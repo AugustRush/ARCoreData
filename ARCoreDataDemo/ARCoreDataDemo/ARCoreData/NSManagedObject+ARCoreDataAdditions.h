@@ -12,6 +12,6 @@
 
 +(NSString *)entityName;
 
-+(id)inserNewEntityIntoContext:(NSManagedObjectContext *)context;
++(id)creatNewEntityWithContext:(NSManagedObjectContext *)context;
 
 @end

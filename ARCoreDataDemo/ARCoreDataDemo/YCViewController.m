@@ -47,11 +47,16 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"did select");
-    Person *p = self.dataArr[indexPath.row];
-    [[ARCoreDataPersistanceController sharePersistanceController] deleteObjects:[NSSet setWithObject:p] finishedBlock:^(NSError *error) {
-        [self.dataArr removeObject:p];
-        NSLog(@"data array count is %ld",self.dataArr.count);
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+//    Person *curP = self.dataArr[indexPath.row];
+//    curP.name = 2.0000;
+//    if ([self.context hasChanges]) {
+//        NSLog(@"has changes");
+//        [self.context save:nil];
+//    }
+//    [self refreshData];
+
+    [[ARCoreDataPersistanceController sharePersistanceController] deleteObjects:[NSSet setWithArray:self.dataArr] finishedBlock:^(NSError *error) {
+        [self refreshData];
     }];
 }
 
@@ -71,7 +76,7 @@
     }
     
     Person *person = self.dataArr[indexPath.row];
-    cell.textLabel.text = person.name;
+    cell.textLabel.text = [NSString stringWithFormat:@"%f",person.name];
     cell.detailTextLabel.text = person.sex;
     
     return cell;
@@ -90,10 +95,26 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
-    Person *newPerson = [Person inserNewEntityIntoContext:self.context];
-    newPerson.name = [NSString stringWithFormat:@"liu test"];
-    newPerson.sex = @"hah";
-    [self.context save:nil];
-    [self refreshData];
+    
+    NSMutableArray *datas = [NSMutableArray array];
+    for (int i = 0; i < 10; i++) {
+        if (i == 990) {
+                    [datas addObject:@{@"name1":@(1.00590),@"sex":@"mmmmm",@"www":@"undifine",@"tetet":@"23423"}];
+            continue;
+        }
+        [datas addObject:@{@"name":@(1.00590),@"sex":@"mmmmm"}];
+    }
+    
+    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[Person entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
+        NSLog(@"insert data finished, error is %@",error);
+        [self refreshData];
+    }];
+    
+//    Person *newP = [Person creatNewEntityWithContext:self.context];
+//    newP.name = @"jjjjjjjj";
+//    newP.sex = @"nan";
+//    [self.context save:nil];
+//    [self refreshData];
+    
 }
 @end

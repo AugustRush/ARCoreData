@@ -19,10 +19,10 @@
 
 +(instancetype)sharePersistanceController;
 
-/**
- *  保存数据上下文改变
- */
-- (void)saveContext;
+///**
+// *  保存数据上下文改变
+// */
+//- (void)saveContext;
 
 /**
  *  获取某个实体类的所有对象
@@ -39,5 +39,14 @@
  *  @param block   删除操作完成的回调
  */
 - (void)deleteObjects:(NSSet *)objects finishedBlock:(void(^)(NSError*))block;
+
+/**
+ *  插入一组新对象
+ *
+ *  @param entityName       实体名称
+ *  @param attresAndValsArr 实体的attr和value字典的数组
+ *  @param block            插入完成回调
+ */
+- (void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void(^)(NSError *error))block;
 
 @end

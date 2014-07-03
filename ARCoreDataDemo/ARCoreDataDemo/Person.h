@@ -2,7 +2,7 @@
 //  Person.h
 //  ARCoreDataDemo
 //
-//  Created by 刘平伟 on 14-7-1.
+//  Created by 刘平伟 on 14-7-3.
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
@@ -12,7 +12,11 @@
 
 @interface Person : NSManagedObject
 
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic) float name;
 @property (nonatomic, retain) NSString * sex;
+@property (nonatomic, retain) NSString * tq;
+@property (nonatomic) int16_t qwe;
+@property (nonatomic) BOOL qweqwe;
+@property (nonatomic, retain) NSString * qweqweqw;
 
 @end

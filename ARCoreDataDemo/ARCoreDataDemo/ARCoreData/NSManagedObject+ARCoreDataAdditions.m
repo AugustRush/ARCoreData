@@ -15,7 +15,7 @@
     return NSStringFromClass(self);
 }
 
-+(id)inserNewEntityIntoContext:(NSManagedObjectContext *)context
++(id)creatNewEntityWithContext:(NSManagedObjectContext *)context
 {
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
 }

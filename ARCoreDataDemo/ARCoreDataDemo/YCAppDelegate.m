@@ -20,13 +20,15 @@
     int i = 0;
     
     do{
-         Person *newPerson = [Person inserNewEntityIntoContext:defCoreDataCtr.managedObjectContext];
-        newPerson.name = [NSString stringWithFormat:@"%d liu",i];
+        Person *newPerson = [Person creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
+        newPerson.name = i;
         newPerson.sex = @"hah";
+        newPerson.tq = @";akdjiqnkdvlqndvoqsdnvsdnvsafvfnv";
+        newPerson.qweqwe = YES;
         
         i++;
     }while (i < 3);
-    [defCoreDataCtr saveContext];
+    [defCoreDataCtr.managedObjectContext save:nil];
     /**
      *  fetch request
      */

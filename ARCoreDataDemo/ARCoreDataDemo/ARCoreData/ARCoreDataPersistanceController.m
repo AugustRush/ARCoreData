@@ -62,11 +62,35 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 -(void)deleteObjects:(NSSet *)objects finishedBlock:(void (^)(NSError *))block{
     NSError *error;
-    [objects enumerateObjectsUsingBlock:^(NSManagedObject *obj, BOOL *stop) {
+    [objects enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self.managedObjectContext deleteObject:obj];
     }];
     [self.managedObjectContext save:&error];
     
+    block(error);
+}
+
+-(void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void (^)(NSError *))block
+{
+    NSError *error;
+    static NSArray *allPropertys = nil;
+    [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
+        
+        NSManagedObject *newObj = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
+        if (allPropertys == nil) {
+            allPropertys = [[[newObj entity] attributesByName] allKeys];
+        }
+        [attresAndVals enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([allPropertys containsObject:key]) {
+                [newObj setValue:obj forKey:key];
+            }else{
+                NSLog(@"attresAndValsArr index %ld compoment has't key %@",idx,key);
+            }
+        }];
+        
+    }];
+    
+    [self.managedObjectContext save:&error];
     block(error);
 }
 
@@ -98,8 +122,9 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
      *  获取资源文件里面CoreData模型文件数组最后一个
      */
     
-    NSURL *modelURL = [[[NSBundle mainBundle] URLsForResourcesWithExtension:@"momd" subdirectory:nil] lastObject];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+//    NSURL *modelURL = [[[NSBundle mainBundle] URLsForResourcesWithExtension:@"momd" subdirectory:nil] lastObject];
+//    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     return _managedObjectModel;
 }
 
@@ -114,29 +139,6 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
