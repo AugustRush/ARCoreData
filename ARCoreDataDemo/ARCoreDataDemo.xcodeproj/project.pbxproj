@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		735C81D319655E1F009A711A /* EntityO.m in Sources */ = {isa = PBXBuildFile; fileRef = 735C81D219655E1F009A711A /* EntityO.m */; };
 		73B8BC5F1965359900E918B5 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B8BC5E1965359900E918B5 /* Person.m */; };
 		73D45F0E1962666800745653 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0D1962666800745653 /* Foundation.framework */; };
 		73D45F101962666800745653 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0F1962666800745653 /* CoreGraphics.framework */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		735C81D119655E1F009A711A /* EntityO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityO.h; sourceTree = "<group>"; };
+		735C81D219655E1F009A711A /* EntityO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityO.m; sourceTree = "<group>"; };
 		73B8BC5D1965359900E918B5 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		73B8BC5E1965359900E918B5 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		73D45F0A1962666800745653 /* ARCoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +133,8 @@
 				73D45F221962666800745653 /* YCViewController.h */,
 				73D45F231962666800745653 /* YCViewController.m */,
 				73D45F471962831D00745653 /* ModelTestw.xcdatamodeld */,
+				735C81D119655E1F009A711A /* EntityO.h */,
+				735C81D219655E1F009A711A /* EntityO.m */,
 				73B8BC5D1965359900E918B5 /* Person.h */,
 				73B8BC5E1965359900E918B5 /* Person.m */,
 				73D45F4219626A6100745653 /* ARCoreData */,
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				735C81D319655E1F009A711A /* EntityO.m in Sources */,
 				73D45F1E1962666800745653 /* YCAppDelegate.m in Sources */,
 				73D45F4C1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m in Sources */,
 				73B8BC5F1965359900E918B5 /* Person.m in Sources */,

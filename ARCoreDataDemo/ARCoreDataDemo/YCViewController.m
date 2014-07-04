@@ -9,6 +9,7 @@
 #import "YCViewController.h"
 #import "ARCoreData/ARCoreData.h"
 #import "Person.h"
+#import "EntityO.h"
 
 @interface YCViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -98,17 +99,24 @@
     
     NSMutableArray *datas = [NSMutableArray array];
     for (int i = 0; i < 10; i++) {
-        if (i == 990) {
+        if (i == 9) {
                     [datas addObject:@{@"name1":@(1.00590),@"sex":@"mmmmm",@"www":@"undifine",@"tetet":@"23423"}];
             continue;
         }
         [datas addObject:@{@"name":@(1.00590),@"sex":@"mmmmm"}];
     }
     
+    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[EntityO entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
+        NSLog(@"insert data finished, error is %@",error);
+        [self refreshData];
+    }];
+
     [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[Person entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
         NSLog(@"insert data finished, error is %@",error);
         [self refreshData];
     }];
+
+
     
 //    Person *newP = [Person creatNewEntityWithContext:self.context];
 //    newP.name = @"jjjjjjjj";

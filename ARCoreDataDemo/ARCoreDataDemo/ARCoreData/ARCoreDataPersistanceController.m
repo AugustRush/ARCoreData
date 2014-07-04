@@ -73,9 +73,8 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 -(void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void (^)(NSError *))block
 {
     NSError *error;
-    static NSArray *allPropertys = nil;
     [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
-        
+        static NSArray *allPropertys = nil;
         NSManagedObject *newObj = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
         if (allPropertys == nil) {
             allPropertys = [[[newObj entity] attributesByName] allKeys];
@@ -125,6 +124,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 //    NSURL *modelURL = [[[NSBundle mainBundle] URLsForResourcesWithExtension:@"momd" subdirectory:nil] lastObject];
 //    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    NSLog(@"manage object model version %@",[_managedObjectModel entityVersionHashesByName]);
     return _managedObjectModel;
 }
 
@@ -138,12 +138,65 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    
+    NSDictionary *persistentStoreOptions = @{ // Light migration
+                                             NSInferMappingModelAutomaticallyOption:@YES,
+                                             NSMigratePersistentStoresAutomaticallyOption:@YES
+                                             };
+    
+    NSPersistentStore *persistanceStore = [_persistentStoreCoordinator
+                                           addPersistentStoreWithType:NSSQLiteStoreType
+                                           configuration:nil
+                                           URL:storeURL
+                                           options:persistentStoreOptions
+                                           error:&error];
+    
+    if (!persistanceStore) {
+        NSLog(@"persistance store may has changed");
+        error = nil;
+        if ([self removeSQLiteFilesAtStoreURL:storeURL error:&error]) {
+            persistanceStore = [_persistentStoreCoordinator
+                                addPersistentStoreWithType:NSSQLiteStoreType
+                                configuration:nil
+                                URL:storeURL
+                                options:persistentStoreOptions
+                                error:&error];
+        }else{
+            NSLog(@"could not remove has changed sqilte");
+        }
     }
     
     return _persistentStoreCoordinator;
+}
+
+- (BOOL)removeSQLiteFilesAtStoreURL:(NSURL *)storeURL error:(NSError * __autoreleasing *)error {
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *storeDirectory = [storeURL URLByDeletingLastPathComponent];
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:storeDirectory
+                                          includingPropertiesForKeys:nil
+                                                             options:0
+                                                        errorHandler:nil];
+    
+    NSString *storeName = [storeURL.lastPathComponent stringByDeletingPathExtension];
+    for (NSURL *url in enumerator) {
+        
+        if ([url.lastPathComponent hasPrefix:storeName] == NO) {
+            continue;
+        }
+        
+        NSError *fileManagerError = nil;
+        if ([fileManager removeItemAtURL:url error:&fileManagerError] == NO) {
+            
+            if (error != NULL) {
+                *error = fileManagerError;
+            }
+            
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - Application's Documents directory

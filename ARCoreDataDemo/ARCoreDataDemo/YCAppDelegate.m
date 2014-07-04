@@ -9,6 +9,7 @@
 #import "YCAppDelegate.h"
 #import "ARCoreData.h"
 #import "Person.h"
+#import "EntityO.h"
 
 @implementation YCAppDelegate
 
@@ -26,7 +27,13 @@
         newPerson.tq = @";akdjiqnkdvlqndvoqsdnvsdnvsafvfnv";
         newPerson.qweqwe = YES;
         
+        
+        EntityO *newEO = [EntityO creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
+        newEO.eName = @"e Name";
+        
         i++;
+        
+    
     }while (i < 3);
     [defCoreDataCtr.managedObjectContext save:nil];
     /**
