@@ -10,6 +10,10 @@
 
 static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
+@interface ARCoreDataPersistanceController ()
+
+@end
+
 @implementation ARCoreDataPersistanceController
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -22,6 +26,15 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
  *
  *  @return 静态的CoreDataPersistanceController
  */
+
+-(id)init
+{
+    self = [super init];
+    if (self) {
+        _modelEntiysNameAndPropertys = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
 
 +(instancetype)sharePersistanceController
 {
@@ -73,17 +86,17 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 -(void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void (^)(NSError *))block
 {
     NSError *error;
+    __block NSArray *allPropertys = nil;
     [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
-        static NSArray *allPropertys = nil;
         NSManagedObject *newObj = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
         if (allPropertys == nil) {
-            allPropertys = [[[newObj entity] attributesByName] allKeys];
+            allPropertys = _modelEntiysNameAndPropertys[entityName];
         }
         [attresAndVals enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([allPropertys containsObject:key]) {
                 [newObj setValue:obj forKey:key];
             }else{
-                NSLog(@"attresAndValsArr index %ld compoment has't key %@",idx,key);
+                NSLog(@"attresAndValsArr index %ld compoment has't key %@",(unsigned long)idx,key);
             }
         }];
         
@@ -103,8 +116,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-//        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+        _managedObjectContext = [[NSManagedObjectContext alloc] init];
 
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
@@ -116,15 +128,14 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-//    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
-    /**
-     *  获取资源文件里面CoreData模型文件数组最后一个
-     */
-    
-//    NSURL *modelURL = [[[NSBundle mainBundle] URLsForResourcesWithExtension:@"momd" subdirectory:nil] lastObject];
-//    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    NSLog(@"manage object model version %@",[_managedObjectModel entityVersionHashesByName]);
+    
+    NSDictionary *entitysNameAndDes = [_managedObjectModel entitiesByName];
+    [entitysNameAndDes enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSEntityDescription * obj, BOOL *stop) {
+        [_modelEntiysNameAndPropertys setObject:obj.propertiesByName.allKeys forKey:key];
+    }];
+    NSLog(@"model entity name and pro is %@",_modelEntiysNameAndPropertys);
+    
     return _managedObjectModel;
 }
 
@@ -152,6 +163,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
                                            error:&error];
     
     if (!persistanceStore) {
+
         NSLog(@"persistance store may has changed");
         error = nil;
         if ([self removeSQLiteFilesAtStoreURL:storeURL error:&error]) {

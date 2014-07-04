@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="EntityO" representedClassName="EntityO" syncable="YES">
-        <attribute name="asdkjfskdjf" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="eName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="sex" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="EntityTTT" syncable="YES">
+    <entity name="EntityTTT" representedClassName="EntityTTT" syncable="YES">
         <attribute name="attribute" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="attribute1" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
@@ -17,8 +17,8 @@
         <attribute name="tq" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EntityO" positionX="-63" positionY="27" width="128" height="75"/>
+        <element name="EntityO" positionX="-63" positionY="27" width="128" height="73"/>
         <element name="Person" positionX="-63" positionY="-18" width="128" height="135"/>
-        <element name="EntityTTT" positionX="-9" positionY="81" width="128" height="75"/>
+        <element name="EntityTTT" positionX="-9" positionY="81" width="128" height="73"/>
     </elements>
 </model>

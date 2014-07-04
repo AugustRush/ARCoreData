@@ -22,14 +22,14 @@
     
     do{
         Person *newPerson = [Person creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
-        newPerson.name = i;
+        newPerson.name = @(i);
         newPerson.sex = @"hah";
         newPerson.tq = @";akdjiqnkdvlqndvoqsdnvsdnvsafvfnv";
-        newPerson.qweqwe = YES;
+        newPerson.qweqwe = @(1000);
         
         
         EntityO *newEO = [EntityO creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
-        newEO.eName = @"e Name";
+        newEO.name = @(3.000);
         
         i++;
         

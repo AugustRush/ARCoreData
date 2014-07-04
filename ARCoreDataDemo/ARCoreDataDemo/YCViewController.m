@@ -77,7 +77,7 @@
     }
     
     Person *person = self.dataArr[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%f",person.name];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",person.name];
     cell.detailTextLabel.text = person.sex;
     
     return cell;

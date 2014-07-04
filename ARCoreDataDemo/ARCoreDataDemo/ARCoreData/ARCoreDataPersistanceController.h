@@ -17,6 +17,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (nonatomic, strong,readonly) NSMutableDictionary *modelEntiysNameAndPropertys;
+
 +(instancetype)sharePersistanceController;
 
 ///**
@@ -44,7 +46,9 @@
  *  插入一组新对象
  *
  *  @param entityName       实体名称
- *  @param attresAndValsArr 实体的attr和value字典的数组
+ *  @param attresAndValsArr 实体的attr和value字典的数组,
+    @[@{@"name":@"liu aa",@"sex":@"man"},
+      @{@"name":@"wang bb",@"sex":@"women"}]
  *  @param block            插入完成回调
  */
 - (void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void(^)(NSError *error))block;
