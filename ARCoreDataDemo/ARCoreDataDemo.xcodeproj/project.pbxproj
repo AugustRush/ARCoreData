@@ -188,9 +188,9 @@
 				73D45F4419626B2E00745653 /* ARCoreDataPersistanceController.h */,
 				73D45F4519626B2E00745653 /* ARCoreDataPersistanceController.m */,
 				73D45F4A1962867900745653 /* NSManagedObject+ARCoreDataAdditions.h */,
+				73D45F4B1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m */,
 				737DF1C419741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.h */,
 				737DF1C519741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m */,
-				73D45F4B1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m */,
 			);
 			path = ARCoreData;
 			sourceTree = "<group>";

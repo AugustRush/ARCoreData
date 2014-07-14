@@ -10,4 +10,14 @@
 
 @implementation NSFetchRequest (ARCoreDataAdditions)
 
+
+//
++(NSFetchRequest *)fetchReuqestWithBatchSize:(NSUInteger)batchSize entityDescription:(NSEntityDescription *)entityDescription
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    [request setFetchBatchSize:batchSize];
+    return request;
+}
+
 @end
