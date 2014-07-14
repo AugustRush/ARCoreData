@@ -19,6 +19,11 @@
 
 @property (nonatomic, strong,readonly) NSMutableDictionary *modelEntiysNameAndPropertys;
 
+/**
+ *  单例
+ *
+ *  @return 静态的CoreDataPersistanceController
+ */
 +(instancetype)sharePersistanceController;
 
 ///**

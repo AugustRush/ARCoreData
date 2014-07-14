@@ -21,12 +21,6 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 #pragma mark - init methods
 
-/**
- *  单例
- *
- *  @return 静态的CoreDataPersistanceController
- */
-
 -(id)init
 {
     self = [super init];
