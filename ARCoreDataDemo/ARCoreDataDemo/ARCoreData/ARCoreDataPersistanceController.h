@@ -39,6 +39,7 @@
  */
 - (void)fetchAllObjectsWithEntityName:(NSString *)entityName finishedBlock:(void(^)(NSArray *objs,NSError *error))block;
 
+-(void)fetchObjectsWithFetchRequest:(NSFetchRequest *)fetchRequest finishedBlock:(void(^)(NSArray *objects,NSError *error))block;
 /**
  *  删除多个数据对象，形式为NSSet
  *

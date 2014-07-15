@@ -35,12 +35,23 @@
 }
 
 -(void)refreshData{
+
     [self.dataArr removeAllObjects];
-    [[ARCoreDataPersistanceController sharePersistanceController] fetchAllObjectsWithEntityName:@"Person" finishedBlock:^(NSArray *objs, NSError *error) {
-        NSLog(@"array count is %ld error is %@",objs.count,error);
-        [self.dataArr addObjectsFromArray:objs];
+//    [[ARCoreDataPersistanceController sharePersistanceController] fetchAllObjectsWithEntityName:@"Person" finishedBlock:^(NSArray *objs, NSError *error) {
+//        NSLog(@"array count is %ld error is %@",objs.count,error);
+//        [self.dataArr addObjectsFromArray:objs];
+//        [self.tableView reloadData];
+//    }];
+    
+    NSFetchRequest *fetReq = [NSFetchRequest fetchRequestWithEntityName:@"Person"];
+    [fetReq setFetchLimit:5];
+    [[ARCoreDataPersistanceController sharePersistanceController] fetchObjectsWithFetchRequest:fetReq finishedBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"array count is %ld error is %@",objects.count,error);
+        [self.dataArr addObjectsFromArray:objects];
         [self.tableView reloadData];
+
     }];
+    
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -100,16 +111,16 @@
     NSMutableArray *datas = [NSMutableArray array];
     for (int i = 0; i < 10; i++) {
         if (i == 9) {
-                    [datas addObject:@{@"name1":@(1.00590),@"sex":@"mmmmm",@"www":@"undifine",@"tetet":@"23423"}];
+                    [datas addObject:@{@"name1":@(1.00590*i),@"sex":@"mmmmm",@"www":@"undifine",@"tetet":@"23423"}];
             continue;
         }
-        [datas addObject:@{@"name":@(1.00590),@"sex":@"mmmmm"}];
+        [datas addObject:@{@"name":@(1.00590*i),@"sex":@"mmmmm"}];
     }
     
-    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[EntityO entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
-        NSLog(@"insert data finished, error is %@",error);
-        [self refreshData];
-    }];
+//    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[EntityO entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
+//        NSLog(@"insert data finished, error is %@",error);
+//        [self refreshData];
+//    }];
 
     [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[Person entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
         NSLog(@"insert data finished, error is %@",error);

@@ -35,7 +35,7 @@
             </objects>
             <point key="canvasLocation" x="-432" y="124"/>
         </scene>
-        <!--View Controller - Title-->
+        <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="YCViewController" sceneMemberID="viewController">
@@ -59,7 +59,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="bqq-lH-3FL">
+                    <navigationItem key="navigationItem" id="bqq-lH-3FL">
+                        <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" title="add" id="Na2-mm-Oo7">
                             <connections>
                                 <action selector="addEntityObj:" destination="vXZ-lx-hvc" id="zrz-29-ARB"/>

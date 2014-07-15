@@ -10,7 +10,6 @@
 		735C81D6196653FE009A711A /* EntityO.m in Sources */ = {isa = PBXBuildFile; fileRef = 735C81D5196653FE009A711A /* EntityO.m */; };
 		735C81D9196653FF009A711A /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 735C81D8196653FF009A711A /* Person.m */; };
 		735C81DC196653FF009A711A /* EntityTTT.m in Sources */ = {isa = PBXBuildFile; fileRef = 735C81DB196653FF009A711A /* EntityTTT.m */; };
-		737DF1C619741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 737DF1C519741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m */; };
 		73D45F0E1962666800745653 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0D1962666800745653 /* Foundation.framework */; };
 		73D45F101962666800745653 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0F1962666800745653 /* CoreGraphics.framework */; };
 		73D45F121962666800745653 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F111962666800745653 /* UIKit.framework */; };
@@ -47,8 +46,6 @@
 		735C81D8196653FF009A711A /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		735C81DA196653FF009A711A /* EntityTTT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityTTT.h; sourceTree = "<group>"; };
 		735C81DB196653FF009A711A /* EntityTTT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityTTT.m; sourceTree = "<group>"; };
-		737DF1C419741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchRequest+ARCoreDataAdditions.h"; sourceTree = "<group>"; };
-		737DF1C519741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchRequest+ARCoreDataAdditions.m"; sourceTree = "<group>"; };
 		73D45F0A1962666800745653 /* ARCoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73D45F0D1962666800745653 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		73D45F0F1962666800745653 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -189,8 +186,6 @@
 				73D45F4519626B2E00745653 /* ARCoreDataPersistanceController.m */,
 				73D45F4A1962867900745653 /* NSManagedObject+ARCoreDataAdditions.h */,
 				73D45F4B1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m */,
-				737DF1C419741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.h */,
-				737DF1C519741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m */,
 			);
 			path = ARCoreData;
 			sourceTree = "<group>";
@@ -302,7 +297,6 @@
 				73D45F491962831D00745653 /* ModelTestw.xcdatamodeld in Sources */,
 				73D45F241962666800745653 /* YCViewController.m in Sources */,
 				73D45F1A1962666800745653 /* main.m in Sources */,
-				737DF1C619741E24004B540D /* NSFetchRequest+ARCoreDataAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -57,13 +57,19 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 -(void)fetchAllObjectsWithEntityName:(NSString *)entityName finishedBlock:(void (^)(NSArray *, NSError *))block
 {
-    NSEntityDescription *EDes = [NSEntityDescription entityForName:entityName
-                                            inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
-    [fetchReq setEntity:EDes];
-    
+//    NSEntityDescription *EDes = [NSEntityDescription entityForName:entityName
+//                                            inManagedObjectContext:self.managedObjectContext];
+//    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
+//    [fetchReq setEntity:EDes];
+    NSFetchRequest *fetchReq = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSError *error;
     NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchReq error:&error];
+    block(objects,error);
+}
+
+-(void)fetchObjectsWithFetchRequest:(NSFetchRequest *)fetchRequest finishedBlock:(void (^)(NSArray *, NSError *))block{
+    NSError *error;
+    NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     block(objects,error);
 }
 
