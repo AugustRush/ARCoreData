@@ -61,6 +61,8 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 //                                            inManagedObjectContext:self.managedObjectContext];
 //    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
 //    [fetchReq setEntity:EDes];
+    NSAssert(block, @"finished block should not be nil");
+    NSAssert(entityName, @"entityName should not be nil");
     NSFetchRequest *fetchReq = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSError *error;
     NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchReq error:&error];
@@ -68,12 +70,17 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 }
 
 -(void)fetchObjectsWithFetchRequest:(NSFetchRequest *)fetchRequest finishedBlock:(void (^)(NSArray *, NSError *))block{
+    NSAssert(block, @"finished block should not be nil");
+    NSAssert(fetchRequest, @"fetchRequest should not be nil");
     NSError *error;
     NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     block(objects,error);
 }
 
--(void)deleteObjects:(NSSet *)objects finishedBlock:(void (^)(NSError *))block{
+-(void)deleteObjects:(NSSet *)objects finishedBlock:(void (^)(NSError *))block
+{
+    NSAssert(objects.count > 0, @"objects count should not equal to 0");
+    NSAssert(block, @"finished block should not be nil");
     NSError *error;
     [objects enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self.managedObjectContext deleteObject:obj];
@@ -85,6 +92,9 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 -(void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void (^)(NSError *))block
 {
+    NSAssert(block, @"finished block should not be nil");
+    NSAssert(entityName, @"entityName should not be nil");
+    NSAssert(attresAndValsArr, @"attresAndValsArr should not be nil");
     NSError *error;
     __block NSArray *allPropertys = nil;
     [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
@@ -116,7 +126,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];//创建一个似有的线程队列，不会阻塞UI
 
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
