@@ -57,10 +57,6 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 -(void)fetchAllObjectsWithEntityName:(NSString *)entityName finishedBlock:(void (^)(NSArray *, NSError *))block
 {
-//    NSEntityDescription *EDes = [NSEntityDescription entityForName:entityName
-//                                            inManagedObjectContext:self.managedObjectContext];
-//    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
-//    [fetchReq setEntity:EDes];
     NSAssert(block, @"finished block should not be nil");
     NSAssert(entityName, @"entityName should not be nil");
     NSFetchRequest *fetchReq = [NSFetchRequest fetchRequestWithEntityName:entityName];
@@ -96,12 +92,9 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     NSAssert(entityName, @"entityName should not be nil");
     NSAssert(attresAndValsArr, @"attresAndValsArr should not be nil");
     NSError *error;
-    __block NSArray *allPropertys = nil;
+    __block NSArray *allPropertys = _modelEntiysNameAndPropertys[entityName];
     [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
         NSManagedObject *newObj = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
-        if (allPropertys == nil) {
-            allPropertys = _modelEntiysNameAndPropertys[entityName];
-        }
         [attresAndVals enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([allPropertys containsObject:key]) {
                 [newObj setValue:obj forKey:key];

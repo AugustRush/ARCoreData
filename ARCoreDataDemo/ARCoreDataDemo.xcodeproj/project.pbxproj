@@ -25,7 +25,7 @@
 		73D45F371962666800745653 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D45F351962666800745653 /* InfoPlist.strings */; };
 		73D45F391962666800745653 /* ARCoreDataDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F381962666800745653 /* ARCoreDataDemoTests.m */; };
 		73D45F4619626B2E00745653 /* ARCoreDataPersistanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F4519626B2E00745653 /* ARCoreDataPersistanceController.m */; };
-		73D45F491962831D00745653 /* ModelTestw.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F471962831D00745653 /* ModelTestw.xcdatamodeld */; };
+		73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */; };
 		73D45F4C1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F4B1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m */; };
 /* End PBXBuildFile section */
 
@@ -68,7 +68,7 @@
 		73D45F4319626A7F00745653 /* ARCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCoreData.h; sourceTree = "<group>"; };
 		73D45F4419626B2E00745653 /* ARCoreDataPersistanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataPersistanceController.h; sourceTree = "<group>"; };
 		73D45F4519626B2E00745653 /* ARCoreDataPersistanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataPersistanceController.m; sourceTree = "<group>"; };
-		73D45F481962831D00745653 /* ModelTestw.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ModelTestw.xcdatamodel; sourceTree = "<group>"; };
+		73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ModelTesdd.xcdatamodel; sourceTree = "<group>"; };
 		73D45F4A1962867900745653 /* NSManagedObject+ARCoreDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARCoreDataAdditions.h"; sourceTree = "<group>"; };
 		73D45F4B1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARCoreDataAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,7 +135,7 @@
 				73D45F1F1962666800745653 /* Main.storyboard */,
 				73D45F221962666800745653 /* YCViewController.h */,
 				73D45F231962666800745653 /* YCViewController.m */,
-				73D45F471962831D00745653 /* ModelTestw.xcdatamodeld */,
+				73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */,
 				735C81DA196653FF009A711A /* EntityTTT.h */,
 				735C81DB196653FF009A711A /* EntityTTT.m */,
 				735C81D7196653FF009A711A /* Person.h */,
@@ -294,7 +294,7 @@
 				73D45F4C1962867900745653 /* NSManagedObject+ARCoreDataAdditions.m in Sources */,
 				735C81DC196653FF009A711A /* EntityTTT.m in Sources */,
 				73D45F4619626B2E00745653 /* ARCoreDataPersistanceController.m in Sources */,
-				73D45F491962831D00745653 /* ModelTestw.xcdatamodeld in Sources */,
+				73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */,
 				73D45F241962666800745653 /* YCViewController.m in Sources */,
 				73D45F1A1962666800745653 /* main.m in Sources */,
 			);
@@ -515,13 +515,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		73D45F471962831D00745653 /* ModelTestw.xcdatamodeld */ = {
+		73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				73D45F481962831D00745653 /* ModelTestw.xcdatamodel */,
+				73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */,
 			);
-			currentVersion = 73D45F481962831D00745653 /* ModelTestw.xcdatamodel */;
-			path = ModelTestw.xcdatamodeld;
+			currentVersion = 73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */;
+			path = ModelTesdd.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

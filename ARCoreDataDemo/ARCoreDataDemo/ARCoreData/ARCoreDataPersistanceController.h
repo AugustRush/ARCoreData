@@ -48,15 +48,4 @@
  */
 - (void)deleteObjects:(NSSet *)objects finishedBlock:(void(^)(NSError*))block;
 
-/**
- *  插入一组新对象
- *
- *  @param entityName       实体名称
- *  @param attresAndValsArr 实体的attr和value字典的数组,
-    @[@{@"name":@"liu aa",@"sex":@"man"},
-      @{@"name":@"wang bb",@"sex":@"women"}]
- *  @param block            插入完成回调
- */
-- (void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void(^)(NSError *error))block;
-
 @end

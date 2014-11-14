@@ -44,7 +44,7 @@
 //    }];
     
     NSFetchRequest *fetReq = [NSFetchRequest fetchRequestWithEntityName:@"Person"];
-    [fetReq setFetchLimit:5];
+//    [fetReq setFetchLimit:5];
     [[ARCoreDataPersistanceController sharePersistanceController] fetchObjectsWithFetchRequest:fetReq finishedBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"array count is %ld error is %@",objects.count,error);
         [self.dataArr addObjectsFromArray:objects];
@@ -59,13 +59,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"did select");
-//    Person *curP = self.dataArr[indexPath.row];
-//    curP.name = 2.0000;
-//    if ([self.context hasChanges]) {
-//        NSLog(@"has changes");
-//        [self.context save:nil];
-//    }
-//    [self refreshData];
 
     [[ARCoreDataPersistanceController sharePersistanceController] deleteObjects:[NSSet setWithArray:self.dataArr] finishedBlock:^(NSError *error) {
         [self refreshData];
@@ -108,32 +101,6 @@
 
 - (IBAction)addEntityObj:(id)sender {
     
-    NSMutableArray *datas = [NSMutableArray array];
-    for (int i = 0; i < 10; i++) {
-        if (i == 9) {
-                    [datas addObject:@{@"name1":@(1.00590*i),@"sex":@"mmmmm",@"www":@"undifine",@"tetet":@"23423"}];
-            continue;
-        }
-        [datas addObject:@{@"name":@(1.00590*i),@"sex":@"mmmmm"}];
-    }
-    
-//    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[EntityO entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
-//        NSLog(@"insert data finished, error is %@",error);
-//        [self refreshData];
-//    }];
-
-    [[ARCoreDataPersistanceController sharePersistanceController] insertObjectsWithEntityName:[Person entityName] attresAndValsArr:datas finishedBlock:^(NSError *error) {
-        NSLog(@"insert data finished, error is %@",error);
-        [self refreshData];
-    }];
-
-
-    
-//    Person *newP = [Person creatNewEntityWithContext:self.context];
-//    newP.name = @"jjjjjjjj";
-//    newP.sex = @"nan";
-//    [self.context save:nil];
-//    [self refreshData];
     
 }
 @end

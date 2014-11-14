@@ -23,7 +23,7 @@
     do{
         Person *newPerson = [Person creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
         newPerson.name = @(i);
-        newPerson.sex = @"hah";
+        newPerson.sex = @"ha来看看力挽狂澜我离开h";
         newPerson.tq = @";akdjiqnkdvlqndvoqsdnvsdnvsafvfnv";
         newPerson.qweqwe = @(1000);
         
