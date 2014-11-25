@@ -12,12 +12,8 @@
 #import "ARCoreDataPersistanceController.h"
 #import "NSManagedObject+ARCoreDataAdditions.h"
 
-#endif
+#define keypath2(OBJ, PATH) \
+(((void)(NO && ((void)OBJ.PATH, NO)), # PATH))
 
-#ifdef DEBUG
-#define NSLog(...) NSLog(__VA_ARGS__)
-#define debugMethod() NSLog(@"%s", __func__)
-#else
-#define NSLog(...)
-#define debugMethod()
+
 #endif

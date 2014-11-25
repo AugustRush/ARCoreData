@@ -12,6 +12,10 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 @interface ARCoreDataPersistanceController ()
 
+@property (nonatomic, strong) NSManagedObjectContext *mainManageObjectContext;
+
+@property (nonatomic, strong) NSManagedObjectContext *defaultPrivateQueueContext;
+
 @end
 
 @implementation ARCoreDataPersistanceController
@@ -26,6 +30,17 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     self = [super init];
     if (self) {
         _modelEntiysNameAndPropertys = [NSMutableDictionary dictionary];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(mainManageObjectContextDidSaved:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:[self mainManageObjectContext]];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(privateManageObjectContextDidSaved:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:[self managedObjectModel]];
+
     }
     return self;
 }
@@ -38,6 +53,27 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
         AR__CoreDataPersistanceCtr = [[ARCoreDataPersistanceController alloc] init];
     });
     return AR__CoreDataPersistanceCtr;
+}
+
+
+#pragma mark - notification methods
+
+-(void)mainManageObjectContextDidSaved:(NSNotification *)notification
+{
+    @synchronized(self){
+        [self.managedObjectContext performBlock:^{
+            [self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+        }];
+    }
+}
+
+-(void)privateManageObjectContextDidSaved:(NSNotification *)notification
+{
+    @synchronized(self){
+        [self.mainManageObjectContext performBlock:^{
+            [self.mainManageObjectContext mergeChangesFromContextDidSaveNotification:notification];
+        }];
+    }
 }
 
 #pragma mark - Custom methods
@@ -55,61 +91,23 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     }
 }
 
--(void)fetchAllObjectsWithEntityName:(NSString *)entityName finishedBlock:(void (^)(NSArray *, NSError *))block
-{
-    NSAssert(block, @"finished block should not be nil");
-    NSAssert(entityName, @"entityName should not be nil");
-    NSFetchRequest *fetchReq = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    NSError *error;
-    NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchReq error:&error];
-    block(objects,error);
-}
-
--(void)fetchObjectsWithFetchRequest:(NSFetchRequest *)fetchRequest finishedBlock:(void (^)(NSArray *, NSError *))block{
-    NSAssert(block, @"finished block should not be nil");
-    NSAssert(fetchRequest, @"fetchRequest should not be nil");
-    NSError *error;
-    NSArray *objects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    block(objects,error);
-}
-
--(void)deleteObjects:(NSSet *)objects finishedBlock:(void (^)(NSError *))block
-{
-    NSAssert(objects.count > 0, @"objects count should not equal to 0");
-    NSAssert(block, @"finished block should not be nil");
-    NSError *error;
-    [objects enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-        [self.managedObjectContext deleteObject:obj];
-    }];
-    [self.managedObjectContext save:&error];
-    
-    block(error);
-}
-
--(void)insertObjectsWithEntityName:(NSString *)entityName attresAndValsArr:(NSArray *)attresAndValsArr finishedBlock:(void (^)(NSError *))block
-{
-    NSAssert(block, @"finished block should not be nil");
-    NSAssert(entityName, @"entityName should not be nil");
-    NSAssert(attresAndValsArr, @"attresAndValsArr should not be nil");
-    NSError *error;
-    __block NSArray *allPropertys = _modelEntiysNameAndPropertys[entityName];
-    [attresAndValsArr enumerateObjectsUsingBlock:^(NSDictionary *attresAndVals, NSUInteger idx, BOOL *stop) {
-        NSManagedObject *newObj = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
-        [attresAndVals enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([allPropertys containsObject:key]) {
-                [newObj setValue:obj forKey:key];
-            }else{
-                NSLog(@"attresAndValsArr index %ld compoment has't key %@",(unsigned long)idx,key);
-            }
-        }];
-        
-    }];
-    
-    [self.managedObjectContext save:&error];
-    block(error);
-}
-
 #pragma mark - Core Data stack
+
+-(NSManagedObjectContext *)mainManageObjectContext
+{
+    if (_mainManageObjectContext != nil) {
+        return _mainManageObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        _mainManageObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        _mainManageObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [_mainManageObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    
+    return _mainManageObjectContext;
+}
 
 - (NSManagedObjectContext *)managedObjectContext
 {
@@ -119,8 +117,8 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];//创建一个似有的线程队列，不会阻塞UI
-
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return _managedObjectContext;
@@ -153,10 +151,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     
-    NSDictionary *persistentStoreOptions = @{ // Light migration
-                                             NSInferMappingModelAutomaticallyOption:@YES,
-                                             NSMigratePersistentStoresAutomaticallyOption:@YES
-                                             };
+    NSDictionary *persistentStoreOptions = [self persistentStoreOptions];
     
     NSPersistentStore *persistanceStore = [_persistentStoreCoordinator
                                            addPersistentStoreWithType:NSSQLiteStoreType
@@ -212,6 +207,13 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     }
     
     return YES;
+}
+
+- (NSDictionary *)persistentStoreOptions
+{
+    return @{NSInferMappingModelAutomaticallyOption: @YES,
+             NSMigratePersistentStoresAutomaticallyOption: @YES,
+             NSSQLitePragmasOption: @{@"synchronous": @"OFF"}};
 }
 
 #pragma mark - Application's Documents directory
