@@ -18,11 +18,18 @@
 +(NSString *)entityName;
 
 /**
- *  creat an entity in default context
+ *  creat an entity in mainQueue context
  *
  *  @return entity
  */
-+(id)creatNewEntity;
++(id)newEntityInMain;
+/**
+ *  creat an entity in mainQueue context
+ *
+ *  @return entity
+ */
++(id)newEntity;
+
 /**
  *  creat an new entity in your context
  *
@@ -158,7 +165,9 @@
 
 // delete methods
 
--(void)deleteObject;
++(void)deleteAllWithHandler:(void(^)(NSError *error))handler;
+
++(void)deleteWhere:(NSString *)filterConfition handler:(void(^)(NSError *error))handler;
 
 // update methods
 
@@ -170,7 +179,9 @@
 
 +(void)updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition;
 
-
 +(void)saveWithHandler:(void(^)(NSError *error))handler;
+
+-(id)objectInMain;
+-(id)objectInPrivate;
 
 @end

@@ -12,9 +12,10 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 @interface ARCoreDataPersistanceController ()
 
-@property (nonatomic, strong) NSManagedObjectContext *mainManageObjectContext;
+@property (nonatomic, strong) NSURL *storeUrl;
+@property (nonatomic, strong) NSPersistentStore *persistentStore;
 
-@property (nonatomic, strong) NSManagedObjectContext *defaultPrivateQueueContext;
+@property (nonatomic, strong) NSManagedObjectContext *mainManageObjectContext;
 
 @end
 
@@ -39,7 +40,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(privateManageObjectContextDidSaved:)
                                                      name:NSManagedObjectContextDidSaveNotification
-                                                   object:[self managedObjectModel]];
+                                                   object:[self managedObjectContext]];
 
     }
     return self;
@@ -78,17 +79,14 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 
 #pragma mark - Custom methods
 
-- (void)saveContext
+-(void)removeAllRecord
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
+    NSPersistentStoreCoordinator *storeCoodinator = self.persistentStoreCoordinator;
+    [storeCoodinator removePersistentStore:self.persistentStore error:&error];
+    [[NSFileManager defaultManager] removeItemAtURL:self.storeUrl error:&error];
+    
+    NSLog(@"remove store file error is %@",error);
 }
 
 #pragma mark - Core Data stack
@@ -147,6 +145,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AR_CoreData.sqlite"];
+    self.storeUrl = storeURL;
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -159,6 +158,8 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
                                            URL:storeURL
                                            options:persistentStoreOptions
                                            error:&error];
+    
+    self.persistentStore = persistanceStore;
     
     if (!persistanceStore) {
 

@@ -8,18 +8,24 @@
 
 #import "NSManagedObject+ARCoreDataAdditions.h"
 #import "ARCoreDataPersistanceController.h"
+#import "NSManagedObjectContext+ARAddtions.h"
 
 #define _systermVersion_greter_8_0 [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
 
 @implementation NSManagedObject (ARCoreDataAdditions)
-
 
 +(NSString *)entityName
 {
     return NSStringFromClass(self);
 }
 
-+(id)creatNewEntity
++(id)newEntityInMain
+{
+    NSManagedObjectContext *manageContext = [self mainManageObjectContext];
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:manageContext];
+}
+
++(id)newEntity
 {
     NSManagedObjectContext *manageContext = [self manageObjectContext];
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:manageContext];
@@ -35,8 +41,26 @@
     NSManagedObjectContext *manageObjectContext = [self manageObjectContext];
     __block NSError *error = nil;
     [manageObjectContext performBlock:^{
+        
+#ifdef _systermVersion_greter_8_0
+        NSAsynchronousFetchRequest *asyncFetchRequest = [[NSAsynchronousFetchRequest alloc] initWithFetchRequest:request completionBlock:^(NSAsynchronousFetchResult *result) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                handler(error,result.finalResult);
+            });
+        }];
+        
+        [manageObjectContext executeRequest:asyncFetchRequest error:&error];
+        if (error) {
+            NSLog(@"error is %@",error);
+        }
+#else
         NSArray *objects = [manageObjectContext executeFetchRequest:request error:&error];
-        handler(error,objects.copy);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler(error,objects);
+        });
+
+#endif
     }];
 }
 
@@ -48,7 +72,7 @@
     [manageObjectContext performBlockAndWait:^{
         objects = [manageObjectContext executeFetchRequest:request error:&error];
     }];
-    return objects.copy;
+    return objects;
 }
 
 +(void)allObjectsWithHandler:(void (^)(NSError *, NSArray *))handler
@@ -128,7 +152,7 @@
                     ascending:ascending
                     batchSize:batchSize
                    fetchLimit:fetchLimit
-                  fetchOffset:fetchLimit];
+                  fetchOffset:0];
 }
 
 +(void)objectsWhere:(NSString *)filterCondition
@@ -171,10 +195,30 @@
     return [self objectsWithFetchRequest:fetchrequest];
 }
 
--(void)deleteObject
++(void)deleteAllWithHandler:(void (^)(NSError *))handler
 {
-    NSManagedObjectContext *manageObjectContext = [self managedObjectContext];
-    [manageObjectContext deleteObject:self];
+    NSManagedObjectContext *manageContext = [self manageObjectContext];
+    
+    [manageContext performBlock:^{
+        NSArray *allObjects = [self allObjects];
+        [allObjects enumerateObjectsUsingBlock:^(NSManagedObject *obj, NSUInteger idx, BOOL *stop) {
+           [manageContext deleteObject:obj];
+        }];
+        
+        [self saveWithHandler:handler];
+    }];
+}
+
++(void)deleteWhere:(NSString *)filterConfition handler:(void (^)(NSError *))handler
+{
+    NSManagedObjectContext *manageContext = [self manageObjectContext];
+    [manageContext performBlock:^{
+        NSArray *objects = [self objectsWhere:filterConfition];
+        [objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [manageContext deleteObject:obj];
+        }];
+        [self saveWithHandler:handler];
+    }];
 }
 
 +(void)updateProperty:(NSString *)propertyName toValue:(id)value
@@ -267,6 +311,7 @@
     __block NSInteger count = 0;
     [manageObjectContext performBlockAndWait:^{
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+        request.resultType = NSManagedObjectIDResultType;
         if (condition) {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:condition];
             request.predicate = predicate;
@@ -303,10 +348,41 @@
 
 +(void)saveWithHandler:(void (^)(NSError *))handler
 {
-    NSManagedObjectContext *manageContext = [self manageObjectContext];
-    NSError *error = nil;
-    if (![manageContext save:&error]) {
-        handler(error);
+    NSManagedObjectContext *privateContext = [self manageObjectContext];
+    NSManagedObjectContext *mainContext = [self mainManageObjectContext];
+    
+    __block NSError *error = nil;
+    if ([privateContext hasChanges]) {
+        [privateContext performBlockAndWait:^{
+            
+            [privateContext save:&error];
+            handler(error);
+        }];
+    }else if ([mainContext hasChanges]){
+        [mainContext performBlockAndWait:^{
+            [mainContext save:&error];
+            handler(error);
+        }];
+    }
+}
+
+-(id)objectInMain
+{
+    NSManagedObjectContext *mainContext = [[self class] mainManageObjectContext];
+    if ([self.managedObjectContext isEqual:mainContext]) {
+        return self;
+    }else{
+        return [mainContext objectWithID:self.objectID];
+    }
+}
+
+-(id)objectInPrivate
+{
+    NSManagedObjectContext *privateContext = [[self class] manageObjectContext];
+    if ([self.managedObjectContext isEqual:privateContext]) {
+        return self;
+    }else{
+        return [privateContext objectWithID:self.objectID];
     }
 }
 
@@ -317,11 +393,9 @@
     return [[ARCoreDataPersistanceController sharePersistanceController] managedObjectContext];
 }
 
-+(NSManagedObjectContext *)priviateFetchContext
++(NSManagedObjectContext *)mainManageObjectContext
 {
-    NSManagedObjectContext *privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [privateContext setParentContext:[self manageObjectContext]];
-    return privateContext;
+    return [[ARCoreDataPersistanceController sharePersistanceController] mainManageObjectContext];
 }
 
 @end
