@@ -1,26 +1,25 @@
 //
-//  ARCoreDataPersistanceController.m
+//  ARCoreDataManager.m
 //  ARCoreDataDemo
 //
 //  Created by 刘平伟 on 14-7-1.
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
-#import "ARCoreDataPersistanceController.h"
+#import "ARCoreDataManager.h"
 
-static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
+static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
 
-@interface ARCoreDataPersistanceController ()
+@interface ARCoreDataManager ()
 
 @property (nonatomic, strong) NSURL *storeUrl;
 @property (nonatomic, strong) NSPersistentStore *persistentStore;
 
-@property (nonatomic, strong) NSManagedObjectContext *mainManageObjectContext;
-
 @end
 
-@implementation ARCoreDataPersistanceController
-@synthesize managedObjectContext = _managedObjectContext;
+@implementation ARCoreDataManager
+@synthesize privateContext = _privateContext;
+@synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
@@ -30,40 +29,29 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 {
     self = [super init];
     if (self) {
-        _modelEntiysNameAndPropertys = [NSMutableDictionary dictionary];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(mainManageObjectContextDidSaved:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:[self mainManageObjectContext]];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(privateManageObjectContextDidSaved:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:[self managedObjectContext]];
-
+        [self addNotifications];
     }
     return self;
 }
 
-+(instancetype)sharePersistanceController
++(instancetype)shareManager
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSLog(@"share");
-        AR__CoreDataPersistanceCtr = [[ARCoreDataPersistanceController alloc] init];
+        AR__CoreDataPersistanceCtr = [[ARCoreDataManager alloc] init];
     });
     return AR__CoreDataPersistanceCtr;
 }
 
 
-#pragma mark - notification methods
+#pragma mark - merge notification methods
 
 -(void)mainManageObjectContextDidSaved:(NSNotification *)notification
 {
     @synchronized(self){
-        [self.managedObjectContext performBlock:^{
-            [self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+        [self.privateContext performBlock:^{
+            [self.privateContext mergeChangesFromContextDidSaveNotification:notification];
         }];
     }
 }
@@ -71,8 +59,8 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
 -(void)privateManageObjectContextDidSaved:(NSNotification *)notification
 {
     @synchronized(self){
-        [self.mainManageObjectContext performBlock:^{
-            [self.mainManageObjectContext mergeChangesFromContextDidSaveNotification:notification];
+        [self.mainContext performBlock:^{
+            [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
         }];
     }
 }
@@ -84,42 +72,72 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
     NSError *error = nil;
     NSPersistentStoreCoordinator *storeCoodinator = self.persistentStoreCoordinator;
     [storeCoodinator removePersistentStore:self.persistentStore error:&error];
-    [[NSFileManager defaultManager] removeItemAtURL:self.storeUrl error:&error];
+    
+    [self removeNotifications];
+    _privateContext = nil;
+    _mainContext = nil;
+    if ([self removeSQLiteFilesAtStoreURL:self.storeUrl error:&error]) {
+        self.persistentStore = [self.persistentStoreCoordinator
+                            addPersistentStoreWithType:NSSQLiteStoreType
+                            configuration:nil
+                            URL:self.storeUrl
+                            options:[self persistentStoreOptions]
+                            error:&error];
+        [self addNotifications];
+    }
     
     NSLog(@"remove store file error is %@",error);
 }
 
-#pragma mark - Core Data stack
-
--(NSManagedObjectContext *)mainManageObjectContext
+-(void)addNotifications
 {
-    if (_mainManageObjectContext != nil) {
-        return _mainManageObjectContext;
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(mainManageObjectContextDidSaved:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:[self mainContext]];
     
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        _mainManageObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        _mainManageObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        [_mainManageObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    
-    return _mainManageObjectContext;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(privateManageObjectContextDidSaved:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:[self privateContext]];
 }
 
-- (NSManagedObjectContext *)managedObjectContext
+-(void)removeNotifications
 {
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Core Data stack
+
+-(NSManagedObjectContext *)mainContext
+{
+    if (_mainContext != nil) {
+        return _mainContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        _managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+        _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [_mainContext setPersistentStoreCoordinator:coordinator];
     }
-    return _managedObjectContext;
+    
+    return _mainContext;
+}
+
+- (NSManagedObjectContext *)privateContext
+{
+    if (_privateContext != nil) {
+        return _privateContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        _privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _privateContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [_privateContext setPersistentStoreCoordinator:coordinator];
+    }
+    return _privateContext;
 }
 
 - (NSManagedObjectModel *)managedObjectModel
@@ -128,12 +146,6 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
         return _managedObjectModel;
     }
     _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    
-    NSDictionary *entitysNameAndDes = [_managedObjectModel entitiesByName];
-    [entitysNameAndDes enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSEntityDescription * obj, BOOL *stop) {
-        [_modelEntiysNameAndPropertys setObject:obj.propertiesByName.allKeys forKey:key];
-    }];
-    NSLog(@"model entity name and pro is %@",_modelEntiysNameAndPropertys);
     
     return _managedObjectModel;
 }
@@ -166,7 +178,7 @@ static ARCoreDataPersistanceController *AR__CoreDataPersistanceCtr = nil;
         NSLog(@"persistance store may has changed");
         error = nil;
         if ([self removeSQLiteFilesAtStoreURL:storeURL error:&error]) {
-            persistanceStore = [_persistentStoreCoordinator
+            self.persistentStore = [_persistentStoreCoordinator
                                 addPersistentStoreWithType:NSSQLiteStoreType
                                 configuration:nil
                                 URL:storeURL

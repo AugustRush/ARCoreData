@@ -7,7 +7,7 @@
 //
 
 #import "NSFetchedResultsController+ARAdditions.h"
-#import "ARCoreDataPersistanceController.h"
+#import "ARCoreDataManager.h"
 
 @implementation NSFetchedResultsController (ARAdditions)
 
@@ -16,12 +16,14 @@
                                            batchSize:(NSUInteger)batchSize
                                        sortedKeyPath:(NSString *)sortedKeyPath
                                            ascending:(BOOL)ascending
+                                            delegate:(id<NSFetchedResultsControllerDelegate>)delegate
 {
     return [self fetchedResultControllerWithEntityName:entityName
                                                  where:filterCondition
                                              batchSize:batchSize
                                          sortedKeyPath:sortedKeyPath
                                              ascending:ascending
+                                              delegate:delegate
                                     sectionNameKeyPath:nil
                                              cacheName:nil];
 }
@@ -31,10 +33,11 @@
                                            batchSize:(NSUInteger)batchSize
                                        sortedKeyPath:(NSString *)sortedKeyPath
                                            ascending:(BOOL)ascending
+                                            delegate:(id<NSFetchedResultsControllerDelegate>)delegate
                                   sectionNameKeyPath:(NSString *)sectionNameKeyPath
                                            cacheName:(NSString *)cacheName
 {
-    ARCoreDataPersistanceController *persistanceController = [ARCoreDataPersistanceController sharePersistanceController];
+    ARCoreDataManager *persistanceController = [ARCoreDataManager shareManager];
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
     fetchRequest.fetchBatchSize = batchSize;
@@ -46,9 +49,10 @@
     fetchRequest.sortDescriptors = @[sortDes];
     NSFetchedResultsController *fetchResultController = [[NSFetchedResultsController alloc]
                                                          initWithFetchRequest:fetchRequest
-                                                         managedObjectContext:[persistanceController mainManageObjectContext]
+                                                         managedObjectContext:[persistanceController mainContext]
                                                          sectionNameKeyPath:sectionNameKeyPath
                                                          cacheName:cacheName];
+    fetchResultController.delegate = delegate;
     
     return fetchResultController;
 }

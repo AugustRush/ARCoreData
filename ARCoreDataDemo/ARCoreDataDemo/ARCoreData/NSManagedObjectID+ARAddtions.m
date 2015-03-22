@@ -7,7 +7,7 @@
 //
 
 #import "NSManagedObjectID+ARAddtions.h"
-#import "ARCoreDataPersistanceController.h"
+#import "ARCoreDataManager.h"
 
 @implementation NSManagedObjectID (ARAddtions)
 
