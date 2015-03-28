@@ -16,4 +16,11 @@
     return [[self URIRepresentation] absoluteString];
 }
 
++(instancetype)objectIDWithURIRepresentation:(NSString *)URIRepresentation
+{
+    NSPersistentStoreCoordinator *persistanceCoordinator = [[ARCoreDataManager shareManager] persistentStoreCoordinator];
+    NSManagedObjectID *objectID = [persistanceCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:URIRepresentation]];
+    return objectID;
+}
+
 @end

@@ -159,6 +159,20 @@
  *
  *  @param keyPath     sorted keyPath
  *  @param ascending   ascending
+ *  @param condition   vargars paramaters conditons
+ *
+ *  @return objects fit this condition
+ */
++(NSArray *)AR_sortedKeyPath:(NSString *)keyPath
+                   ascending:(BOOL)ascending
+                   batchSize:(NSUInteger)batchSize
+                       where:(NSString *)condition,...;
+
+/**
+ *  async find objects with vargars paramaters
+ *
+ *  @param keyPath     sorted keyPath
+ *  @param ascending   ascending
  *  @param batchSize   perform fetch batch size
  *  @param fetchLimit  max count of objects one time to fetch
  *  @param fetchOffset fetch offset
@@ -173,9 +187,20 @@
                  fetchOffset:(NSUInteger)fetchOffset
                        where:(NSString *)condition,...;
 
-
-+(NSUInteger)numberOfEntitys;
-+(NSUInteger)numberOfEntitysWhere:(NSString *)condition;
+/**
+ *  fetch count of all objects
+ *
+ *  @return the entity's count
+ */
++(NSUInteger)AR_count;
+/**
+ *  fetch count of all objects in this condition
+ *
+ *  @param condition filter condition
+ *
+ *  @return count of objects
+ */
++(NSUInteger)AR_countWhere:(NSString *)condition,...;
 
 // delete methods
 

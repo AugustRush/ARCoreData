@@ -11,5 +11,6 @@
 @interface NSManagedObjectContext (ARAddtions)
 
 - (NSArray *)objectsWithObjectIDs:(NSArray *)objectIDs;
+- (NSArray *)objectsWithURIRepresentations:(NSArray *)URIRepresentations;
 
 @end

@@ -96,31 +96,6 @@
     }];
 }
 
-+(NSUInteger)numberOfEntitys
-{
-    return [self numberOfEntitysWhere:nil];
-}
-
-+(NSUInteger)numberOfEntitysWhere:(NSString *)condition
-{
-    NSManagedObjectContext *manageObjectContext = [self defaultPrivateContext];
-    __block NSInteger count = 0;
-    [manageObjectContext performBlockAndWait:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
-        request.resultType = NSManagedObjectIDResultType;
-        if (condition) {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:condition];
-            request.predicate = predicate;
-        }
-        [request setIncludesSubentities:NO]; //Omit subentities. Default is YES (i.e. include subentities)
-        
-        NSError *err;
-        count = [manageObjectContext countForFetchRequest:request error:&err];
-    }];
-    
-    return count;
-}
-
 +(void)saveWithHandler:(void (^)(NSError *))handler
 {
     NSManagedObjectContext *privateContext = [self defaultPrivateContext];
@@ -335,18 +310,6 @@
                   fetchLimit:(NSUInteger)fetchLimit
                  fetchOffset:(NSUInteger)fetchOffset
 {
-//    NSFetchRequest *request = [self AR_requestWithFetchLimit:fetchLimit batchSize:batchSize fetchOffset:fetchOffset];
-//    [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@",property,value]];
-//    if (keyPath != nil) {
-//        NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:keyPath ascending:ascending];
-//        [request setSortDescriptors:@[sorted]];
-//    }
-//    NSManagedObjectContext *context = [self defaultPrivateContext];
-//    __block NSArray *objs = nil;
-//    [context performBlockAndWait:^{
-//        objs = [context executeFetchRequest:request error:nil];
-//    }];
-//    return objs;
     return [self AR_sortedKeyPath:keyPath
                         ascending:ascending
                    fetchBatchSize:batchSize
@@ -403,6 +366,34 @@
 
 +(NSArray *)AR_sortedKeyPath:(NSString *)keyPath
                    ascending:(BOOL)ascending
+                   batchSize:(NSUInteger)batchSize
+                       where:(NSString *)condition, ...
+{
+    NSFetchRequest *request = [self AR_requestWithFetchLimit:0
+                                                   batchSize:batchSize];
+    if (condition != nil) {
+        va_list arguments;
+        va_start(arguments, condition);
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:condition arguments:arguments];
+        va_end(arguments);
+        [request setPredicate:predicate];
+    }
+    if (keyPath != nil) {
+        NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:keyPath ascending:ascending];
+        [request setSortDescriptors:@[sorted]];
+    }
+    NSManagedObjectContext *context = [self defaultPrivateContext];
+    __block NSArray *objs = nil;
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        objs = [context executeFetchRequest:request error:&error];
+    }];
+    return objs;
+
+}
+
++(NSArray *)AR_sortedKeyPath:(NSString *)keyPath
+                   ascending:(BOOL)ascending
               fetchBatchSize:(NSUInteger)batchSize
                   fetchLimit:(NSUInteger)fetchLimit
                  fetchOffset:(NSUInteger)fetchOffset
@@ -429,6 +420,34 @@
         objs = [context executeFetchRequest:request error:&error];
     }];
     return objs;
+}
+
++(NSUInteger)AR_count
+{
+    return [self AR_countWhere:nil];
+}
+
++(NSUInteger)AR_countWhere:(NSString *)condition, ...
+{
+    NSManagedObjectContext *manageObjectContext = [self defaultPrivateContext];
+    __block NSInteger count = 0;
+    NSFetchRequest *request = [self AR_allRequest];
+    request.resultType = NSCountResultType;
+    [request setIncludesSubentities:NO]; //Omit subentities. Default is YES (i.e. include subentities)
+    if (condition) {
+        va_list arguments;
+        va_start(arguments, condition);
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:condition arguments:arguments];
+        va_end(arguments);
+        [request setPredicate:predicate];
+        request.predicate = predicate;
+    }
+    [manageObjectContext performBlockAndWait:^{
+        NSError *err;
+        count = [manageObjectContext countForFetchRequest:request error:&err];
+    }];
+    
+    return count;
 }
 
 @end

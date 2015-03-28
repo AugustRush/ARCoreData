@@ -12,4 +12,6 @@
 
 - (NSString *)stringRepresentation;
 
++ (instancetype)objectIDWithURIRepresentation:(NSString *)URIRepresentation;
+
 @end

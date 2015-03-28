@@ -60,6 +60,10 @@ static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
 {
     @synchronized(self){
         [self.mainContext performBlock:^{
+//http://stackoverflow.com/questions/3923826/nsfetchedresultscontroller-with-predicate-ignores-changes-merged-from-different
+            for(NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+                [[self.mainContext objectWithID:[object objectID]] willAccessValueForKey:nil];
+            }
             [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
         }];
     }
