@@ -2,21 +2,29 @@
 //  Person.h
 //  ARCoreDataDemo
 //
-//  Created by 刘平伟 on 14-7-4.
-//  Copyright (c) 2014年 lPW. All rights reserved.
+//  Created by August on 15/4/18.
+//  Copyright (c) 2015年 lPW. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NSManagedObject+ARMapping.h"
 
+@class Dog;
 
-@interface Person : NSManagedObject
+@interface Person : NSManagedObject<ARManageObjectMappingProtocol>
 
-@property (nonatomic, retain) NSNumber * name;
-@property (nonatomic, retain) NSNumber * qwe;
-@property (nonatomic, retain) NSNumber * qweqwe;
-@property (nonatomic, retain) NSString * qweqweqw;
-@property (nonatomic, retain) NSString * sex;
-@property (nonatomic, retain) NSString * tq;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) BOOL sex;
+@property (nonatomic, retain) NSString * guid;
+@property (nonatomic, retain) NSSet *dogs;
+@end
+
+@interface Person (CoreDataGeneratedAccessors)
+
+- (void)addDogsObject:(Dog *)value;
+- (void)removeDogsObject:(Dog *)value;
+- (void)addDogs:(NSSet *)values;
+- (void)removeDogs:(NSSet *)values;
 
 @end

@@ -61,9 +61,10 @@ static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
     @synchronized(self){
         [self.mainContext performBlock:^{
 //http://stackoverflow.com/questions/3923826/nsfetchedresultscontroller-with-predicate-ignores-changes-merged-from-different
-            for(NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
-                [[self.mainContext objectWithID:[object objectID]] willAccessValueForKey:nil];
-            }
+            
+        for(NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+            [[self.mainContext objectWithID:[object objectID]] willAccessValueForKey:nil];
+        }
             [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
         }];
     }
@@ -160,7 +161,7 @@ static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AR_CoreData.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"BoardCoreData.sqlite"];
     self.storeUrl = storeURL;
     
     NSError *error = nil;
@@ -230,7 +231,7 @@ static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
 {
     return @{NSInferMappingModelAutomaticallyOption: @YES,
              NSMigratePersistentStoresAutomaticallyOption: @YES,
-             NSSQLitePragmasOption: @{@"synchronous": @"OFF"}};
+             NSSQLitePragmasOption: @{@"synchronous": @"NO"}};
 }
 
 #pragma mark - Application's Documents directory

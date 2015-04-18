@@ -18,7 +18,4 @@
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARCreate.h"
 
-//#define keypath2(OBJ, PATH) \
-//(((void)(NO && ((void)OBJ.PATH, NO)), # PATH))
-
 #endif

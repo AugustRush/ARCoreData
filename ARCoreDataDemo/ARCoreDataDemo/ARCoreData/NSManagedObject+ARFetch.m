@@ -207,7 +207,7 @@
 +(id)AR_firstWhereProperty:(NSString *)property equalTo:(id)value
 {
     NSFetchRequest *request = [self AR_requestWithFetchLimit:1 batchSize:1];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@",property,value]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@",property,[value description]]];
     NSManagedObjectContext *context = [self defaultPrivateContext];
     __block id obj = nil;
     [context performBlockAndWait:^{
@@ -238,8 +238,7 @@
 
 -(void)AR_delete
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context deleteObject:self];
+    [self.managedObjectContext deleteObject:self];
 }
 
 +(NSArray *)AR_whereProperty:(NSString *)property
@@ -315,7 +314,7 @@
                    fetchBatchSize:batchSize
                        fetchLimit:fetchLimit
                       fetchOffset:fetchOffset
-                            where:@"%K == %@",property,value];
+                            where:@"%K == %@",property,[value description]];
 }
 
 +(void)AR_whereProperty:(NSString *)property
@@ -328,7 +327,7 @@
                 handler:(void (^)(NSError *, NSArray *))handler
 {
     NSFetchRequest *request = [self AR_requestWithFetchLimit:fetchLimit batchSize:batchSize fetchOffset:fetchOffset];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@",property,value]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@",property,[value description]]];
     if (keyPath != nil) {
         NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:keyPath ascending:ascending];
         [request setSortDescriptors:@[sorted]];

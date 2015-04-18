@@ -9,13 +9,12 @@
 #import "YCViewController.h"
 #import "ARCoreData/ARCoreData.h"
 #import "Person.h"
-#import "EntityO.h"
+#import "Dog.h"
 
-@interface YCViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface YCViewController ()<UITableViewDelegate,UITableViewDataSource,NSFetchedResultsControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) NSMutableArray *dataArr;
-@property (nonatomic, strong) NSManagedObjectContext *context;
+@property (nonatomic, strong) NSFetchedResultsController *fetchController;
 
 - (IBAction)addEntityObj:(id)sender;
 @end
@@ -27,49 +26,84 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.dataArr = [NSMutableArray array];
-    
-    self.context = [ARCoreDataPersistanceController sharePersistanceController].managedObjectContext;
-    [self refreshData];
 }
 
--(void)refreshData{
+#pragma mark - fetch controller
 
-    [self.dataArr removeAllObjects];
-//    [[ARCoreDataPersistanceController sharePersistanceController] fetchAllObjectsWithEntityName:@"Person" finishedBlock:^(NSArray *objs, NSError *error) {
-//        NSLog(@"array count is %ld error is %@",objs.count,error);
-//        [self.dataArr addObjectsFromArray:objs];
-//        [self.tableView reloadData];
-//    }];
-    
-    NSFetchRequest *fetReq = [NSFetchRequest fetchRequestWithEntityName:@"Person"];
-//    [fetReq setFetchLimit:5];
-    [[ARCoreDataPersistanceController sharePersistanceController] fetchObjectsWithFetchRequest:fetReq finishedBlock:^(NSArray *objects, NSError *error) {
-        NSLog(@"array count is %ld error is %@",objects.count,error);
-        [self.dataArr addObjectsFromArray:objects];
-        [self.tableView reloadData];
+-(NSFetchedResultsController *)fetchController
+{
+    if (_fetchController != nil) {
+        return _fetchController;
+    }
+    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
+                                                                                   where:nil
+                                                                               batchSize:10
+                                                                           sortedKeyPath:@"name" ascending:NO
+                                                                                delegate:self];
+    return _fetchController;
+}
 
-    }];
-    
+-(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
+}
+
+-(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
+}
+
+-(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+        {
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        case NSFetchedResultsChangeDelete:
+        {
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        case NSFetchedResultsChangeMove:
+        {
+            [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+        }
+            break;
+        case NSFetchedResultsChangeUpdate:
+        {
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - UITableViewDelegate methods
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"did select");
-
-    [[ARCoreDataPersistanceController sharePersistanceController] deleteObjects:[NSSet setWithArray:self.dataArr] finishedBlock:^(NSError *error) {
-        [self refreshData];
+    Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
+    [dog AR_delete];
+    
+    [Person saveWithHandler:^(NSError *error) {
+        NSLog(@"delete dog error is %@",error);
     }];
 }
 
 #pragma mark - UITableViewDataSource methods
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.fetchController.sections.count;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArr.count;
+    return [self.fetchController.sections[section] numberOfObjects];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,9 +114,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellReuseIdentifier];
     }
     
-    Person *person = self.dataArr[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",person.name];
-    cell.detailTextLabel.text = person.sex;
+    Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
+    
+    cell.textLabel.text = dog.name;
+    cell.detailTextLabel.text = [dog.owners.anyObject name];
     
     return cell;
 }
@@ -100,7 +135,19 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
+    for (int i = 1; i < 3; i++) {
+        NSString *name = [NSString stringWithFormat:@"%u",arc4random()];
+        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%4];
+        Person *person = [Person fillWithJSON:@{@"n":name,
+                                                @"g":@"3",
+                                                @"s":@YES,
+                                                @"ds":@[@{@"n":name},
+                                                        @{@"n":name}]}];
+    }
     
+    [Person saveWithHandler:^(NSError *error) {
+        NSLog(@"all person is %@",[Person AR_all]);
+    }];
     
 }
 @end

@@ -29,5 +29,4 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self AR_entityName] inManagedObjectContext:context];
 }
 
-
 @end

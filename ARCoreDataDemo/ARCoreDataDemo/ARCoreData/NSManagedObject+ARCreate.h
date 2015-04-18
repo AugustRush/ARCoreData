@@ -32,5 +32,4 @@
  */
 +(id)AR_newInContext:(NSManagedObjectContext *)context;
 
-
 @end

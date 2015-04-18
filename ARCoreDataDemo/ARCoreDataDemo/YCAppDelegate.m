@@ -9,51 +9,33 @@
 #import "YCAppDelegate.h"
 #import "ARCoreData.h"
 #import "Person.h"
-#import "EntityO.h"
+#import "Dog.h"
 
 @implementation YCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    ARCoreDataPersistanceController *defCoreDataCtr = [ARCoreDataPersistanceController sharePersistanceController];
-    
-    int i = 0;
-    
-    do{
-        Person *newPerson = [Person creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
-        newPerson.name = @(i);
-        newPerson.sex = @"ha来看看力挽狂澜我离开h";
-        newPerson.tq = @";akdjiqnkdvlqndvoqsdnvsdnvsafvfnv";
-        newPerson.qweqwe = @(1000);
-        
-        
-        EntityO *newEO = [EntityO creatNewEntityWithContext:defCoreDataCtr.managedObjectContext];
-        newEO.name = @(3.000);
-        
-        i++;
-        
-    
-    }while (i < 3);
-    [defCoreDataCtr.managedObjectContext save:nil];
-    /**
-     *  fetch request
-     */
-    
-//    NSEntityDescription *EDes = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:defCoreDataCtr.managedObjectContext];
-//    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
-//    [fetchReq setEntity:EDes];
-//    
-//    NSError *error;
-//    NSArray *objects = [defCoreDataCtr.managedObjectContext executeFetchRequest:fetchReq error:&error];
-//    if (objects == nil) {
-//        NSLog(@"fetch error is %@",error);
-//    }else{
-//        NSLog(@"objecs is %@",objects);
+//    int i = 10;
+//    while (i > 0) {
+//        Person *person = [Person fillWithJSON:@{@"n":@"liu",
+//                                                @"g":@"3",
+//                                                @"s":@YES,
+//                                                @"ds":@[@{@"n":@"beibei"},
+//                                                       @{@"n":@"daidai"}]}];
+//        
+//        Person *person1 = [Person fillWithJSON:@{@"n":@"wang",
+//                                                @"g":@"4",
+//                                                @"s":@YES,
+//                                                @"ds":@[@{@"n":@"beibei"},
+//                                                        @{@"n":@"daidai"}]}];
+//        i --;
 //    }
-    
-//    [defCoreDataCtr fetchAllObjectsWithEntityName:[Person entityName]];
-//
+//    [Person AR_truncateAll];
+//    [Person saveWithHandler:^(NSError *error) {
+//        NSLog(@"all person is %@",[Person AR_all]);
+//        NSLog(@"all dogs is %@",[Dog AR_all]);
+//        
+//    }];
     
     return YES;
 }

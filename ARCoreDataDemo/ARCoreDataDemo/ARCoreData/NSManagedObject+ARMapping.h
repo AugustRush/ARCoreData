@@ -13,7 +13,7 @@
 +(NSDictionary *)JSONKeyPathsByPropertyKey;
 
 @optional
-+(NSSet *)uniquedPropertyKeys;
++(NSString *)primaryKey;
 
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import "NSManagedObjectContext+ARAddtions.h"
+#import "ARCoreDataManager.h"
 
 @implementation NSManagedObjectContext (ARAddtions)
 
@@ -27,7 +28,7 @@
         }
     }];
     
-    return objects.copy;
+    return objects;
 }
 
 -(NSArray *)objectsWithURIRepresentations:(NSArray *)URIRepresentations
@@ -47,7 +48,8 @@
             [objects addObject:[self objectWithID:objectID]];
         }
     }];
-    return objects.copy;
+    return objects;
 }
+
 
 @end

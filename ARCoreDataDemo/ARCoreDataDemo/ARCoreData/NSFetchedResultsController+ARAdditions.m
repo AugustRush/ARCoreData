@@ -45,15 +45,20 @@
         NSPredicate *predicate = [NSPredicate predicateWithFormat:filterCondition];
         fetchRequest.predicate = predicate;
     }
-    NSSortDescriptor *sortDes = [NSSortDescriptor sortDescriptorWithKey:sortedKeyPath ascending:ascending];
-    fetchRequest.sortDescriptors = @[sortDes];
+    if (sortedKeyPath != nil) {
+        NSSortDescriptor *sortDes = [NSSortDescriptor sortDescriptorWithKey:sortedKeyPath ascending:ascending];
+        fetchRequest.sortDescriptors = @[sortDes];
+    }
     NSFetchedResultsController *fetchResultController = [[NSFetchedResultsController alloc]
                                                          initWithFetchRequest:fetchRequest
                                                          managedObjectContext:[persistanceController mainContext]
                                                          sectionNameKeyPath:sectionNameKeyPath
                                                          cacheName:cacheName];
     fetchResultController.delegate = delegate;
-    
+    NSError *error = nil;
+    if (![fetchResultController performFetch:&error]) {
+        NSLog(@"perfrom fetch error is %@",error);
+    }
     return fetchResultController;
 }
 

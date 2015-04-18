@@ -1,33 +1,29 @@
 //
-//  Person.m
+//  Dog.m
 //  ARCoreDataDemo
 //
 //  Created by August on 15/4/18.
 //  Copyright (c) 2015年 lPW. All rights reserved.
 //
 
-#import "Person.h"
 #import "Dog.h"
+#import "Person.h"
 
 
-@implementation Person
+@implementation Dog
 
 @dynamic name;
-@dynamic sex;
-@dynamic guid;
-@dynamic dogs;
+@dynamic owners;
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey
 {
-    return @{@"guid":@"g",
-             @"name":@"n",
-             @"sex":@"s",
-             @"dogs":@"ds"};
+    return @{@"name":@"n",
+             @"owners":@"o"};
 }
 
 +(NSString *)primaryKey
 {
-    return @"guid";
+    return @"name";
 }
 
 @end
