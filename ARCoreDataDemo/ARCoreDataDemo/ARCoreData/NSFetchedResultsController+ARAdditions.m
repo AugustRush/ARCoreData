@@ -8,6 +8,7 @@
 
 #import "NSFetchedResultsController+ARAdditions.h"
 #import "ARCoreDataManager.h"
+#import "ARCoreDataMacros.h"
 
 @implementation NSFetchedResultsController (ARAdditions)
 
@@ -49,6 +50,7 @@
         NSSortDescriptor *sortDes = [NSSortDescriptor sortDescriptorWithKey:sortedKeyPath ascending:ascending];
         fetchRequest.sortDescriptors = @[sortDes];
     }
+    
     NSFetchedResultsController *fetchResultController = [[NSFetchedResultsController alloc]
                                                          initWithFetchRequest:fetchRequest
                                                          managedObjectContext:[persistanceController mainContext]

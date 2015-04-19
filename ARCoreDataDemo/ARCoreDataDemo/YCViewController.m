@@ -89,7 +89,7 @@
     Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
     [dog AR_delete];
     
-    [Person saveWithHandler:^(NSError *error) {
+    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
         NSLog(@"delete dog error is %@",error);
     }];
 }
@@ -135,18 +135,18 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
-    for (int i = 1; i < 3; i++) {
-        NSString *name = [NSString stringWithFormat:@"%u",arc4random()];
-        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%4];
-        Person *person = [Person fillWithJSON:@{@"n":name,
-                                                @"g":@"3",
+    for (int i = 1; i < 300; i++) {
+        NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
+        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%14];
+        Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
+                                                @"g":guid,
                                                 @"s":@YES,
-                                                @"ds":@[@{@"n":name},
-                                                        @{@"n":name}]}];
+                                                @"ds":@[@{@"n":@"haha"},
+                                                        @{@"n":guid}]}];
     }
     
-    [Person saveWithHandler:^(NSError *error) {
-        NSLog(@"all person is %@",[Person AR_all]);
+    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
+           NSLog(@"all person is %@",[Person AR_all]); 
     }];
     
 }

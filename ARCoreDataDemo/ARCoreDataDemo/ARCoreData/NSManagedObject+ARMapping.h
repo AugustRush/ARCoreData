@@ -7,20 +7,15 @@
 //
 
 @import CoreData;
-
-@protocol ARManageObjectMappingProtocol <NSObject>
-
-+(NSDictionary *)JSONKeyPathsByPropertyKey;
-
-@optional
-+(NSString *)primaryKey;
-
-@end
+#import "ARManageObjectMappingProtocol.h"
 
 @interface NSManagedObject (ARMapping)
 
 // Mapping methods
-+(id)fillWithJSON:(NSDictionary *)JSON;
-+(NSArray *)fillWithJSONs:(NSArray *)JSONs;
+//+(id)fillWithJSON:(NSDictionary *)JSON;
+//+(NSArray *)fillWithJSONs:(NSArray *)JSONs;
+
+-(void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value;
+-(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value;
 
 @end

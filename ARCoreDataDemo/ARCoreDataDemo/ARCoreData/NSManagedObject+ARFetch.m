@@ -12,8 +12,7 @@
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARManageObjectContext.h"
-
-#define _systermVersion_greter_8_0 [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
+#import "ARCoreDataMacros.h"
 
 @implementation NSManagedObject (ARFetch)
 
@@ -96,38 +95,99 @@
     }];
 }
 
-+(void)saveWithHandler:(void (^)(NSError *))handler
++(BOOL)AR_saveAndWait
+{
+    NSManagedObjectContext *privateContext = [self defaultPrivateContext];
+    NSManagedObjectContext *mainContext = [self defaultMainContext];
+    __block BOOL success = NO;
+    __block NSError *error = nil;
+    if ([privateContext hasChanges]) {
+        [privateContext performBlockAndWait:^{
+            success = [privateContext save:&error];
+        }];
+    }else if([mainContext hasChanges]){
+        [mainContext performBlockAndWait:^{
+            success = [mainContext save:&error];
+        }];
+    }else{
+        NSLog(@"there is nothing to save !");
+    }
+    if (error != nil) {
+        NSLog(@"save error is %@",error);
+    }
+    return success;
+}
+
++(void)AR_saveAndWaitCompletion:(void (^)(BOOL, NSError *))completion
 {
     NSManagedObjectContext *privateContext = [self defaultPrivateContext];
     NSManagedObjectContext *mainContext = [self defaultMainContext];
     
     __block NSError *error = nil;
+    __block BOOL success = YES;
     if ([privateContext hasChanges]) {
         [privateContext performBlockAndWait:^{
             
-            [privateContext save:&error];
-            if (handler) {
+            success = [privateContext save:&error];
+            if (completion) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    handler(error);
+                    completion(success,error);
                 });
             }
         }];
     }else if ([mainContext hasChanges]){
         [mainContext performBlockAndWait:^{
-            [mainContext save:&error];
-            if (handler) {
+            success = [mainContext save:&error];
+            if (completion) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    handler(error);
+                    completion(success,error);
                 });
             }
         }];
     }else{
-        if (handler) {
+        if (completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                handler(error);
+                completion(success,error);
             });
         }
     }
+
+}
+
++(void)AR_saveCompletion:(void (^)(BOOL, NSError *))completion
+{
+    NSManagedObjectContext *privateContext = [self defaultPrivateContext];
+    NSManagedObjectContext *mainContext = [self defaultMainContext];
+    
+    __block NSError *error = nil;
+    __block BOOL success = YES;
+    if ([privateContext hasChanges]) {
+        [privateContext performBlock:^{
+            
+            success = [privateContext save:&error];
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(success,error);
+                });
+            }
+        }];
+    }else if ([mainContext hasChanges]){
+        [mainContext performBlock:^{
+            success = [mainContext save:&error];
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(success,error);
+                });
+            }
+        }];
+    }else{
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(success,error);
+            });
+        }
+    }
+
 }
 
 -(id)objectInMain

@@ -8,8 +8,6 @@
 
 #import "ARCoreDataManager.h"
 
-static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
-
 @interface ARCoreDataManager ()
 
 @property (nonatomic, strong) NSURL *storeUrl;
@@ -36,9 +34,9 @@ static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
 
 +(instancetype)shareManager
 {
+    static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSLog(@"share");
         AR__CoreDataPersistanceCtr = [[ARCoreDataManager alloc] init];
     });
     return AR__CoreDataPersistanceCtr;

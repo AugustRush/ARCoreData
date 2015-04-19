@@ -17,5 +17,6 @@
 #import "NSManagedObject+ARMapping.h"
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARCreate.h"
+#import "ARManageObjectMappingProtocol.h"
 
 #endif

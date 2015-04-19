@@ -207,6 +207,11 @@
 +(BOOL)AR_truncateAll;
 -(void)AR_delete;
 
+//save methods
++(BOOL)AR_saveAndWait;
++(void)AR_saveAndWaitCompletion:(void(^)(BOOL success,NSError *error))completion;
++(void)AR_saveCompletion:(void(^)(BOOL success, NSError *error))completion;
+
 // update methods
 
 +(void)updateProperty:(NSString *)propertyName toValue:(id)value;
@@ -216,8 +221,6 @@
 +(void)updateKeyPath:(NSString *)keyPath toValue:(id)value;
 
 +(void)updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition;
-
-+(void)saveWithHandler:(void(^)(NSError *error))handler;
 
 -(id)objectInMain;
 -(id)objectInPrivate;
