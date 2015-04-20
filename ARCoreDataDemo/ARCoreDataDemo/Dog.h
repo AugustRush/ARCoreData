@@ -15,6 +15,7 @@
 @interface Dog : NSManagedObject<ARManageObjectMappingProtocol>
 
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic) int64_t guid;
 @property (nonatomic, retain) NSSet *owners;
 @end
 

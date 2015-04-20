@@ -12,56 +12,9 @@
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARCreate.h"
+#import "ARCoreDataManager.h"
 
 @implementation NSManagedObject (ARMapping)
-
-//+(NSMutableDictionary *)cacheLocalObjects
-//{
-//    static NSMutableDictionary *localObjects = nil;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        localObjects = [NSMutableDictionary dictionary];
-//    });
-//    
-//    return localObjects;
-//}
-//
-//#pragma mark - transfrom methods
-//
-//+(id)fillWithJSON:(NSDictionary *)JSON
-//{
-//    if (JSON != nil) {
-//        return [[self fillWithJSONs:@[JSON]] lastObject];
-//    }
-//    return nil;
-//}
-//
-//+(NSArray *)fillWithJSONs:(NSArray *)JSONs
-//{
-//    NSAssert([JSONs isKindOfClass:[NSArray class]], @"JSONs should be a NSArray");
-//    NSAssert1([self respondsToSelector:@selector(JSONKeyPathsByPropertyKey)],  @"%@ class should impliment +(NSDictionary *)JSONKeyPathsByPropertyKey; method", NSStringFromClass(self));
-//    NSMutableArray *objs = [NSMutableArray array];
-//    
-//    NSDictionary *mapping = [self performSelector:@selector(JSONKeyPathsByPropertyKey)];
-//    NSString *primaryKey = nil;
-//    if ([self respondsToSelector:@selector(primaryKey)]) {
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-//        primaryKey = [self performSelector:@selector(primaryKey)];
-//#pragma clang diagnostic pop
-//    }
-//    
-//    NSManagedObjectContext *context = [self defaultPrivateContext];
-//    for (NSDictionary *JSON in JSONs) {
-//        [objs addObject:[self objectWithJSON:JSON
-//                                  primaryKey:primaryKey
-//                                     mapping:mapping
-//                                   inContext:context]];
-//    
-//    }
-//    [[self cacheLocalObjects] removeAllObjects];
-//    return objs;
-//}
 
 -(void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value
 {
@@ -118,7 +71,17 @@
 
 }
 
-#pragma mark - 
+#pragma mark - private methods
+
+-(NSArray *)allAttributeNames
+{
+    return self.entity.attributesByName.allKeys;
+}
+
+-(NSArray *)allRelationshipNames
+{
+    return self.entity.relationshipsByName.allKeys;
+}
 
 -(NSAttributeDescription *)attributeDescriptionForAttribute:(NSString *)attributeName
 {

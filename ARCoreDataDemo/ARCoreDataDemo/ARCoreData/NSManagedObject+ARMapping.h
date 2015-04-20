@@ -11,11 +11,12 @@
 
 @interface NSManagedObject (ARMapping)
 
-// Mapping methods
-//+(id)fillWithJSON:(NSDictionary *)JSON;
-//+(NSArray *)fillWithJSONs:(NSArray *)JSONs;
-
 -(void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value;
 -(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value;
+
+-(NSArray *)allAttributeNames;
+-(NSArray *)allRelationshipNames;
+-(NSAttributeDescription *)attributeDescriptionForAttribute:(NSString *)attributeName;
+-(NSRelationshipDescription *)relationshipDescriptionForRelationship:(NSString *)relationshipName;
 
 @end

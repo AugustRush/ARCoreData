@@ -35,10 +35,12 @@
     if (_fetchController != nil) {
         return _fetchController;
     }
+//    NSString *filter = [NSString stringWithFormat:@"guid < 10"];
     _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
                                                                                    where:nil
                                                                                batchSize:10
-                                                                           sortedKeyPath:@"name" ascending:NO
+                                                                           sortedKeyPath:@"name"
+                                                                               ascending:NO
                                                                                 delegate:self];
     return _fetchController;
 }
@@ -117,7 +119,7 @@
     Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
     
     cell.textLabel.text = dog.name;
-    cell.detailTextLabel.text = [dog.owners.anyObject name];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld",dog.guid];
     
     return cell;
 }
@@ -135,18 +137,22 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
-    for (int i = 1; i < 300; i++) {
+//    [Dog AR_truncateAll];
+    
+    for (int i = 1; i < 30; i++) {
         NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%14];
+        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%4];
         Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
-                                                @"g":guid,
+                                                @"g":@"3",
                                                 @"s":@YES,
-                                                @"ds":@[@{@"n":@"haha"},
-                                                        @{@"n":guid}]}];
+                                                @"ds":@[@{@"n":@"haha",
+                                                          @"g":@5},
+                                                        @{@"n":@(i),
+                                                          @"g":@"5"}]}];
     }
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-           NSLog(@"all person is %@",[Person AR_all]); 
+        NSLog(@"all dog is %@ dog count is %d",[Dog AR_all],[Dog AR_count]);
     }];
     
 }

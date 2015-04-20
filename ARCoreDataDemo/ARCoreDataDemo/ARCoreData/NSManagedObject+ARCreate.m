@@ -89,7 +89,14 @@
                 entity = [self AR_newInContext:context];
             }else{
                 NSString *mappingKey = mapping[primaryKey];
+                
+                NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:[self AR_entityName] inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
                 id remoteValue = JSON[mappingKey];
+                if (attributeDes.attributeType == NSStringAttributeType) {
+                    remoteValue = [remoteValue description];
+                }else{
+                    remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
+                }
                 
                 NSString *cacheKey = [NSString stringWithFormat:@"%@.%@=%@",NSStringFromClass(self),primaryKey,remoteValue];
                 entity = [[self cacheLocalObjects] objectForKey:cacheKey];
@@ -145,26 +152,13 @@
                                               value:(id)value
                                           inContext:(NSManagedObjectContext *)context
 {
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,[value description]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,value];
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
     fetchRequest.fetchLimit = 1;
     [fetchRequest setPredicate:predicate];
     
     return [[context executeFetchRequest:fetchRequest error:nil] lastObject];
-}
-
-#pragma mark - private methods
-
--(NSArray *)allAttributeNames
-{
-    return self.entity.attributesByName.allKeys;
-}
-
--(NSArray *)allRelationshipNames
-{
-    return self.entity.relationshipsByName.allKeys;
 }
 
 @end
