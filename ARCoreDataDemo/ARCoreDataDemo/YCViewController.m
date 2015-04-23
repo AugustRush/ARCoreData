@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 }
 
 #pragma mark - fetch controller
@@ -35,13 +36,13 @@
     if (_fetchController != nil) {
         return _fetchController;
     }
-//    NSString *filter = [NSString stringWithFormat:@"guid < 10"];
+    NSString *filter = [NSString stringWithFormat:@"self.owners.guid == %@",@"3"];
     _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
-                                                                                   where:nil
+                                                                                   where:filter
                                                                                batchSize:10
                                                                            sortedKeyPath:@"name"
                                                                                ascending:NO
-                                                                                delegate:self];
+                                                                                delegate:nil];
     return _fetchController;
 }
 
@@ -147,12 +148,14 @@
                                                 @"s":@YES,
                                                 @"ds":@[@{@"n":@"haha",
                                                           @"g":@5},
-                                                        @{@"n":@(i),
+                                                        @{@"n":name,
                                                           @"g":@"5"}]}];
     }
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"all dog is %@ dog count is %d",[Dog AR_all],[Dog AR_count]);
+        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
+        
+        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
     }];
     
 }
