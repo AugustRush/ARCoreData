@@ -20,7 +20,7 @@
 {
     return @{@"name":@"n",
              @"owners":@"o",
-             @"guid":@"g"};
+             @"guid":@"g.uid"};
 }
 
 +(NSString *)primaryKey

@@ -30,8 +30,8 @@
 //                                                        @{@"n":@"daidai"}]}];
 //        i --;
 //    }
-    [Person AR_truncateAll];
-    [Dog AR_truncateAll];
+//    [Person AR_truncateAll];
+//    [Dog AR_truncateAll];
 //    [Person saveWithHandler:^(NSError *error) {
 //        NSLog(@"all person is %@",[Person AR_all]);
 //        NSLog(@"all dogs is %@",[Dog AR_all]);

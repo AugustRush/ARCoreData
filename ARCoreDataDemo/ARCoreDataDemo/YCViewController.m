@@ -147,9 +147,11 @@
                                                 @"g":@"3",
                                                 @"s":@YES,
                                                 @"ds":@[@{@"n":@"haha",
-                                                          @"g":@5},
+                                                          @"g":@{@"uid":@"5",
+                                                                 @"extra":@34}},
                                                         @{@"n":name,
-                                                          @"g":@"5"}]}];
+                                                          @"g":@{@"uid":@"5",
+                                                                 @"extra":@34}}]}];
     }
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
