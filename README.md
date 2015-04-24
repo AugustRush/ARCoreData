@@ -63,11 +63,10 @@ _____________________
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "ARCoreData.h"
 
 @class Person;
 
-@interface Dog : NSManagedObject<ARManageObjectMappingProtocol>
+@interface Dog : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic) int64_t guid;
@@ -83,7 +82,117 @@ _____________________
 
 @end
 
+```
+you can create a person like this:
 
 ```
+    Person *person = [Person AR_new];
+    person.name = @"aaa";
+    person.guid = @"1";
+    
+    Dog *pet = [Dog AR_new];
+    pet.name = @"doggie";
+    pet.guid = 123;
+
+    [person addDogsObject:pet];
+
+    [Person AR_saveAndWait];//this is save method
+
+```
+
+if you want to use a JSON(KVC object) create a new person , you should impliment <ARManageObjectMappingProtocol>, 
+this is my Person and Dog .m file.
+
+```
+@implementation Person
+
+@dynamic name;
+@dynamic sex;
+@dynamic guid;
+@dynamic dogs;
+
++(NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{@"guid":@"g",
+             @"name":@"n",
+             @"sex":@"s",
+             @"dogs":@"ds"};
+}
+
++(NSString *)primaryKey
+{
+    return @"guid";
+}
+
+@end
+
+
+**********************************
+
+
+@implementation Dog
+
+@dynamic name;
+@dynamic owners;
+@dynamic guid;
+
++(NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{@"name":@"n",
+             @"owners":@"o",
+             @"guid":@"g.uid"};
+}
+
++(NSString *)primaryKey
+{
+    return @"guid";
+}
+
+@end
+
+```
+
+and then, you can create a Person like this:
+
+```
+        Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
+                                                @"g":@"3",
+                                                @"s":@YES,
+                                                @"ds":@[@{@"n":@"haha",
+                                                          @"g":@{@"uid":@"7",
+                                                                 @"extra":@34}},
+                                                        @{@"n":name,
+                                                          @"g":@{@"uid":@"6",
+                                                                 @"extra":@34}}]}];
+```
+
+if you impliment the class method +(NSString *)primaryKey; you just can create a uniqued person through a same "guid".
+
+## Mapping 
+
+i hava impliment some methods , you can use server response directly to create an(or a array) manageObject(s)  and to save,
+there have methods :
+
+```
++(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON;
+
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
+
+```
+you have seen ARManageObjectMappingProtocol , yes ,this protocol have two methods,like famous mapping <a href="https://github.com/Mantle/Mantle">Mantle</a>, but this transform must be faster than Mantle.
+
+## Fetch objects
+
+there have a lot of methods to help you fetch objects convinience and faster , exemple:
+```
+    NSArray *allPersons = [Person AR_all];
+    
+    NSArray *persons = [Person AR_where:@"name = %@",@"a name"];
+    
+    NSArray *persons = [Person AR_whereProperty:@"guid" equalTo:@3];
+```
+and so on !!!
+
+
 
 

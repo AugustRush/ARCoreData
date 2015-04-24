@@ -38,6 +38,18 @@
 //        
 //    }];
     
+    Person *person = [Person AR_new];
+    person.name = @"aaa";
+    person.guid = @"1";
+    
+    Dog *pet = [Dog AR_new];
+    pet.name = @"doggie";
+    pet.guid = 123;
+    
+    [person addDogsObject:pet];
+    
+    [Person AR_saveAndWait];
+    
     return YES;
 }
 							
