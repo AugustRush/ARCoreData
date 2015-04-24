@@ -16,12 +16,12 @@
 
 @implementation NSManagedObject (ARFetch)
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value
 {
-    [self updateProperty:propertyName toValue:value where:nil];
+    [self AR_updateProperty:propertyName toValue:value where:nil];
 }
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
 {
 #ifdef _systermVersion_greter_8_0
     NSManagedObjectContext *manageOBjectContext = [self defaultPrivateContext];
@@ -62,16 +62,16 @@
     }];
 #else
     
-    [self updateKeyPath:propertyName toValue:value where:condition];
+    [self AR_updateKeyPath:propertyName toValue:value where:condition];
 #endif
 }
 
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value
 {
-    [self updateKeyPath:keyPath toValue:value where:nil];
+    [self AR_updateKeyPath:keyPath toValue:value where:nil];
 }
 
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition
 {
     NSManagedObjectContext *manageObjectContext = [self defaultPrivateContext];
     __block NSError *error = nil;

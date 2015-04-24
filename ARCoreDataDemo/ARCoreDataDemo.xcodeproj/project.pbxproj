@@ -22,6 +22,8 @@
 		73D45F371962666800745653 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D45F351962666800745653 /* InfoPlist.strings */; };
 		73D45F391962666800745653 /* ARCoreDataDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F381962666800745653 /* ARCoreDataDemoTests.m */; };
 		73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */; };
+		972CDF161AEAA20A00393BB7 /* ARCollectionViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 972CDF131AEAA20A00393BB7 /* ARCollectionViewFetchResultController.m */; };
+		972CDF171AEAA20A00393BB7 /* ARTableViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 972CDF151AEAA20A00393BB7 /* ARTableViewFetchResultController.m */; };
 		9779BAB21AE25A4A0053379C /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB11AE25A4A0053379C /* Person.m */; };
 		9779BAB51AE265490053379C /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB41AE265490053379C /* Dog.m */; };
 		97D952731AE73D5B006886AA /* ARCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952611AE73D5B006886AA /* ARCoreDataManager.m */; };
@@ -32,7 +34,6 @@
 		97D952791AE73D5C006886AA /* NSManagedObject+ARRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D9526E1AE73D5B006886AA /* NSManagedObject+ARRequest.m */; };
 		97D9527A1AE73D5C006886AA /* NSManagedObjectContext+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */; };
 		97D9527B1AE73D5C006886AA /* NSManagedObjectID+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */; };
-		97D952811AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,10 @@
 		73D45F361962666800745653 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73D45F381962666800745653 /* ARCoreDataDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataDemoTests.m; sourceTree = "<group>"; };
 		73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ModelTesdd.xcdatamodel; sourceTree = "<group>"; };
+		972CDF121AEAA20A00393BB7 /* ARCollectionViewFetchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCollectionViewFetchResultController.h; sourceTree = "<group>"; };
+		972CDF131AEAA20A00393BB7 /* ARCollectionViewFetchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCollectionViewFetchResultController.m; sourceTree = "<group>"; };
+		972CDF141AEAA20A00393BB7 /* ARTableViewFetchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTableViewFetchResultController.h; sourceTree = "<group>"; };
+		972CDF151AEAA20A00393BB7 /* ARTableViewFetchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTableViewFetchResultController.m; sourceTree = "<group>"; };
 		9779BAB01AE25A4A0053379C /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		9779BAB11AE25A4A0053379C /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		9779BAB31AE265490053379C /* Dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
@@ -89,8 +94,6 @@
 		97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+ARAddtions.m"; sourceTree = "<group>"; };
 		97D952711AE73D5B006886AA /* NSManagedObjectID+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectID+ARAddtions.h"; sourceTree = "<group>"; };
 		97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectID+ARAddtions.m"; sourceTree = "<group>"; };
-		97D9527F1AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTableViewFetchResultControllerDataSource.h; sourceTree = "<group>"; };
-		97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTableViewFetchResultControllerDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +206,10 @@
 				97D9525F1AE73D5B006886AA /* ARCoreDataMacros.h */,
 				97D952601AE73D5B006886AA /* ARCoreDataManager.h */,
 				97D952611AE73D5B006886AA /* ARCoreDataManager.m */,
+				972CDF121AEAA20A00393BB7 /* ARCollectionViewFetchResultController.h */,
+				972CDF131AEAA20A00393BB7 /* ARCollectionViewFetchResultController.m */,
+				972CDF141AEAA20A00393BB7 /* ARTableViewFetchResultController.h */,
+				972CDF151AEAA20A00393BB7 /* ARTableViewFetchResultController.m */,
 				97D952621AE73D5B006886AA /* ARManageObjectMappingProtocol.h */,
 				97D952651AE73D5B006886AA /* NSManagedObject+ARCreate.h */,
 				97D952661AE73D5B006886AA /* NSManagedObject+ARCreate.m */,
@@ -218,8 +225,6 @@
 				97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */,
 				97D952711AE73D5B006886AA /* NSManagedObjectID+ARAddtions.h */,
 				97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */,
-				97D9527F1AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.h */,
-				97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */,
 			);
 			path = ARCoreData;
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				972CDF171AEAA20A00393BB7 /* ARTableViewFetchResultController.m in Sources */,
 				97D9527A1AE73D5C006886AA /* NSManagedObjectContext+ARAddtions.m in Sources */,
 				97D9527B1AE73D5C006886AA /* NSManagedObjectID+ARAddtions.m in Sources */,
 				97D952731AE73D5B006886AA /* ARCoreDataManager.m in Sources */,
@@ -329,8 +335,8 @@
 				97D952791AE73D5C006886AA /* NSManagedObject+ARRequest.m in Sources */,
 				97D952761AE73D5C006886AA /* NSManagedObject+ARFetch.m in Sources */,
 				73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */,
+				972CDF161AEAA20A00393BB7 /* ARCollectionViewFetchResultController.m in Sources */,
 				97D952781AE73D5C006886AA /* NSManagedObject+ARMapping.m in Sources */,
-				97D952811AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m in Sources */,
 				73D45F241962666800745653 /* YCViewController.m in Sources */,
 				73D45F1A1962666800745653 /* main.m in Sources */,
 				97D952751AE73D5C006886AA /* NSManagedObject+ARCreate.m in Sources */,

@@ -17,6 +17,7 @@
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARCreate.h"
 #import "ARManageObjectMappingProtocol.h"
-#import "ARTableViewFetchResultControllerDataSource.h"
+#import "ARCollectionViewFetchResultController.h"
+#import "ARTableViewFetchResultController.h"
 
 #endif

@@ -177,12 +177,5 @@
         NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
     }];
     
-    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
-        
-        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
-
-    }];
-    
 }
 @end
