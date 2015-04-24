@@ -23,14 +23,67 @@
 ## Install
 
 #### Manualy
-* just drag ARCoreData to your project and edit you model , do not need to config any others 
+just drag ARCoreData to your project and edit you model , do not need to config any others 
+<br>Import: `#import "ARCoreData.h"`
 
 #### Cocoapods
 * unsupport currently(will come soon)
 
-## Usage
+## Getting start
 ***********************
 
 #### Creat new object
 
-* [Person AR_new], [Person AR_newOrUpdateWithJSON:JSON]
+if you have a Person and Dog class like this:
+```
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+@class Dog;
+
+@interface Person : NSManagedObject<ARManageObjectMappingProtocol>
+
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) BOOL sex;
+@property (nonatomic, retain) NSString * guid;
+@property (nonatomic, retain) NSSet *dogs;
+@end
+
+@interface Person (CoreDataGeneratedAccessors)
+
+- (void)addDogsObject:(Dog *)value;
+- (void)removeDogsObject:(Dog *)value;
+- (void)addDogs:(NSSet *)values;
+- (void)removeDogs:(NSSet *)values;
+
+@end
+
+_____________________
+
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import "ARCoreData.h"
+
+@class Person;
+
+@interface Dog : NSManagedObject<ARManageObjectMappingProtocol>
+
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic) int64_t guid;
+@property (nonatomic, retain) NSSet *owners;
+@end
+
+@interface Dog (CoreDataGeneratedAccessors)
+
+- (void)addOwnersObject:(Person *)value;
+- (void)removeOwnersObject:(Person *)value;
+- (void)addOwners:(NSSet *)values;
+- (void)removeOwners:(NSSet *)values;
+
+@end
+
+
+```
+
+
