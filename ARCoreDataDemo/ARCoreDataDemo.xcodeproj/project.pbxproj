@@ -22,17 +22,17 @@
 		73D45F371962666800745653 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D45F351962666800745653 /* InfoPlist.strings */; };
 		73D45F391962666800745653 /* ARCoreDataDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F381962666800745653 /* ARCoreDataDemoTests.m */; };
 		73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */; };
-		9779BA951AE254F70053379C /* ARCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA841AE254F70053379C /* ARCoreDataManager.m */; };
-		9779BA961AE254F70053379C /* NSFetchedResultsController+ARAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA861AE254F70053379C /* NSFetchedResultsController+ARAdditions.m */; };
-		9779BA971AE254F70053379C /* NSManagedObject+ARCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA881AE254F70053379C /* NSManagedObject+ARCreate.m */; };
-		9779BA981AE254F70053379C /* NSManagedObject+ARFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA8A1AE254F70053379C /* NSManagedObject+ARFetch.m */; };
-		9779BA991AE254F70053379C /* NSManagedObject+ARManageObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA8C1AE254F70053379C /* NSManagedObject+ARManageObjectContext.m */; };
-		9779BA9A1AE254F70053379C /* NSManagedObject+ARMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA8E1AE254F70053379C /* NSManagedObject+ARMapping.m */; };
-		9779BA9B1AE254F70053379C /* NSManagedObject+ARRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA901AE254F70053379C /* NSManagedObject+ARRequest.m */; };
-		9779BA9C1AE254F70053379C /* NSManagedObjectContext+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA921AE254F70053379C /* NSManagedObjectContext+ARAddtions.m */; };
-		9779BA9D1AE254F70053379C /* NSManagedObjectID+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BA941AE254F70053379C /* NSManagedObjectID+ARAddtions.m */; };
 		9779BAB21AE25A4A0053379C /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB11AE25A4A0053379C /* Person.m */; };
 		9779BAB51AE265490053379C /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB41AE265490053379C /* Dog.m */; };
+		97D952731AE73D5B006886AA /* ARCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952611AE73D5B006886AA /* ARCoreDataManager.m */; };
+		97D952751AE73D5C006886AA /* NSManagedObject+ARCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952661AE73D5B006886AA /* NSManagedObject+ARCreate.m */; };
+		97D952761AE73D5C006886AA /* NSManagedObject+ARFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952681AE73D5B006886AA /* NSManagedObject+ARFetch.m */; };
+		97D952771AE73D5C006886AA /* NSManagedObject+ARManageObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D9526A1AE73D5B006886AA /* NSManagedObject+ARManageObjectContext.m */; };
+		97D952781AE73D5C006886AA /* NSManagedObject+ARMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D9526C1AE73D5B006886AA /* NSManagedObject+ARMapping.m */; };
+		97D952791AE73D5C006886AA /* NSManagedObject+ARRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D9526E1AE73D5B006886AA /* NSManagedObject+ARRequest.m */; };
+		97D9527A1AE73D5C006886AA /* NSManagedObjectContext+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */; };
+		97D9527B1AE73D5C006886AA /* NSManagedObjectID+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */; };
+		97D952811AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,31 +66,31 @@
 		73D45F361962666800745653 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73D45F381962666800745653 /* ARCoreDataDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataDemoTests.m; sourceTree = "<group>"; };
 		73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ModelTesdd.xcdatamodel; sourceTree = "<group>"; };
-		9779BA821AE254F70053379C /* ARCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreData.h; sourceTree = "<group>"; };
-		9779BA831AE254F70053379C /* ARCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataManager.h; sourceTree = "<group>"; };
-		9779BA841AE254F70053379C /* ARCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataManager.m; sourceTree = "<group>"; };
-		9779BA851AE254F70053379C /* NSFetchedResultsController+ARAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchedResultsController+ARAdditions.h"; sourceTree = "<group>"; };
-		9779BA861AE254F70053379C /* NSFetchedResultsController+ARAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+ARAdditions.m"; sourceTree = "<group>"; };
-		9779BA871AE254F70053379C /* NSManagedObject+ARCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARCreate.h"; sourceTree = "<group>"; };
-		9779BA881AE254F70053379C /* NSManagedObject+ARCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARCreate.m"; sourceTree = "<group>"; };
-		9779BA891AE254F70053379C /* NSManagedObject+ARFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARFetch.h"; sourceTree = "<group>"; };
-		9779BA8A1AE254F70053379C /* NSManagedObject+ARFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARFetch.m"; sourceTree = "<group>"; };
-		9779BA8B1AE254F70053379C /* NSManagedObject+ARManageObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARManageObjectContext.h"; sourceTree = "<group>"; };
-		9779BA8C1AE254F70053379C /* NSManagedObject+ARManageObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARManageObjectContext.m"; sourceTree = "<group>"; };
-		9779BA8D1AE254F70053379C /* NSManagedObject+ARMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARMapping.h"; sourceTree = "<group>"; };
-		9779BA8E1AE254F70053379C /* NSManagedObject+ARMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARMapping.m"; sourceTree = "<group>"; };
-		9779BA8F1AE254F70053379C /* NSManagedObject+ARRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARRequest.h"; sourceTree = "<group>"; };
-		9779BA901AE254F70053379C /* NSManagedObject+ARRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARRequest.m"; sourceTree = "<group>"; };
-		9779BA911AE254F70053379C /* NSManagedObjectContext+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+ARAddtions.h"; sourceTree = "<group>"; };
-		9779BA921AE254F70053379C /* NSManagedObjectContext+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+ARAddtions.m"; sourceTree = "<group>"; };
-		9779BA931AE254F70053379C /* NSManagedObjectID+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectID+ARAddtions.h"; sourceTree = "<group>"; };
-		9779BA941AE254F70053379C /* NSManagedObjectID+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectID+ARAddtions.m"; sourceTree = "<group>"; };
 		9779BAB01AE25A4A0053379C /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		9779BAB11AE25A4A0053379C /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		9779BAB31AE265490053379C /* Dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
 		9779BAB41AE265490053379C /* Dog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dog.m; sourceTree = "<group>"; };
-		9779BAD31AE3521A0053379C /* ARCoreDataMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataMacros.h; sourceTree = "<group>"; };
-		97A6DFD91AE355CB00C1DB3B /* ARManageObjectMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARManageObjectMappingProtocol.h; sourceTree = "<group>"; };
+		97D9525E1AE73D5B006886AA /* ARCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreData.h; sourceTree = "<group>"; };
+		97D9525F1AE73D5B006886AA /* ARCoreDataMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataMacros.h; sourceTree = "<group>"; };
+		97D952601AE73D5B006886AA /* ARCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataManager.h; sourceTree = "<group>"; };
+		97D952611AE73D5B006886AA /* ARCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataManager.m; sourceTree = "<group>"; };
+		97D952621AE73D5B006886AA /* ARManageObjectMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARManageObjectMappingProtocol.h; sourceTree = "<group>"; };
+		97D952651AE73D5B006886AA /* NSManagedObject+ARCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARCreate.h"; sourceTree = "<group>"; };
+		97D952661AE73D5B006886AA /* NSManagedObject+ARCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARCreate.m"; sourceTree = "<group>"; };
+		97D952671AE73D5B006886AA /* NSManagedObject+ARFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARFetch.h"; sourceTree = "<group>"; };
+		97D952681AE73D5B006886AA /* NSManagedObject+ARFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARFetch.m"; sourceTree = "<group>"; };
+		97D952691AE73D5B006886AA /* NSManagedObject+ARManageObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARManageObjectContext.h"; sourceTree = "<group>"; };
+		97D9526A1AE73D5B006886AA /* NSManagedObject+ARManageObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARManageObjectContext.m"; sourceTree = "<group>"; };
+		97D9526B1AE73D5B006886AA /* NSManagedObject+ARMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARMapping.h"; sourceTree = "<group>"; };
+		97D9526C1AE73D5B006886AA /* NSManagedObject+ARMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARMapping.m"; sourceTree = "<group>"; };
+		97D9526D1AE73D5B006886AA /* NSManagedObject+ARRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARRequest.h"; sourceTree = "<group>"; };
+		97D9526E1AE73D5B006886AA /* NSManagedObject+ARRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARRequest.m"; sourceTree = "<group>"; };
+		97D9526F1AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+ARAddtions.h"; sourceTree = "<group>"; };
+		97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+ARAddtions.m"; sourceTree = "<group>"; };
+		97D952711AE73D5B006886AA /* NSManagedObjectID+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectID+ARAddtions.h"; sourceTree = "<group>"; };
+		97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectID+ARAddtions.m"; sourceTree = "<group>"; };
+		97D9527F1AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTableViewFetchResultControllerDataSource.h; sourceTree = "<group>"; };
+		97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTableViewFetchResultControllerDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +150,7 @@
 		73D45F131962666800745653 /* ARCoreDataDemo */ = {
 			isa = PBXGroup;
 			children = (
-				9779BA811AE254F70053379C /* ARCoreData */,
+				97D9525D1AE73D5B006886AA /* ARCoreData */,
 				73D45F1C1962666800745653 /* YCAppDelegate.h */,
 				73D45F1D1962666800745653 /* YCAppDelegate.m */,
 				73D45F1F1962666800745653 /* Main.storyboard */,
@@ -196,30 +196,30 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9779BA811AE254F70053379C /* ARCoreData */ = {
+		97D9525D1AE73D5B006886AA /* ARCoreData */ = {
 			isa = PBXGroup;
 			children = (
-				9779BA821AE254F70053379C /* ARCoreData.h */,
-				9779BAD31AE3521A0053379C /* ARCoreDataMacros.h */,
-				9779BA831AE254F70053379C /* ARCoreDataManager.h */,
-				9779BA841AE254F70053379C /* ARCoreDataManager.m */,
-				9779BA851AE254F70053379C /* NSFetchedResultsController+ARAdditions.h */,
-				9779BA861AE254F70053379C /* NSFetchedResultsController+ARAdditions.m */,
-				9779BA871AE254F70053379C /* NSManagedObject+ARCreate.h */,
-				9779BA881AE254F70053379C /* NSManagedObject+ARCreate.m */,
-				97A6DFD91AE355CB00C1DB3B /* ARManageObjectMappingProtocol.h */,
-				9779BA891AE254F70053379C /* NSManagedObject+ARFetch.h */,
-				9779BA8A1AE254F70053379C /* NSManagedObject+ARFetch.m */,
-				9779BA8B1AE254F70053379C /* NSManagedObject+ARManageObjectContext.h */,
-				9779BA8C1AE254F70053379C /* NSManagedObject+ARManageObjectContext.m */,
-				9779BA8D1AE254F70053379C /* NSManagedObject+ARMapping.h */,
-				9779BA8E1AE254F70053379C /* NSManagedObject+ARMapping.m */,
-				9779BA8F1AE254F70053379C /* NSManagedObject+ARRequest.h */,
-				9779BA901AE254F70053379C /* NSManagedObject+ARRequest.m */,
-				9779BA911AE254F70053379C /* NSManagedObjectContext+ARAddtions.h */,
-				9779BA921AE254F70053379C /* NSManagedObjectContext+ARAddtions.m */,
-				9779BA931AE254F70053379C /* NSManagedObjectID+ARAddtions.h */,
-				9779BA941AE254F70053379C /* NSManagedObjectID+ARAddtions.m */,
+				97D9525E1AE73D5B006886AA /* ARCoreData.h */,
+				97D9525F1AE73D5B006886AA /* ARCoreDataMacros.h */,
+				97D952601AE73D5B006886AA /* ARCoreDataManager.h */,
+				97D952611AE73D5B006886AA /* ARCoreDataManager.m */,
+				97D952621AE73D5B006886AA /* ARManageObjectMappingProtocol.h */,
+				97D952651AE73D5B006886AA /* NSManagedObject+ARCreate.h */,
+				97D952661AE73D5B006886AA /* NSManagedObject+ARCreate.m */,
+				97D952671AE73D5B006886AA /* NSManagedObject+ARFetch.h */,
+				97D952681AE73D5B006886AA /* NSManagedObject+ARFetch.m */,
+				97D952691AE73D5B006886AA /* NSManagedObject+ARManageObjectContext.h */,
+				97D9526A1AE73D5B006886AA /* NSManagedObject+ARManageObjectContext.m */,
+				97D9526B1AE73D5B006886AA /* NSManagedObject+ARMapping.h */,
+				97D9526C1AE73D5B006886AA /* NSManagedObject+ARMapping.m */,
+				97D9526D1AE73D5B006886AA /* NSManagedObject+ARRequest.h */,
+				97D9526E1AE73D5B006886AA /* NSManagedObject+ARRequest.m */,
+				97D9526F1AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.h */,
+				97D952701AE73D5B006886AA /* NSManagedObjectContext+ARAddtions.m */,
+				97D952711AE73D5B006886AA /* NSManagedObjectID+ARAddtions.h */,
+				97D952721AE73D5B006886AA /* NSManagedObjectID+ARAddtions.m */,
+				97D9527F1AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.h */,
+				97D952801AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m */,
 			);
 			path = ARCoreData;
 			sourceTree = "<group>";
@@ -322,21 +322,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9779BA9A1AE254F70053379C /* NSManagedObject+ARMapping.m in Sources */,
-				9779BA9C1AE254F70053379C /* NSManagedObjectContext+ARAddtions.m in Sources */,
-				9779BA961AE254F70053379C /* NSFetchedResultsController+ARAdditions.m in Sources */,
+				97D9527A1AE73D5C006886AA /* NSManagedObjectContext+ARAddtions.m in Sources */,
+				97D9527B1AE73D5C006886AA /* NSManagedObjectID+ARAddtions.m in Sources */,
+				97D952731AE73D5B006886AA /* ARCoreDataManager.m in Sources */,
 				73D45F1E1962666800745653 /* YCAppDelegate.m in Sources */,
-				9779BA971AE254F70053379C /* NSManagedObject+ARCreate.m in Sources */,
-				9779BA981AE254F70053379C /* NSManagedObject+ARFetch.m in Sources */,
-				9779BA991AE254F70053379C /* NSManagedObject+ARManageObjectContext.m in Sources */,
+				97D952791AE73D5C006886AA /* NSManagedObject+ARRequest.m in Sources */,
+				97D952761AE73D5C006886AA /* NSManagedObject+ARFetch.m in Sources */,
 				73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */,
+				97D952781AE73D5C006886AA /* NSManagedObject+ARMapping.m in Sources */,
+				97D952811AE8AB7A006886AA /* ARTableViewFetchResultControllerDataSource.m in Sources */,
 				73D45F241962666800745653 /* YCViewController.m in Sources */,
 				73D45F1A1962666800745653 /* main.m in Sources */,
-				9779BA9B1AE254F70053379C /* NSManagedObject+ARRequest.m in Sources */,
+				97D952751AE73D5C006886AA /* NSManagedObject+ARCreate.m in Sources */,
 				9779BAB21AE25A4A0053379C /* Person.m in Sources */,
 				9779BAB51AE265490053379C /* Dog.m in Sources */,
-				9779BA951AE254F70053379C /* ARCoreDataManager.m in Sources */,
-				9779BA9D1AE254F70053379C /* NSManagedObjectID+ARAddtions.m in Sources */,
+				97D952771AE73D5C006886AA /* NSManagedObject+ARManageObjectContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

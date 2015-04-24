@@ -14,16 +14,18 @@
 
 @dynamic name;
 @dynamic owners;
+@dynamic guid;
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{@"name":@"n",
-             @"owners":@"o"};
+             @"owners":@"o",
+             @"guid":@"g.uid"};
 }
 
 +(NSString *)primaryKey
 {
-    return @"name";
+    return @"guid";
 }
 
 @end

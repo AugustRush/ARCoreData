@@ -88,10 +88,10 @@
             if (primaryKey == nil) {
                 entity = [self AR_newInContext:context];
             }else{
-                NSString *mappingKey = [mapping valueForKey:primaryKey];
+                NSString *mappingKey = mapping[primaryKey];
                 
                 NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:[self AR_entityName] inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
-                id remoteValue = [JSON valueForKeyPath:mappingKey];
+                id remoteValue = JSON[mappingKey];
                 if (attributeDes.attributeType == NSStringAttributeType) {
                     remoteValue = [remoteValue description];
                 }else{
@@ -132,11 +132,11 @@
                     
                 }else{
                     if ([attributes containsObject:key]) {
-                        [entity mergeAttributeForKey:key withValue:[JSON valueForKeyPath:obj]];
+                        [entity mergeAttributeForKey:key withValue:[JSON valueForKey:obj]];
                         
                         
                     }else if ([relationships containsObject:key]){
-                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKeyPath:obj]];
+                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKey:obj]];
                     }
                     
                 }

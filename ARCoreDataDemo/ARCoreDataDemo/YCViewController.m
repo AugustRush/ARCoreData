@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 }
 
 #pragma mark - fetch controller
@@ -35,11 +36,30 @@
     if (_fetchController != nil) {
         return _fetchController;
     }
-    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
-                                                                                   where:nil
-                                                                               batchSize:10
-                                                                           sortedKeyPath:@"name" ascending:NO
-                                                                                delegate:self];
+    NSString *filter = [NSString stringWithFormat:@"ANY owners.guid contains[c] '3'"];
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Dog AR_entityName]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:filter]];
+    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sorted]];
+    
+    NSManagedObjectContext *manageContext = [[ARCoreDataManager shareManager] mainContext];
+    _fetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                           managedObjectContext:manageContext
+                                                             sectionNameKeyPath:nil
+                                                                      cacheName:nil];
+    _fetchController.delegate = self;
+    NSError *error = nil;
+    if (![_fetchController performFetch:&error]) {
+        NSLog(@"fetch error is %@",error);
+    }
+    
+//    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
+//                                                                                   where:filter
+//                                                                               batchSize:10
+//                                                                           sortedKeyPath:@"name"
+//                                                                               ascending:NO
+//                                                                                delegate:nil];
     return _fetchController;
 }
 
@@ -117,7 +137,7 @@
     Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
     
     cell.textLabel.text = dog.name;
-    cell.detailTextLabel.text = [dog.owners.anyObject name];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld",dog.guid];
     
     return cell;
 }
@@ -135,18 +155,26 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
-    for (int i = 1; i < 300; i++) {
+//    [Dog AR_truncateAll];
+    
+    for (int i = 1; i < 30; i++) {
         NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%14];
+        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%4];
         Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
-                                                @"g":guid,
+                                                @"g":@"3",
                                                 @"s":@YES,
-                                                @"ds":@[@{@"n":@"haha"},
-                                                        @{@"n":guid}]}];
+                                                @"ds":@[@{@"n":@"haha",
+                                                          @"g":@{@"uid":@"7",
+                                                                 @"extra":@34}},
+                                                        @{@"n":name,
+                                                          @"g":@{@"uid":@"6",
+                                                                 @"extra":@34}}]}];
     }
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-           NSLog(@"all person is %@",[Person AR_all]); 
+        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
+        
+        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
     }];
     
 }
