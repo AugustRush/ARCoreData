@@ -36,13 +36,30 @@
     if (_fetchController != nil) {
         return _fetchController;
     }
-    NSString *filter = [NSString stringWithFormat:@"self.owners.guid == %@",@"3"];
-    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
-                                                                                   where:filter
-                                                                               batchSize:10
-                                                                           sortedKeyPath:@"name"
-                                                                               ascending:NO
-                                                                                delegate:nil];
+    NSString *filter = [NSString stringWithFormat:@"ANY owners.guid contains[c] '3'"];
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Dog AR_entityName]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:filter]];
+    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sorted]];
+    
+    NSManagedObjectContext *manageContext = [[ARCoreDataManager shareManager] mainContext];
+    _fetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                           managedObjectContext:manageContext
+                                                             sectionNameKeyPath:nil
+                                                                      cacheName:nil];
+    _fetchController.delegate = self;
+    NSError *error = nil;
+    if (![_fetchController performFetch:&error]) {
+        NSLog(@"fetch error is %@",error);
+    }
+    
+//    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
+//                                                                                   where:filter
+//                                                                               batchSize:10
+//                                                                           sortedKeyPath:@"name"
+//                                                                               ascending:NO
+//                                                                                delegate:nil];
     return _fetchController;
 }
 
@@ -147,10 +164,10 @@
                                                 @"g":@"3",
                                                 @"s":@YES,
                                                 @"ds":@[@{@"n":@"haha",
-                                                          @"g":@{@"uid":@"5",
+                                                          @"g":@{@"uid":@"7",
                                                                  @"extra":@34}},
                                                         @{@"n":name,
-                                                          @"g":@{@"uid":@"5",
+                                                          @"g":@{@"uid":@"6",
                                                                  @"extra":@34}}]}];
     }
     

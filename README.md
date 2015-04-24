@@ -1,7 +1,6 @@
-ARCoreData
-==========
+# ARCoreData
 
-To use CoreData easily . 
+* To use CoreData easily . 
 
 ## Features
 

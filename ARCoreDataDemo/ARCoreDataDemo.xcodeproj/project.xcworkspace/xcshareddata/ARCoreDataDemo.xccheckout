@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>4B4CA3E1-C052-4796-9588-C648A2458621</string>
 	<key>IDESourceControlProjectName</key>
-	<string>ARCoreDataDemo</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>516FD8ABC15F7AC1901CD3619FC14C361F01586F</key>
 		<string>https://github.com/AugustRush/ARCoreData.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ARCoreDataDemo/ARCoreDataDemo.xcodeproj</string>
+	<string>ARCoreDataDemo/ARCoreDataDemo.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>516FD8ABC15F7AC1901CD3619FC14C361F01586F</key>
