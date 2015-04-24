@@ -41,14 +41,23 @@
 
 +(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON
 {
+    return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd];
+}
+
++(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy
+{
     if (JSON != nil) {
-        return [[self AR_newOrUpdateWithJSONs:@[JSON]] lastObject];
+        return [[self AR_newOrUpdateWithJSONs:@[JSON] relationshipsMergePolicy:policy] lastObject];
     }
     return nil;
-
 }
 
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs
+{
+    return [self AR_newOrUpdateWithJSONs:JSONs relationshipsMergePolicy:ARRelationshipMergePolicyAdd];
+}
+
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy
 {
     NSAssert([JSONs isKindOfClass:[NSArray class]], @"JSONs should be a NSArray");
     NSAssert1([self respondsToSelector:@selector(JSONKeyPathsByPropertyKey)],  @"%@ class should impliment +(NSDictionary *)JSONKeyPathsByPropertyKey; method", NSStringFromClass(self));
@@ -68,18 +77,19 @@
         [objs addObject:[self objectWithJSON:JSON
                                   primaryKey:primaryKey
                                      mapping:mapping
+                     relationshipMergePolicy:policy
                                    inContext:context]];
         
     }
     [[self cacheLocalObjects] removeAllObjects];
     return objs;
-
 }
 
-+(id)objectWithJSON:(NSDictionary *)JSON
-         primaryKey:(NSString *)primaryKey
-            mapping:(NSDictionary *)mapping
-          inContext:(NSManagedObjectContext *)context
++(id)     objectWithJSON:(NSDictionary *)JSON
+              primaryKey:(NSString *)primaryKey
+                 mapping:(NSDictionary *)mapping
+ relationshipMergePolicy:(ARRelationshipMergePolicy)policy
+               inContext:(NSManagedObjectContext *)context
 {
     __block NSManagedObject *entity = nil;
     @autoreleasepool {
@@ -88,10 +98,10 @@
             if (primaryKey == nil) {
                 entity = [self AR_newInContext:context];
             }else{
-                NSString *mappingKey = mapping[primaryKey];
+                NSString *mappingKey = [mapping valueForKey:primaryKey];
                 
                 NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:[self AR_entityName] inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
-                id remoteValue = JSON[mappingKey];
+                id remoteValue = [JSON valueForKeyPath:mappingKey];
                 if (attributeDes.attributeType == NSStringAttributeType) {
                     remoteValue = [remoteValue description];
                 }else{
@@ -132,11 +142,11 @@
                     
                 }else{
                     if ([attributes containsObject:key]) {
-                        [entity mergeAttributeForKey:key withValue:[JSON valueForKey:obj]];
+                        [entity mergeAttributeForKey:key withValue:[JSON valueForKeyPath:obj]];
                         
                         
                     }else if ([relationships containsObject:key]){
-                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKey:obj]];
+                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKeyPath:obj] mergePolicy:policy];
                     }
                     
                 }

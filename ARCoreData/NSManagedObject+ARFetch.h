@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
 @interface NSManagedObject (ARFetch)
 

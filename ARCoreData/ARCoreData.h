@@ -13,10 +13,11 @@
 #import "NSManagedObject+ARFetch.h"
 #import "NSManagedObjectID+ARAddtions.h"
 #import "NSManagedObjectContext+ARAddtions.h"
-#import "NSFetchedResultsController+ARAdditions.h"
 #import "NSManagedObject+ARMapping.h"
 #import "NSManagedObject+ARRequest.h"
 #import "NSManagedObject+ARCreate.h"
 #import "ARManageObjectMappingProtocol.h"
+#import "ARTableViewFetchResultController.h"
+#import "ARCollectionViewFetchResultController.h"
 
 #endif

@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, ARRelationshipMergePolicy) {
+    ARRelationshipMergePolicyAdd,//default
+    ARRelationshipMergePolicyRepalce
+};
+
 @protocol ARManageObjectMappingProtocol <NSObject>
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey;

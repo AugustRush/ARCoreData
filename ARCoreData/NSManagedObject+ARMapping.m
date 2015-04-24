@@ -50,7 +50,7 @@
 
 }
 
--(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value
+-(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy
 {
     if (value == nil || [value isEqual:[NSNull null]]) {
         return;
@@ -59,10 +59,14 @@
     NSString *desClassName = relationshipDes.destinationEntity.managedObjectClassName;
     if (relationshipDes.isToMany) {
         NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value];
-        NSMutableSet *localSet = [self mutableSetValueForKey:relationshipName];
         if (destinationObjs != nil && destinationObjs.count > 0) {
-            [localSet addObjectsFromArray:destinationObjs];
-            [self setValue:localSet forKey:relationshipName];
+            if (policy == ARRelationshipMergePolicyAdd) {
+                NSMutableSet *localSet = [self mutableSetValueForKey:relationshipName];
+                [localSet addObjectsFromArray:destinationObjs];
+                [self setValue:localSet forKey:relationshipName];
+            }else{
+                [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
+            }
         }
     }else{
         id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
