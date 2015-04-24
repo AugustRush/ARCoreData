@@ -196,7 +196,7 @@ and so on !!!
 ## Saving objects
 
 ```
-###### sync
+* sync
     [Person AR_saveAndWait];
 
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
@@ -207,7 +207,7 @@ and so on !!!
 
     }];
 
-###### async
+* async
 
 	[Person AR_saveCompletion:^(BOOL success, NSError *error) {
         NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
@@ -218,7 +218,8 @@ and so on !!!
 
 ``` 
 ##TDR:
-there have more methods i have created for you, you can see it in my Demo project after.
+there have more methods i have created for you, you can see it in my Demo project after. this library also worked in
+swift fine !
 
 
 
