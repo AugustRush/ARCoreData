@@ -1,6 +1,6 @@
 ![](https://github.com/AugustRush/ARCoreData/blob/master/6DB73380-0D9A-43A1-AD21-8374D748429A.png)
 
-* <center>To use CoreData easily .</center> 
+<center>To use CoreData easily .</center> 
 
 *****************************************
 
@@ -27,3 +27,4 @@
 
 ### Cocoapods
 * unsupport currently(will come soon)
+
