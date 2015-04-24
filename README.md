@@ -32,7 +32,7 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 ## Getting start
 ***********************
 
-#### Creat new object
+## Creat new object
 
 if you have a Person and Dog class like this:
 ```
@@ -192,6 +192,33 @@ there have a lot of methods to help you fetch objects convinience and faster , e
     NSArray *persons = [Person AR_whereProperty:@"guid" equalTo:@3];
 ```
 and so on !!!
+
+## Saving objects
+
+```
+###### sync
+    [Person AR_saveAndWait];
+
+    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
+
+        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
+
+        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
+
+    }];
+
+###### async
+
+	[Person AR_saveCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
+        
+        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
+    }];
+
+
+``` 
+##TDR:
+there have more methods i have created for you, you can see it in my Demo project after.
 
 
 
