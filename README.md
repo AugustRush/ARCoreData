@@ -1,6 +1,8 @@
 ![](https://github.com/AugustRush/ARCoreData/blob/master/6DB73380-0D9A-43A1-AD21-8374D748429A.png)
 
-* To use CoreData easily . 
+* <center>To use CoreData easily .</center> 
+
+*****************************************
 
 ## Features
 
