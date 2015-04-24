@@ -4,10 +4,9 @@
 
 ## Features
 
-* custom primaryKey
-** currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
+* custom primaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
 
-* JSON(NSDictionary) -> NSManageObject
+* JSON(NSDictionary) -> NSManageObject(In theory,support any KVC object)
 
 * JSONs(NSArray) -> NSManageObject(s)
 
