@@ -168,9 +168,20 @@ and then, you can create a Person like this:
 
 if you impliment the class method +(NSString *)primaryKey; you just can create a uniqued person through a same "guid".
 
-## Mapping 
+## Mapping (ARManageObjectMappingProtocol)
 
-i hava impliment some methods , you can use server response directly to create an(or a array) manageObject(s)  and to save,
+```
+@protocol ARManageObjectMappingProtocol <NSObject>
+
++(NSDictionary *)JSONKeyPathsByPropertyKey;
+
+@optional
++(NSString *)primaryKey;
+
+@end
+```
+
+i hava impliment some methods , you can use server response directly to create an(or a array) manageObject(s),
 there have methods :
 
 ```
@@ -179,7 +190,7 @@ there have methods :
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
 
 ```
-you have seen ARManageObjectMappingProtocol , yes ,this protocol have two methods,like famous mapping <a href="https://github.com/Mantle/Mantle">Mantle</a>, but this transform must be faster than Mantle.
+you have seen ARManageObjectMappingProtocol , yes ,this protocol have two methods,like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but this transform must be faster than Mantle.
 
 ## Fetch objects
 
@@ -199,12 +210,8 @@ and so on !!!
 * sync
     [Person AR_saveAndWait];
 
-    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-
-        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
-
-        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
-
+    [Person AR_saveAndWaitCompletion:^(BOOL success, NSError *error) {
+        // fetch objects or do UI work
     }];
 
 * async

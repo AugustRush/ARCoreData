@@ -48,7 +48,9 @@
     
     [person addDogsObject:pet];
     
-    [Person AR_saveAndWait];
+    [Person AR_saveAndWaitCompletion:^(BOOL success, NSError *error) {
+        // fetch object or UI work
+    }];
     
     return YES;
 }
