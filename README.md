@@ -217,7 +217,7 @@ and so on !!!
 
 
 ``` 
-##TDR:
+##TL;DR:
 there have more methods i have created for you, you can see it in my Demo project after. this library also worked in
 swift fine !
 
