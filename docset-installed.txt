@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Users/august/Library/Developer/Shared/Documentation/DocSets/com.ibireme.arcoredatademo.ARCoreDataDemo.docset
+Time: 2015-04-25 01:34:14 +0000

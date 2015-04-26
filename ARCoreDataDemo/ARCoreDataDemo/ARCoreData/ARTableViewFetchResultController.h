@@ -13,10 +13,10 @@
 @protocol ARTableViewFetchResultControllerDelegate <NSObject>
 
 @required
--(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(id)cell withObject:(id)object;
+-(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(UITableViewCell *)cell withObject:(id)object;
 
 @optional
--(void)tableFetchResultController:(ARTableViewFetchResultController *)controller updateCell:(id)cell withObject:(id)object;
+-(void)tableFetchResultController:(ARTableViewFetchResultController *)controller updateCell:(UITableViewCell *)cell withObject:(id)object;
 
 @end
 

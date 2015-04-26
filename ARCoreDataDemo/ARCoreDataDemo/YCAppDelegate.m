@@ -14,44 +14,7 @@
 @implementation YCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-//    int i = 10;
-//    while (i > 0) {
-//        Person *person = [Person fillWithJSON:@{@"n":@"liu",
-//                                                @"g":@"3",
-//                                                @"s":@YES,
-//                                                @"ds":@[@{@"n":@"beibei"},
-//                                                       @{@"n":@"daidai"}]}];
-//        
-//        Person *person1 = [Person fillWithJSON:@{@"n":@"wang",
-//                                                @"g":@"4",
-//                                                @"s":@YES,
-//                                                @"ds":@[@{@"n":@"beibei"},
-//                                                        @{@"n":@"daidai"}]}];
-//        i --;
-//    }
-//    [Person AR_truncateAll];
-//    [Dog AR_truncateAll];
-//    [Person saveWithHandler:^(NSError *error) {
-//        NSLog(@"all person is %@",[Person AR_all]);
-//        NSLog(@"all dogs is %@",[Dog AR_all]);
-//        
-//    }];
-    
-    Person *person = [Person AR_new];
-    person.name = @"aaa";
-    person.guid = @"1";
-    
-    Dog *pet = [Dog AR_new];
-    pet.name = @"doggie";
-    pet.guid = 123;
-    
-    [person addDogsObject:pet];
-    
-    [Person AR_saveAndWaitCompletion:^(BOOL success, NSError *error) {
-        // fetch object or UI work
-    }];
-    
+{    
     return YES;
 }
 							

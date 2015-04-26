@@ -11,10 +11,10 @@
 #import "Person.h"
 #import "Dog.h"
 
-@interface YCViewController ()<UITableViewDelegate,UITableViewDataSource,NSFetchedResultsControllerDelegate>
+@interface YCViewController ()<UITableViewDelegate,ARTableViewFetchResultControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchController;
+@property (nonatomic, strong) ARTableViewFetchResultController *fetchController;
 
 - (IBAction)addEntityObj:(id)sender;
 @end
@@ -27,79 +27,25 @@
 {
     [super viewDidLoad];
     
-}
-
-#pragma mark - fetch controller
-
--(NSFetchedResultsController *)fetchController
-{
-    if (_fetchController != nil) {
-        return _fetchController;
-    }
-    NSString *filter = [NSString stringWithFormat:@"ANY owners.guid contains[c] '3'"];
+    NSFetchRequest *fetchRequest = [Dog AR_allRequest];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY owners.guid = %@",@"3"];
+    [fetchRequest setPredicate:predicate];
     
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Dog AR_entityName]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:filter]];
     NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
     [fetchRequest setSortDescriptors:@[sorted]];
     
-    NSManagedObjectContext *manageContext = [[ARCoreDataManager shareManager] mainContext];
-    _fetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                           managedObjectContext:manageContext
-                                                             sectionNameKeyPath:nil
-                                                                      cacheName:nil];
-    _fetchController.delegate = self;
-    NSError *error = nil;
-    if (![_fetchController performFetch:&error]) {
-        NSLog(@"fetch error is %@",error);
-    }
+    self.fetchController = [[ARTableViewFetchResultController alloc] initWithFetchRequest:fetchRequest tableView:self.tableView cellReuseIdentifier: @"cell" delegate:self];
     
-//    _fetchController = [NSFetchedResultsController fetchedResultControllerWithEntityName:[Dog AR_entityName]
-//                                                                                   where:filter
-//                                                                               batchSize:10
-//                                                                           sortedKeyPath:@"name"
-//                                                                               ascending:NO
-//                                                                                delegate:nil];
-    return _fetchController;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
 }
 
--(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
-}
+#pragma mark - ARTableViewFetchResultControllerDelegate methods
 
--(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+-(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(UITableViewCell *)cell withObject:(id)object
 {
-    [self.tableView beginUpdates];
-}
-
--(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-        {
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        case NSFetchedResultsChangeDelete:
-        {
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        case NSFetchedResultsChangeMove:
-        {
-            [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-        }
-            break;
-        case NSFetchedResultsChangeUpdate:
-        {
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-            
-        default:
-            break;
-    }
+    Dog *dog = (Dog *)object;
+    cell.textLabel.text = dog.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld",dog.guid];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -112,34 +58,6 @@
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
         NSLog(@"delete dog error is %@",error);
     }];
-}
-
-#pragma mark - UITableViewDataSource methods
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return self.fetchController.sections.count;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.fetchController.sections[section] numberOfObjects];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellReuseIdentifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellReuseIdentifier];
-    }
-    
-    Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
-    
-    cell.textLabel.text = dog.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld",dog.guid];
-    
-    return cell;
 }
 
 #pragma mark - manage memory methods
@@ -155,21 +73,21 @@
 }
 
 - (IBAction)addEntityObj:(id)sender {
-//    [Dog AR_truncateAll];
     
-    for (int i = 1; i < 30; i++) {
+//    for (int i = 1; i < 30; i++) {
         NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%4];
+        NSString *guid = [NSString stringWithFormat:@"%u",arc4random()];
         Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
                                                 @"g":@"3",
                                                 @"s":@YES,
-                                                @"ds":@[@{@"n":@"haha",
-                                                          @"g":@{@"uid":@"7",
+                                                @"ds":@[@{@"n":guid,
+                                                          @"g":@{@"uid":guid,
                                                                  @"extra":@34}},
                                                         @{@"n":name,
                                                           @"g":@{@"uid":@"6",
                                                                  @"extra":@34}}]}];
-    }
+//    }
+    NSLog(@"person is %@",person);
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
         NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
