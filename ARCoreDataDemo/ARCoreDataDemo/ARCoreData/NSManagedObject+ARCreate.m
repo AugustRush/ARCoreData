@@ -41,14 +41,23 @@
 
 +(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON
 {
+    return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd];
+}
+
++(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy
+{
     if (JSON != nil) {
-        return [[self AR_newOrUpdateWithJSONs:@[JSON]] lastObject];
+        return [[self AR_newOrUpdateWithJSONs:@[JSON] relationshipsMergePolicy:policy] lastObject];
     }
     return nil;
-
 }
 
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs
+{
+    return [self AR_newOrUpdateWithJSONs:JSONs relationshipsMergePolicy:ARRelationshipMergePolicyAdd];
+}
+
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy
 {
     NSAssert([JSONs isKindOfClass:[NSArray class]], @"JSONs should be a NSArray");
     NSAssert1([self respondsToSelector:@selector(JSONKeyPathsByPropertyKey)],  @"%@ class should impliment +(NSDictionary *)JSONKeyPathsByPropertyKey; method", NSStringFromClass(self));
@@ -68,18 +77,19 @@
         [objs addObject:[self objectWithJSON:JSON
                                   primaryKey:primaryKey
                                      mapping:mapping
+                     relationshipMergePolicy:policy
                                    inContext:context]];
         
     }
     [[self cacheLocalObjects] removeAllObjects];
     return objs;
-
 }
 
-+(id)objectWithJSON:(NSDictionary *)JSON
-         primaryKey:(NSString *)primaryKey
-            mapping:(NSDictionary *)mapping
-          inContext:(NSManagedObjectContext *)context
++(id)     objectWithJSON:(NSDictionary *)JSON
+              primaryKey:(NSString *)primaryKey
+                 mapping:(NSDictionary *)mapping
+ relationshipMergePolicy:(ARRelationshipMergePolicy)policy
+               inContext:(NSManagedObjectContext *)context
 {
     __block NSManagedObject *entity = nil;
     @autoreleasepool {
@@ -136,7 +146,7 @@
                         
                         
                     }else if ([relationships containsObject:key]){
-                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKeyPath:obj]];
+                        [entity mergeRelationshipForKey:key withValue:[JSON valueForKeyPath:obj] mergePolicy:policy];
                     }
                     
                 }

@@ -30,7 +30,7 @@
 /**
  *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol pritocol
  *
- *  @param JSON key value object
+ *  @param JSON key value object(KVC object)
  *
  *  @return mapping object
  */
@@ -38,10 +38,30 @@
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol pritocol
  *
- *  @param JSON key value objects
+ *  @param JSON key value objects(KVC objects)
  *
  *  @return mapping objects
  */
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
+
+/**
+ *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol pritocol
+ *
+ *  @param JSON   JSON key value object(KVC object)
+ *  @param policy ARRelationshipMergePolicy custom
+ *
+ *  @return mapping object
+ */
++(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
+
+/**
+ *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol pritocol
+ *
+ *  @param JSONs  JSON key value objects(KVC objects)
+ *  @param policy ARRelationshipMergePolicy custom
+ *
+ *  @return mapping objects
+ */
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy;
 
 @end

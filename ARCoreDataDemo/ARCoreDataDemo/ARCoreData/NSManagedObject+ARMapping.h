@@ -6,13 +6,13 @@
 //
 //
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 #import "ARManageObjectMappingProtocol.h"
 
 @interface NSManagedObject (ARMapping)
 
 -(void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value;
--(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value;
+-(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy;
 
 -(NSArray *)allAttributeNames;
 -(NSArray *)allRelationshipNames;
