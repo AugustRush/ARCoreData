@@ -7,7 +7,7 @@
 //
 
 #import "NSManagedObject+ARMapping.h"
-#import "NSManagedObject+ARFetch.h"
+#import "NSManagedObject+ARConvenience.h"
 #import "NSManagedObject+ARCreate.h"
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "NSManagedObject+ARRequest.h"

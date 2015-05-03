@@ -8,10 +8,7 @@
 
 @import CoreData;
 
-@interface NSManagedObject (ARFetch)
-
-#pragma mark - fetch objects methods
-
+@interface NSManagedObject (ARConvenience)
 
 /**
  *  find a local object
@@ -146,7 +143,7 @@
                 handler:(void(^)(NSError *error, NSArray *objects))handler;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param condition like [NSString stringWithFormat:]
  *
@@ -155,7 +152,7 @@
 +(NSArray *)AR_where:(NSString *)condition,...;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param keyPath     sorted keyPath
  *  @param ascending   ascending
@@ -169,7 +166,7 @@
                        where:(NSString *)condition,...;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param keyPath     sorted keyPath
  *  @param ascending   ascending

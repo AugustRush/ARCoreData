@@ -26,7 +26,7 @@
 		9779BAB51AE265490053379C /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB41AE265490053379C /* Dog.m */; };
 		97A95FFB1AF3B66500A05BD1 /* ARCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FEE1AF3B66500A05BD1 /* ARCoreDataManager.m */; };
 		97A95FFC1AF3B66500A05BD1 /* NSManagedObject+ARCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */; };
-		97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARFetch.m */; };
+		97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */; };
 		97A95FFE1AF3B66500A05BD1 /* NSManagedObject+ARMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */; };
 		97A95FFF1AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF81AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m */; };
 		97A960001AF3B66500A05BD1 /* ARTableViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FFA1AF3B66500A05BD1 /* ARTableViewFetchResultController.m */; };
@@ -76,8 +76,8 @@
 		97A95FEF1AF3B66500A05BD1 /* ARManageObjectMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARManageObjectMappingProtocol.h; sourceTree = "<group>"; };
 		97A95FF01AF3B66500A05BD1 /* NSManagedObject+ARCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARCreate.h"; sourceTree = "<group>"; };
 		97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARCreate.m"; sourceTree = "<group>"; };
-		97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARFetch.h"; sourceTree = "<group>"; };
-		97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARFetch.m"; sourceTree = "<group>"; };
+		97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARConvenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARConvenience.h"; sourceTree = "<group>"; };
+		97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARConvenience.m"; sourceTree = "<group>"; };
 		97A95FF41AF3B66500A05BD1 /* NSManagedObject+ARMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARMapping.h"; sourceTree = "<group>"; };
 		97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARMapping.m"; sourceTree = "<group>"; };
 		97A95FF71AF3B66500A05BD1 /* ARCollectionViewFetchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCollectionViewFetchResultController.h; sourceTree = "<group>"; };
@@ -207,8 +207,8 @@
 				97A95FEF1AF3B66500A05BD1 /* ARManageObjectMappingProtocol.h */,
 				97A95FF01AF3B66500A05BD1 /* NSManagedObject+ARCreate.h */,
 				97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */,
-				97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARFetch.h */,
-				97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARFetch.m */,
+				97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARConvenience.h */,
+				97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */,
 				97A95FF41AF3B66500A05BD1 /* NSManagedObject+ARMapping.h */,
 				97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */,
 			);
@@ -355,7 +355,7 @@
 				97A9600C1AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m in Sources */,
 				97A95FFC1AF3B66500A05BD1 /* NSManagedObject+ARCreate.m in Sources */,
 				97A95FFB1AF3B66500A05BD1 /* ARCoreDataManager.m in Sources */,
-				97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARFetch.m in Sources */,
+				97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m in Sources */,
 				73D45F1E1962666800745653 /* YCAppDelegate.m in Sources */,
 				97A95FFF1AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m in Sources */,
 				97A9600A1AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m in Sources */,

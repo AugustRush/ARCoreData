@@ -10,7 +10,7 @@
 #define ARCoreDataDemo_ARCoreData_h
 
 #import "ARCoreDataManager.h"
-#import "NSManagedObject+ARFetch.h"
+#import "NSManagedObject+ARConvenience.h"
 #import "NSManagedObjectID+ARAddtions.h"
 #import "NSManagedObjectContext+ARAddtions.h"
 #import "NSManagedObject+ARMapping.h"

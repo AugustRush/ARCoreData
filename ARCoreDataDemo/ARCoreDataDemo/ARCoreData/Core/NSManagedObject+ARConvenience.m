@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
-#import "NSManagedObject+ARFetch.h"
+#import "NSManagedObject+ARConvenience.h"
 #import "ARCoreDataManager.h"
 #import "NSManagedObjectContext+ARAddtions.h"
 #import "NSManagedObject+ARManageObjectContext.h"
@@ -14,7 +14,9 @@
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "ARCoreDataMacros.h"
 
-@implementation NSManagedObject (ARFetch)
+@implementation NSManagedObject (ARConvenience)
+
+#pragma mark - update methods
 
 +(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value
 {
@@ -94,6 +96,8 @@
         }
     }];
 }
+
+#pragma mark - save methods
 
 +(BOOL)AR_saveAndWait
 {
@@ -190,6 +194,8 @@
 
 }
 
+#pragma mark - transfer to main/private(thread) methods
+
 -(id)AR_objectInMain
 {
     NSManagedObjectContext *mainContext = [[self class] defaultMainContext];
@@ -208,6 +214,30 @@
     }else{
         return [privateContext objectWithID:self.objectID];
     }
+}
+
+#pragma mark - delete methods
+
++(BOOL)AR_truncateAll
+{
+    NSFetchRequest *request = [self AR_allRequest];
+    [request setReturnsObjectsAsFaults:YES];
+    [request setIncludesPropertyValues:NO];
+    
+    NSManagedObjectContext *context = [self defaultPrivateContext];
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
+        for (id obj in objsToDelete ) {
+            [context deleteObject:obj];
+        }
+    }];
+    return YES;
+}
+
+-(void)AR_delete
+{
+    [self.managedObjectContext deleteObject:self];
 }
 
 #pragma mark - fetch methods
@@ -273,28 +303,6 @@
         }
     }];  
     return obj;
-}
-
-+(BOOL)AR_truncateAll
-{
-    NSFetchRequest *request = [self AR_allRequest];
-    [request setReturnsObjectsAsFaults:YES];
-    [request setIncludesPropertyValues:NO];
-    
-    NSManagedObjectContext *context = [self defaultPrivateContext];
-    [context performBlockAndWait:^{
-        NSError *error = nil;
-        NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
-        for (id obj in objsToDelete ) {
-            [context deleteObject:obj];
-        }
-    }];
-    return YES;
-}
-
--(void)AR_delete
-{
-    [self.managedObjectContext deleteObject:self];
 }
 
 +(NSArray *)AR_whereProperty:(NSString *)property
