@@ -215,14 +215,12 @@
 // update methods
 
 +(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value;
-
 +(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition;
-
 +(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value;
-
 +(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition;
 
--(id)objectInMain;
--(id)objectInPrivate;
+
+-(id)AR_objectInMain;
+-(id)AR_objectInPrivate;
 
 @end

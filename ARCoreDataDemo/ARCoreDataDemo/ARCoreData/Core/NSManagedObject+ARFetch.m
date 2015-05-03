@@ -190,7 +190,7 @@
 
 }
 
--(id)objectInMain
+-(id)AR_objectInMain
 {
     NSManagedObjectContext *mainContext = [[self class] defaultMainContext];
     if ([self.managedObjectContext isEqual:mainContext]) {
@@ -200,7 +200,7 @@
     }
 }
 
--(id)objectInPrivate
+-(id)AR_objectInPrivate
 {
     NSManagedObjectContext *privateContext = [[self class] defaultPrivateContext];
     if ([self.managedObjectContext isEqual:privateContext]) {
@@ -210,11 +210,7 @@
     }
 }
 
-/**
- *   ///////////////// NEW ///////////////
- *
- *  //// ///////////////////////
- */
+#pragma mark - fetch methods
 
 +(id)AR_anyone
 {
