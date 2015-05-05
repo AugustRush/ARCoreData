@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = 'MagicalRecord/**/*.{h,m}'
+  s.source_files  = 'ARCoreData/**/*.{h,m}'
   s.exclude_files = "ARCoreData/Exclude"
 
   # s.public_header_files = "ARCoreData/**/*.h"
@@ -115,7 +115,7 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  # s.framework  = "SomeFramework"
+  # s.framework  = "CoreData"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
   # s.library   = "iconv"
