@@ -27,7 +27,7 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 <br>Import: `#import "ARCoreData.h"`
 
 #### Cocoapods
-* unsupport currently(will come soon)
+* pod 'ARCoreData', :git => 'https://github.com/AugustRush/ARCoreData.git'
 
 ## Getting start
 ***********************
