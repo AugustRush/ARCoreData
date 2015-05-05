@@ -94,17 +94,17 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |ss|
     ss.source_files = 'ARCoreData/Core/*.{h,m}'
-    ss.ios.frameworks = 'CoreData', 'Foudation'
+    ss.ios.frameworks = 'CoreData', 'Foundation'
   end
 
   s.subspec 'FetchController' do |ss|
     ss.source_files = 'ARCoreData/FetchController/*.{h,m}'
-    ss.ios.frameworks = 'CoreData', 'Foudation'
+    ss.ios.frameworks = 'CoreData', 'Foundation'
   end
 
   s.subspec 'Category' do |ss|
      ss.source_files = 'ARCoreData/Category/*.{h,m}'
-     ss.ios.frameworks = 'CoreData', 'Foudation'
+     ss.ios.frameworks = 'CoreData', 'Foundation'
   end
 
   # s.public_header_files = "ARCoreData/*.h"
