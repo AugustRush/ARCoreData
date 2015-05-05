@@ -65,10 +65,10 @@ Pod::Spec.new do |s|
   #
 
   # s.platform     = :ios
-  # s.platform     = :ios, "5.0"
+  # s.platform     = :ios, "6.0"
 
   #  When using multiple platforms
-  # s.ios.deployment_target = "5.0"
+  # s.ios.deployment_target = "6.0"
   # s.osx.deployment_target = "10.7"
 
 
@@ -92,7 +92,23 @@ Pod::Spec.new do |s|
   s.source_files  = 'ARCoreData/**/*.{h,m}'
   s.exclude_files = "ARCoreData/Exclude"
 
-  # s.public_header_files = "ARCoreData/**/*.h"
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'ARCoreData/Core/*.{h,m}'
+    ss.ios.frameworks = 'CoreData', 'Foudation'
+  end
+
+  s.subspec 'FetchController' do |ss|
+    ss.source_files = 'ARCoreData/FetchController/*.{h,m}'
+    ss.ios.frameworks = 'CoreData', 'Foudation'
+  end
+
+  s.subspec 'Category' do |ss|
+     ss.source_files = 'ARCoreData/Category/*.{h,m}'
+     ss.ios.frameworks = 'CoreData', 'Foudation'
+  end
+
+  # s.public_header_files = "ARCoreData/*.h"
+
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
