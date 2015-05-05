@@ -6,6 +6,7 @@
         <relationship name="owners" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Person" inverseName="dogs" inverseEntity="Person" syncable="YES"/>
     </entity>
     <entity name="Person" representedClassName="Person" syncable="YES">
+        <attribute name="birthday" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sex" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -13,6 +14,6 @@
     </entity>
     <elements>
         <element name="Dog" positionX="-63" positionY="9" width="128" height="90"/>
-        <element name="Person" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Person" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

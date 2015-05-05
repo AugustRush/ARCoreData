@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic) BOOL sex;
 @property (nonatomic, retain) NSString * guid;
+@property (nonatomic, retain) NSDate * birthday;
 @property (nonatomic, retain) NSSet *dogs;
 @end
 

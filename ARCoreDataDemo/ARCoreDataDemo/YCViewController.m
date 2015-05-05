@@ -44,8 +44,7 @@
 -(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(UITableViewCell *)cell withObject:(id)object
 {
     Dog *dog = (Dog *)object;
-    cell.textLabel.text = dog.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lld",dog.guid];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",dog.name,[dog.owners.anyObject birthday]];
 }
 
 #pragma mark - UITableViewDelegate methods
