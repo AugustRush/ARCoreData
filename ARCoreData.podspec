@@ -89,8 +89,11 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = 'ARCoreData/**/*.{h,m}'
-  s.exclude_files = "ARCoreData/Exclude"
+  sp.source_files  = 'ARCoreData/**/*.{h,m}'
+  sp.exclude_files = "ARCoreData/Exclude"
+  sp.prefix_header_contents = <<-EOS
+  #import <CoreData/CoreData.h>
+  #import "ARCoreData.h"
 
   # s.public_header_files = "ARCoreData/**/*.h"
 
