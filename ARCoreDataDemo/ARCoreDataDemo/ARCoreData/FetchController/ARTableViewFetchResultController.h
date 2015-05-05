@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import "ARCoreDataManager.h"
 
 @class ARTableViewFetchResultController;
 @protocol ARTableViewFetchResultControllerDelegate <NSObject>

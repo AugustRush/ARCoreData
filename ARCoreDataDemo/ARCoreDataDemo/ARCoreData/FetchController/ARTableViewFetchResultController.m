@@ -7,7 +7,6 @@
 //
 
 #import "ARTableViewFetchResultController.h"
-#import "ARCoreDataManager.h"
 
 @interface ARTableViewFetchResultController ()<UITableViewDataSource,NSFetchedResultsControllerDelegate>
 

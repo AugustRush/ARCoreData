@@ -7,7 +7,6 @@
 //
 
 #import "ARCollectionViewFetchResultController.h"
-#import "ARCoreDataManager.h"
 
 #define AR_changeType @"type"
 #define AR_changeIndexPath1 @"change_indexPath1"
