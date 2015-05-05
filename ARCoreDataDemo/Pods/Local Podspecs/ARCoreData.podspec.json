@@ -1,0 +1,49 @@
+{
+  "name": "ARCoreData",
+  "version": "1.0",
+  "summary": "The easist way to use core data!",
+  "description": "                   A longer description of ARCoreData in Markdown format.\n\n                   * Think: Why did you write this? What is the focus? What does it do?\n                   * CocoaPods will be using this to generate tags, and improve search results.\n                   * Try to keep it short, snappy and to the point.\n                   * Finally, don't worry about the indent, CocoaPods strips it!\n",
+  "homepage": "https://github.com/AugustRush/ARCoreData",
+  "license": "MIT (example)",
+  "authors": {
+    "August": "liupingwei30@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/AugustRush/ARCoreData.git",
+    "tag": "v1.0"
+  },
+  "source_files": "ARCoreData/*.{h,m}",
+  "exclude_files": "ARCoreData/Exclude",
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "ARCoreData/Core/*.{h,m}",
+      "ios": {
+        "frameworks": [
+          "CoreData",
+          "Foundation"
+        ]
+      }
+    },
+    {
+      "name": "FetchController",
+      "source_files": "ARCoreData/FetchController/*.{h,m}",
+      "ios": {
+        "frameworks": [
+          "CoreData",
+          "Foundation"
+        ]
+      }
+    },
+    {
+      "name": "Category",
+      "source_files": "ARCoreData/Category/*.{h,m}",
+      "ios": {
+        "frameworks": [
+          "CoreData",
+          "Foundation"
+        ]
+      }
+    }
+  ]
+}

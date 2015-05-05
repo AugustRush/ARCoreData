@@ -1,0 +1,3 @@
+platform :ios, '7.0'
+
+pod 'ARCoreData', :git => 'https://github.com/AugustRush/ARCoreData.git'

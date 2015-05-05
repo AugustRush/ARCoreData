@@ -7,7 +7,6 @@
 //
 
 #import "YCAppDelegate.h"
-#import "ARCoreData.h"
 #import "Person.h"
 #import "Dog.h"
 

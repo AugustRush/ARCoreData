@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BEE669F21B79E87D0AA9965 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46C5CFA79085DCF532AB9317 /* libPods.a */; };
 		73D45F0E1962666800745653 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0D1962666800745653 /* Foundation.framework */; };
 		73D45F101962666800745653 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F0F1962666800745653 /* CoreGraphics.framework */; };
 		73D45F121962666800745653 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D45F111962666800745653 /* UIKit.framework */; };
@@ -24,16 +25,6 @@
 		73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73D45F471962831D00745653 /* ModelTesdd.xcdatamodeld */; };
 		9779BAB21AE25A4A0053379C /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB11AE25A4A0053379C /* Person.m */; };
 		9779BAB51AE265490053379C /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB41AE265490053379C /* Dog.m */; };
-		97A95FFB1AF3B66500A05BD1 /* ARCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FEE1AF3B66500A05BD1 /* ARCoreDataManager.m */; };
-		97A95FFC1AF3B66500A05BD1 /* NSManagedObject+ARCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */; };
-		97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */; };
-		97A95FFE1AF3B66500A05BD1 /* NSManagedObject+ARMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */; };
-		97A95FFF1AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FF81AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m */; };
-		97A960001AF3B66500A05BD1 /* ARTableViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A95FFA1AF3B66500A05BD1 /* ARTableViewFetchResultController.m */; };
-		97A9600A1AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A960031AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m */; };
-		97A9600B1AF3B6D700A05BD1 /* NSManagedObject+ARRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A960051AF3B6D700A05BD1 /* NSManagedObject+ARRequest.m */; };
-		97A9600C1AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A960071AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m */; };
-		97A9600D1AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A960091AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		46C5CFA79085DCF532AB9317 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		73D45F0A1962666800745653 /* ARCoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARCoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73D45F0D1962666800745653 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		73D45F0F1962666800745653 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -67,33 +59,12 @@
 		73D45F361962666800745653 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73D45F381962666800745653 /* ARCoreDataDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataDemoTests.m; sourceTree = "<group>"; };
 		73D45F481962831D00745653 /* ModelTesdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ModelTesdd.xcdatamodel; sourceTree = "<group>"; };
+		96EB42ECAB92504FA699A1B8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9779BAB01AE25A4A0053379C /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		9779BAB11AE25A4A0053379C /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		9779BAB31AE265490053379C /* Dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
 		9779BAB41AE265490053379C /* Dog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dog.m; sourceTree = "<group>"; };
-		97A95FED1AF3B66500A05BD1 /* ARCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataManager.h; sourceTree = "<group>"; };
-		97A95FEE1AF3B66500A05BD1 /* ARCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoreDataManager.m; sourceTree = "<group>"; };
-		97A95FEF1AF3B66500A05BD1 /* ARManageObjectMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARManageObjectMappingProtocol.h; sourceTree = "<group>"; };
-		97A95FF01AF3B66500A05BD1 /* NSManagedObject+ARCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARCreate.h"; sourceTree = "<group>"; };
-		97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARCreate.m"; sourceTree = "<group>"; };
-		97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARConvenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARConvenience.h"; sourceTree = "<group>"; };
-		97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARConvenience.m"; sourceTree = "<group>"; };
-		97A95FF41AF3B66500A05BD1 /* NSManagedObject+ARMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARMapping.h"; sourceTree = "<group>"; };
-		97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARMapping.m"; sourceTree = "<group>"; };
-		97A95FF71AF3B66500A05BD1 /* ARCollectionViewFetchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCollectionViewFetchResultController.h; sourceTree = "<group>"; };
-		97A95FF81AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCollectionViewFetchResultController.m; sourceTree = "<group>"; };
-		97A95FF91AF3B66500A05BD1 /* ARTableViewFetchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTableViewFetchResultController.h; sourceTree = "<group>"; };
-		97A95FFA1AF3B66500A05BD1 /* ARTableViewFetchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTableViewFetchResultController.m; sourceTree = "<group>"; };
-		97A960021AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARManageObjectContext.h"; sourceTree = "<group>"; };
-		97A960031AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARManageObjectContext.m"; sourceTree = "<group>"; };
-		97A960041AF3B6D700A05BD1 /* NSManagedObject+ARRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+ARRequest.h"; sourceTree = "<group>"; };
-		97A960051AF3B6D700A05BD1 /* NSManagedObject+ARRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+ARRequest.m"; sourceTree = "<group>"; };
-		97A960061AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+ARAddtions.h"; sourceTree = "<group>"; };
-		97A960071AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+ARAddtions.m"; sourceTree = "<group>"; };
-		97A960081AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectID+ARAddtions.h"; sourceTree = "<group>"; };
-		97A960091AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectID+ARAddtions.m"; sourceTree = "<group>"; };
-		97D9525E1AE73D5B006886AA /* ARCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreData.h; sourceTree = "<group>"; };
-		97D9525F1AE73D5B006886AA /* ARCoreDataMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoreDataMacros.h; sourceTree = "<group>"; };
+		B295D2345322B4BACC42200E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +75,7 @@
 				73D45F101962666800745653 /* CoreGraphics.framework in Frameworks */,
 				73D45F121962666800745653 /* UIKit.framework in Frameworks */,
 				73D45F0E1962666800745653 /* Foundation.framework in Frameworks */,
+				0BEE669F21B79E87D0AA9965 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +99,7 @@
 				73D45F321962666800745653 /* ARCoreDataDemoTests */,
 				73D45F0C1962666800745653 /* Frameworks */,
 				73D45F0B1962666800745653 /* Products */,
+				85D0BC4BCDE6DA740239C73E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,6 +119,7 @@
 				73D45F0F1962666800745653 /* CoreGraphics.framework */,
 				73D45F111962666800745653 /* UIKit.framework */,
 				73D45F2C1962666800745653 /* XCTest.framework */,
+				46C5CFA79085DCF532AB9317 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -153,7 +127,6 @@
 		73D45F131962666800745653 /* ARCoreDataDemo */ = {
 			isa = PBXGroup;
 			children = (
-				97D9525D1AE73D5B006886AA /* ARCoreData */,
 				73D45F1C1962666800745653 /* YCAppDelegate.h */,
 				73D45F1D1962666800745653 /* YCAppDelegate.m */,
 				73D45F1F1962666800745653 /* Main.storyboard */,
@@ -199,58 +172,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		97A95FEC1AF3B66500A05BD1 /* Core */ = {
+		85D0BC4BCDE6DA740239C73E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				97A95FED1AF3B66500A05BD1 /* ARCoreDataManager.h */,
-				97A95FEE1AF3B66500A05BD1 /* ARCoreDataManager.m */,
-				97A95FEF1AF3B66500A05BD1 /* ARManageObjectMappingProtocol.h */,
-				97A95FF01AF3B66500A05BD1 /* NSManagedObject+ARCreate.h */,
-				97A95FF11AF3B66500A05BD1 /* NSManagedObject+ARCreate.m */,
-				97A95FF21AF3B66500A05BD1 /* NSManagedObject+ARConvenience.h */,
-				97A95FF31AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m */,
-				97A95FF41AF3B66500A05BD1 /* NSManagedObject+ARMapping.h */,
-				97A95FF51AF3B66500A05BD1 /* NSManagedObject+ARMapping.m */,
+				B295D2345322B4BACC42200E /* Pods.debug.xcconfig */,
+				96EB42ECAB92504FA699A1B8 /* Pods.release.xcconfig */,
 			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		97A95FF61AF3B66500A05BD1 /* FetchController */ = {
-			isa = PBXGroup;
-			children = (
-				97A95FF71AF3B66500A05BD1 /* ARCollectionViewFetchResultController.h */,
-				97A95FF81AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m */,
-				97A95FF91AF3B66500A05BD1 /* ARTableViewFetchResultController.h */,
-				97A95FFA1AF3B66500A05BD1 /* ARTableViewFetchResultController.m */,
-			);
-			path = FetchController;
-			sourceTree = "<group>";
-		};
-		97A960011AF3B6D700A05BD1 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				97A960021AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.h */,
-				97A960031AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m */,
-				97A960041AF3B6D700A05BD1 /* NSManagedObject+ARRequest.h */,
-				97A960051AF3B6D700A05BD1 /* NSManagedObject+ARRequest.m */,
-				97A960061AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.h */,
-				97A960071AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m */,
-				97A960081AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.h */,
-				97A960091AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.m */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
-		97D9525D1AE73D5B006886AA /* ARCoreData */ = {
-			isa = PBXGroup;
-			children = (
-				97D9525E1AE73D5B006886AA /* ARCoreData.h */,
-				97D9525F1AE73D5B006886AA /* ARCoreDataMacros.h */,
-				97A95FEC1AF3B66500A05BD1 /* Core */,
-				97A960011AF3B6D700A05BD1 /* Category */,
-				97A95FF61AF3B66500A05BD1 /* FetchController */,
-			);
-			path = ARCoreData;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,9 +188,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73D45F3C1962666800745653 /* Build configuration list for PBXNativeTarget "ARCoreDataDemo" */;
 			buildPhases = (
+				D5D2EBB241F636D6D0EBFC5F /* Check Pods Manifest.lock */,
 				73D45F061962666800745653 /* Sources */,
 				73D45F071962666800745653 /* Frameworks */,
 				73D45F081962666800745653 /* Resources */,
+				A646BE67A1EBB999C2F0450F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -346,27 +276,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A646BE67A1EBB999C2F0450F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D5D2EBB241F636D6D0EBFC5F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		73D45F061962666800745653 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97A960001AF3B66500A05BD1 /* ARTableViewFetchResultController.m in Sources */,
-				97A9600C1AF3B6D700A05BD1 /* NSManagedObjectContext+ARAddtions.m in Sources */,
-				97A95FFC1AF3B66500A05BD1 /* NSManagedObject+ARCreate.m in Sources */,
-				97A95FFB1AF3B66500A05BD1 /* ARCoreDataManager.m in Sources */,
-				97A95FFD1AF3B66500A05BD1 /* NSManagedObject+ARConvenience.m in Sources */,
 				73D45F1E1962666800745653 /* YCAppDelegate.m in Sources */,
-				97A95FFF1AF3B66500A05BD1 /* ARCollectionViewFetchResultController.m in Sources */,
-				97A9600A1AF3B6D700A05BD1 /* NSManagedObject+ARManageObjectContext.m in Sources */,
 				73D45F491962831D00745653 /* ModelTesdd.xcdatamodeld in Sources */,
 				73D45F241962666800745653 /* YCViewController.m in Sources */,
 				73D45F1A1962666800745653 /* main.m in Sources */,
 				9779BAB21AE25A4A0053379C /* Person.m in Sources */,
-				97A95FFE1AF3B66500A05BD1 /* NSManagedObject+ARMapping.m in Sources */,
-				97A9600B1AF3B6D700A05BD1 /* NSManagedObject+ARRequest.m in Sources */,
 				9779BAB51AE265490053379C /* Dog.m in Sources */,
-				97A9600D1AF3B6D700A05BD1 /* NSManagedObjectID+ARAddtions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +441,7 @@
 		};
 		73D45F3D1962666800745653 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B295D2345322B4BACC42200E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -501,6 +455,7 @@
 		};
 		73D45F3E1962666800745653 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96EB42ECAB92504FA699A1B8 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

@@ -7,7 +7,6 @@
 //
 
 #import "YCViewController.h"
-#import "ARCoreData/ARCoreData.h"
 #import "Person.h"
 #import "Dog.h"
 

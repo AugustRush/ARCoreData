@@ -1,0 +1,1 @@
+../../../ARCoreData/ARCoreData/Core/NSManagedObject+ARConvenience.h

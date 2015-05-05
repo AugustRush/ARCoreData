@@ -1,0 +1,25 @@
+PODS:
+  - ARCoreData (1.0):
+    - ARCoreData/Category (= 1.0)
+    - ARCoreData/Core (= 1.0)
+    - ARCoreData/FetchController (= 1.0)
+  - ARCoreData/Category (1.0)
+  - ARCoreData/Core (1.0)
+  - ARCoreData/FetchController (1.0)
+
+DEPENDENCIES:
+  - ARCoreData (from `https://github.com/AugustRush/ARCoreData.git`)
+
+EXTERNAL SOURCES:
+  ARCoreData:
+    :git: https://github.com/AugustRush/ARCoreData.git
+
+CHECKOUT OPTIONS:
+  ARCoreData:
+    :commit: 836f0096bd94f0aeb0d590b685a885afb65f2b51
+    :git: https://github.com/AugustRush/ARCoreData.git
+
+SPEC CHECKSUMS:
+  ARCoreData: 27c5898d8697ae49d3e455a5c79897b465c5dc49
+
+COCOAPODS: 0.36.3
