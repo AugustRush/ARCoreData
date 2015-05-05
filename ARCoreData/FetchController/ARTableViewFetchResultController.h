@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import "ARCoreDataManager.h"
 
 @class ARTableViewFetchResultController;
 @protocol ARTableViewFetchResultControllerDelegate <NSObject>
@@ -17,6 +17,9 @@
 
 @optional
 -(void)tableFetchResultController:(ARTableViewFetchResultController *)controller updateCell:(id)cell withObject:(id)object;
+
+-(void)tableFetchResultControllerDidChangedContent:(ARTableViewFetchResultController *)controller;
+-(void)tableFetchResultControllerWillChangedContent:(ARTableViewFetchResultController *)controller;
 
 @end
 

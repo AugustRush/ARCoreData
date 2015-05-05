@@ -7,7 +7,6 @@
 //
 
 #import "ARTableViewFetchResultController.h"
-#import "ARCoreDataManager.h"
 
 @interface ARTableViewFetchResultController ()<UITableViewDataSource,NSFetchedResultsControllerDelegate>
 
@@ -56,11 +55,17 @@
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView beginUpdates];
+    if ([self.delegate respondsToSelector:@selector(tableFetchResultControllerWillChangedContent:)]) {
+        [self.delegate tableFetchResultControllerWillChangedContent:self];
+    }
 }
 
 -(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView endUpdates];
+    if ([self.delegate respondsToSelector:@selector(tableFetchResultControllerDidChangedContent:)]) {
+        [self.delegate tableFetchResultControllerDidChangedContent:self];
+    }
 }
 
 -(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath

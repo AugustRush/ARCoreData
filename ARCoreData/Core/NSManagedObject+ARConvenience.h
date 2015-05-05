@@ -6,12 +6,9 @@
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
+@import CoreData;
 
-@interface NSManagedObject (ARFetch)
-
-#pragma mark - fetch objects methods
-
+@interface NSManagedObject (ARConvenience)
 
 /**
  *  find a local object
@@ -146,7 +143,7 @@
                 handler:(void(^)(NSError *error, NSArray *objects))handler;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param condition like [NSString stringWithFormat:]
  *
@@ -155,7 +152,7 @@
 +(NSArray *)AR_where:(NSString *)condition,...;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param keyPath     sorted keyPath
  *  @param ascending   ascending
@@ -169,7 +166,7 @@
                        where:(NSString *)condition,...;
 
 /**
- *  async find objects with vargars paramaters
+ *  sync find objects with vargars paramaters
  *
  *  @param keyPath     sorted keyPath
  *  @param ascending   ascending
@@ -214,15 +211,13 @@
 
 // update methods
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value;
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value;
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition;
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value;
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition;
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition;
 
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value;
-
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition;
-
--(id)objectInMain;
--(id)objectInPrivate;
+-(id)AR_objectInMain;
+-(id)AR_objectInPrivate;
 
 @end

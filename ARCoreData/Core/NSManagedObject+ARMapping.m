@@ -7,7 +7,7 @@
 //
 
 #import "NSManagedObject+ARMapping.h"
-#import "NSManagedObject+ARFetch.h"
+#import "NSManagedObject+ARConvenience.h"
 #import "NSManagedObject+ARCreate.h"
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "NSManagedObject+ARRequest.h"
@@ -61,9 +61,17 @@
         NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value];
         if (destinationObjs != nil && destinationObjs.count > 0) {
             if (policy == ARRelationshipMergePolicyAdd) {
-                NSMutableSet *localSet = [self mutableSetValueForKey:relationshipName];
-                [localSet addObjectsFromArray:destinationObjs];
-                [self setValue:localSet forKey:relationshipName];
+                id relationObject = [self valueForKey:relationshipName];
+                if([relationObject isKindOfClass:[NSMutableOrderedSet class]]) {
+                    NSMutableOrderedSet *localOrderedSet = [self mutableOrderedSetValueForKey:relationshipName];
+                    [localOrderedSet addObjectsFromArray:destinationObjs];
+                    [self setValue:localOrderedSet forKey:relationshipName];
+                }
+                else {
+                    NSMutableSet *localSet = [self mutableSetValueForKey:relationshipName];
+                    [localSet addObjectsFromArray:destinationObjs];
+                    [self setValue:localSet forKey:relationshipName];
+                }
             }else{
                 [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
             }

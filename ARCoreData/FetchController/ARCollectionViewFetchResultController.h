@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import "ARCoreDataManager.h"
 
 @class ARCollectionViewFetchResultController;
 @protocol ARCollectionViewFetchResultControllerDelegate <NSObject>
@@ -17,6 +17,10 @@
 
 @optional
 -(void)collectionFetchResultController:(ARCollectionViewFetchResultController *)controller updateCell:(id)cell withObject:(id)object;
+
+-(void)collectionFetchResultControllerDidChangedContent:(ARCollectionViewFetchResultController *)controller;
+-(void)collectionFetchResultControllerWillChangedContent:(ARCollectionViewFetchResultController *)controller;
+
 
 @end
 

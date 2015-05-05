@@ -64,6 +64,9 @@
 
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if ([self.delegate respondsToSelector:@selector(collectionFetchResultControllerWillChangedContent:)]) {
+        [self.delegate collectionFetchResultControllerWillChangedContent:self];
+    }
 }
 
 -(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -92,6 +95,10 @@
     } completion:^(BOOL finished) {
         [self.objectChanges removeAllObjects];
         [self.sectionChanges removeAllObjects];
+        
+        if ([self.delegate respondsToSelector:@selector(collectionFetchResultControllerDidChangedContent:)]) {
+            [self.delegate collectionFetchResultControllerDidChangedContent:self];
+        }
     }];
 }
 

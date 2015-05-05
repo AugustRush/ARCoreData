@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 lPW. All rights reserved.
 //
 
-#import "NSManagedObject+ARFetch.h"
+#import "NSManagedObject+ARConvenience.h"
 #import "ARCoreDataManager.h"
 #import "NSManagedObjectContext+ARAddtions.h"
 #import "NSManagedObject+ARManageObjectContext.h"
@@ -14,14 +14,16 @@
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "ARCoreDataMacros.h"
 
-@implementation NSManagedObject (ARFetch)
+@implementation NSManagedObject (ARConvenience)
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value
+#pragma mark - update methods
+
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value
 {
-    [self updateProperty:propertyName toValue:value where:nil];
+    [self AR_updateProperty:propertyName toValue:value where:nil];
 }
 
-+(void)updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
++(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
 {
 #ifdef _systermVersion_greter_8_0
     NSManagedObjectContext *manageOBjectContext = [self defaultPrivateContext];
@@ -62,16 +64,16 @@
     }];
 #else
     
-    [self updateKeyPath:propertyName toValue:value where:condition];
+    [self AR_updateKeyPath:propertyName toValue:value where:condition];
 #endif
 }
 
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value
 {
-    [self updateKeyPath:keyPath toValue:value where:nil];
+    [self AR_updateKeyPath:keyPath toValue:value where:nil];
 }
 
-+(void)updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition
++(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value where:(NSString *)condition
 {
     NSManagedObjectContext *manageObjectContext = [self defaultPrivateContext];
     __block NSError *error = nil;
@@ -94,6 +96,8 @@
         }
     }];
 }
+
+#pragma mark - save methods
 
 +(BOOL)AR_saveAndWait
 {
@@ -190,7 +194,9 @@
 
 }
 
--(id)objectInMain
+#pragma mark - transfer to main/private(thread) methods
+
+-(id)AR_objectInMain
 {
     NSManagedObjectContext *mainContext = [[self class] defaultMainContext];
     if ([self.managedObjectContext isEqual:mainContext]) {
@@ -200,7 +206,7 @@
     }
 }
 
--(id)objectInPrivate
+-(id)AR_objectInPrivate
 {
     NSManagedObjectContext *privateContext = [[self class] defaultPrivateContext];
     if ([self.managedObjectContext isEqual:privateContext]) {
@@ -210,11 +216,31 @@
     }
 }
 
-/**
- *   ///////////////// NEW ///////////////
- *
- *  //// ///////////////////////
- */
+#pragma mark - delete methods
+
++(BOOL)AR_truncateAll
+{
+    NSFetchRequest *request = [self AR_allRequest];
+    [request setReturnsObjectsAsFaults:YES];
+    [request setIncludesPropertyValues:NO];
+    
+    NSManagedObjectContext *context = [self defaultPrivateContext];
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
+        for (id obj in objsToDelete ) {
+            [context deleteObject:obj];
+        }
+    }];
+    return YES;
+}
+
+-(void)AR_delete
+{
+    [self.managedObjectContext deleteObject:self];
+}
+
+#pragma mark - fetch methods
 
 +(id)AR_anyone
 {
@@ -277,28 +303,6 @@
         }
     }];  
     return obj;
-}
-
-+(BOOL)AR_truncateAll
-{
-    NSFetchRequest *request = [self AR_allRequest];
-    [request setReturnsObjectsAsFaults:YES];
-    [request setIncludesPropertyValues:NO];
-    
-    NSManagedObjectContext *context = [self defaultPrivateContext];
-    [context performBlockAndWait:^{
-        NSError *error = nil;
-        NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
-        for (id obj in objsToDelete ) {
-            [context deleteObject:obj];
-        }
-    }];
-    return YES;
-}
-
--(void)AR_delete
-{
-    [self.managedObjectContext deleteObject:self];
 }
 
 +(NSArray *)AR_whereProperty:(NSString *)property
