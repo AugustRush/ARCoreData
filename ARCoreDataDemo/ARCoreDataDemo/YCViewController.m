@@ -30,7 +30,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY owners.guid = %@",@"3"];
     [fetchRequest setPredicate:predicate];
     
-    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
+    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"guid" ascending:NO];
     [fetchRequest setSortDescriptors:@[sorted]];
     
     self.fetchController = [[ARTableViewFetchResultController alloc] initWithFetchRequest:fetchRequest tableView:self.tableView cellReuseIdentifier: @"cell" delegate:self];
@@ -54,7 +54,9 @@
     [dog AR_delete];
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"delete dog error is %@",error);
+        NSLog(@"all dog count is %ld",[Dog AR_count]);
+        
+        NSLog(@"all person count is %ld",[Person AR_count]);
     }];
 }
 
@@ -75,6 +77,8 @@
 //    for (int i = 1; i < 30; i++) {
         NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
         NSString *guid = [NSString stringWithFormat:@"%u",arc4random()];
+    
+    //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么久只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
         Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
                                                 @"g":@"3",
                                                 @"s":@YES,
@@ -88,9 +92,9 @@
     NSLog(@"person is %@",person);
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
+        NSLog(@"all dog count is %ld",[Dog AR_count]);
         
-        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
+        NSLog(@"all person is %@ person count is %ld",[Person AR_all],[Person AR_count]);
     }];
     
 }
