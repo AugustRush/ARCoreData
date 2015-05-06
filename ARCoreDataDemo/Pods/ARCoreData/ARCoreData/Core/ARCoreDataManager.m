@@ -34,12 +34,12 @@
 
 +(instancetype)shareManager
 {
-    static ARCoreDataManager *AR__CoreDataPersistanceCtr = nil;
+    static ARCoreDataManager *__coreDataManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        AR__CoreDataPersistanceCtr = [[ARCoreDataManager alloc] init];
+        __coreDataManager = [[ARCoreDataManager alloc] init];
     });
-    return AR__CoreDataPersistanceCtr;
+    return __coreDataManager;
 }
 
 
@@ -59,7 +59,6 @@
     @synchronized(self){
         [self.mainContext performBlock:^{
 //http://stackoverflow.com/questions/3923826/nsfetchedresultscontroller-with-predicate-ignores-changes-merged-from-different
-            NSLog(@"merge info is %@",notification.userInfo);
         for(NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
             [[self.mainContext objectWithID:[object objectID]] willAccessValueForKey:nil];
         }

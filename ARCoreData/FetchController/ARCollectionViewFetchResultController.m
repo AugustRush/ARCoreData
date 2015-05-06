@@ -11,6 +11,7 @@
 #define AR_changeType @"type"
 #define AR_changeIndexPath1 @"change_indexPath1"
 #define AR_changeIndexPath2 @"change_indexPath2"
+#define AR_changeIndex @"_change_index"
 
 @interface ARCollectionViewFetchResultController ()<NSFetchedResultsControllerDelegate,UICollectionViewDataSource>
 
@@ -72,6 +73,29 @@
 -(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.collectionView performBatchUpdates:^{
+        
+        [self.sectionChanges enumerateObjectsUsingBlock:^(NSDictionary *changeInfo, NSUInteger idx, BOOL *stop) {
+            NSFetchedResultsChangeType type = [[changeInfo objectForKey:AR_changeType] integerValue];
+            NSUInteger index = [[changeInfo objectForKey:AR_changeIndex] integerValue];
+            switch (type) {
+                case NSFetchedResultsChangeInsert:
+                    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:index]];
+                    break;
+                case NSFetchedResultsChangeDelete:
+                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:index]];
+                    break;
+                case NSFetchedResultsChangeMove:
+
+                    break;
+                case NSFetchedResultsChangeUpdate:
+                    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:index]];
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+        
         [self.objectChanges enumerateObjectsUsingBlock:^(NSDictionary *changeInfo, NSUInteger idx, BOOL *stop) {
             NSFetchedResultsChangeType type = [[changeInfo objectForKey:AR_changeType] integerValue];
             switch (type) {
@@ -139,16 +163,19 @@
 {
     switch (type) {
         case NSFetchedResultsChangeInsert:
-            
+            [self.sectionChanges addObject:@{AR_changeType:@(type),
+                                            AR_changeIndex:@(sectionIndex)}];
             break;
         case NSFetchedResultsChangeMove:
-            
+            //not impliment
             break;
         case NSFetchedResultsChangeUpdate:
-            
+            [self.sectionChanges addObject:@{AR_changeType:@(type),
+                                             AR_changeIndex:@(sectionIndex)}];
             break;
         case NSFetchedResultsChangeDelete:
-            
+            [self.sectionChanges addObject:@{AR_changeType:@(type),
+                                             AR_changeIndex:@(sectionIndex)}];
             break;
             
             
