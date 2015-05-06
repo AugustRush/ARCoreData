@@ -182,7 +182,7 @@ if you impliment the class method +(NSString *)primaryKey; you just can create a
 ```
 
 i hava impliment some methods , you can use server response directly to create an(or a array) manageObject(s),
-there have methods :
+there have two methods :
 
 ```
 +(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON;
@@ -190,11 +190,13 @@ there have methods :
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
 
 ```
-you have seen ARManageObjectMappingProtocol , yes ,this protocol have two methods,like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but this transform must be faster than Mantle.
+you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h) , yes ,this protocol have two methods,like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. you just to impliment these two methods , and just use two methods the above, it will automaticly transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
 
 ## Fetch objects
 
-there have a lot of methods to help you fetch objects convinience and faster , exemple:
+there have a lot of methods to help you fetch objects convinience and faster ,you can see the file [Fetch](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/NSManagedObject%2BARConvenience.h).
+
+Exemple:
 ```
     NSArray *allPersons = [Person AR_all];
     
