@@ -86,21 +86,21 @@ _____________________
 you can create a person like this:
 
 ```
-    Person *person = [Person AR_new];
-    person.name = @"aaa";
-    person.guid = @"1";
+Person *person = [Person AR_new];
+person.name = @"aaa";
+person.guid = @"1";
     
-    Dog *pet = [Dog AR_new];
-    pet.name = @"doggie";
-    pet.guid = 123;
+Dog *pet = [Dog AR_new];
+pet.name = @"doggie";
+pet.guid = 123;
 
-    [person addDogsObject:pet];
+[person addDogsObject:pet];
 
-    [Person AR_saveAndWait];//this is save method
+[Person AR_saveAndWait];//this is save method
 
 ```
 
-if you want to use a JSON(KVC object) create a new person , you should impliment <ARManageObjectMappingProtocol>, 
+if you want to use a JSON(KVC object) create a new person, you should impliment <ARManageObjectMappingProtocol>, 
 this is my Person and Dog .m file.
 
 ```
@@ -166,7 +166,7 @@ and then, you can create a Person like this:
                                                                  @"extra":@34}}]}];
 ```
 
-if you impliment the class method +(NSString *)primaryKey; you just can create a uniqued person through a same "guid".
+if you implement the class method +(NSString *)primaryKey; you just can create an unique person through a same "guid".
 
 ## Mapping (ARManageObjectMappingProtocol)
 
@@ -181,7 +181,7 @@ if you impliment the class method +(NSString *)primaryKey; you just can create a
 @end
 ```
 
-i hav impliment some methods , you can use server response directly to create an(or a array) manageObject(s),
+I have implemented some methods, you can use server response directly to create an(or a array) manageObject(s),
 there have two methods :
 
 ```
@@ -194,9 +194,9 @@ you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCo
 
 ## Fetch objects
 
-there have a lot of methods to help you fetch objects convinience and faster ,you can see the file [Fetch](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/NSManagedObject%2BARConvenience.h).
+there have a lot of methods to help you fetch objects convenience and faster, you can see the file [Fetch](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/NSManagedObject%2BARConvenience.h).
 
-Exemple:
+Example:
 ```
     NSArray *allPersons = [Person AR_all];
     
