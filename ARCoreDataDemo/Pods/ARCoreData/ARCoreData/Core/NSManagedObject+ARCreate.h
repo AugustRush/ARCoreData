@@ -34,7 +34,7 @@
  *
  *  @return mapping object
  */
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON;
++(id)AR_newOrUpdateWithJSON:(id)JSON;
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol pritocol
  *
@@ -52,7 +52,7 @@
  *
  *  @return mapping object
  */
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
++(id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
 
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol pritocol

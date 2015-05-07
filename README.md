@@ -181,7 +181,7 @@ if you impliment the class method +(NSString *)primaryKey; you just can create a
 @end
 ```
 
-i hava impliment some methods , you can use server response directly to create an(or a array) manageObject(s),
+i hav impliment some methods , you can use server response directly to create an(or a array) manageObject(s),
 there have two methods :
 
 ```
