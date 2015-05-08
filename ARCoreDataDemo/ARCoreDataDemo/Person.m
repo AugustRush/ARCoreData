@@ -32,6 +32,10 @@
     return @"guid";
 }
 
+// the custom property transform methods, just add "Transformer" before property name, exmple,
+// +(NSDate *)timeTransformer:(id)value;
+// +(NSArray *)dogsTransformer:(id)value;
+
 +(NSDate *)birthdayTransformer:(id)value
 {
     return [NSDate dateWithTimeIntervalSince1970:12352345];

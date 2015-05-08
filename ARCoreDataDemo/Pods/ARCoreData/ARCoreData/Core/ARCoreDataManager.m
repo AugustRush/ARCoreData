@@ -87,8 +87,6 @@
                             error:&error];
         [self addNotifications];
     }
-    
-    NSLog(@"remove store file error is %@",error);
 }
 
 -(void)addNotifications

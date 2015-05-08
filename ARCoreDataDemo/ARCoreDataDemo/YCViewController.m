@@ -26,6 +26,7 @@
 {
     [super viewDidLoad];
     
+    
     NSFetchRequest *fetchRequest = [Dog AR_allRequest];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY owners.guid = %@",@"3"];
     [fetchRequest setPredicate:predicate];
@@ -74,11 +75,12 @@
 
 - (IBAction)addEntityObj:(id)sender {
     
-//    for (int i = 1; i < 30; i++) {
+//    NSLog(@"start mapping");
+//    for (int i = 1; i < 300; i++) {
         NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
         NSString *guid = [NSString stringWithFormat:@"%u",arc4random()];
     
-    //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么久只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
+    //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试.
         Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
                                                 @"g":@"3",
                                                 @"s":@YES,
@@ -89,7 +91,7 @@
                                                           @"g":@{@"uid":@"6",
                                                                  @"extra":@34}}]}];
 //    }
-    NSLog(@"person is %@",person);
+//    NSLog(@"stop mapping");
     
     [Person AR_saveCompletion:^(BOOL success, NSError *error) {
         NSLog(@"all dog count is %ld",[Dog AR_count]);
