@@ -1,6 +1,6 @@
 ![](https://github.com/AugustRush/ARCoreData/blob/master/6DB73380-0D9A-43A1-AD21-8374D748429A.png)
 
-* To use CoreData easily .
+* ARCoreData is a library to make CoreData easily. we can become a good friend with CoreData now. Don't need any config，we will enjoy a high performance object storage。
 
 ## MOC Model
 
@@ -20,9 +20,9 @@
 
 * Easily fetch
 
-* ARTableViewFetchResultController(a convinence class to replace NSFetchResultControler for UITableView)
+* ARTableViewFetchResultController(a convenience class to replace NSFetchResultControler for UITableView)
 
-* ARCollectionViewFetchResultController(a convinence class to replace NSFetchResultControler for UICollectionView)
+* ARCollectionViewFetchResultController(a convenience class to replace NSFetchResultControler for UICollectionView)
 
 ## Install
 
