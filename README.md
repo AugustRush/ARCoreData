@@ -1,6 +1,6 @@
 ![](https://github.com/AugustRush/ARCoreData/blob/master/6DB73380-0D9A-43A1-AD21-8374D748429A.png)
 
-* ARCoreData is a library to make CoreData easily. we can become a good friend with CoreData now. Don't need any config，we will enjoy a high performance object storage。
+* ARCoreData is a library to make CoreData easily. we can become a good friend with CoreData now. Don't need any config，just enjoy a high performance object storage。
 
 ## MOC Model
 
@@ -229,8 +229,16 @@ and so on !!!
     }];
 
 
-``` 
-##TL;DR:
+```
+## TODO:
+
+* Migration
+
+* Encryption
+
+* Fixed bugs
+
+## TL;DR:
 there have more methods i have created for you, you can see it in my Demo project after. this library also worked in
 swift fine !
 
