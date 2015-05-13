@@ -50,6 +50,23 @@
     return [self.fetchResultController objectAtIndexPath:indexPath];
 }
 
+-(void)setPause:(BOOL)pause
+{
+    if (pause != _pause) {
+        _pause = pause;
+        if (_pause) {
+            self.tableView.dataSource = nil;
+        }else{
+            self.tableView.dataSource = self;
+            NSError *error;
+            if (![self.fetchResultController performFetch:&error]) {
+                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            }
+            [self.tableView reloadData];
+        }
+    }
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate methods
 
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
