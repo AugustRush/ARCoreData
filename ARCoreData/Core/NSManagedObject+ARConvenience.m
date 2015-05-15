@@ -202,7 +202,11 @@
     if ([self.managedObjectContext isEqual:mainContext]) {
         return self;
     }else{
-        return [mainContext objectWithID:self.objectID];
+        __block id object = nil;
+        [mainContext performBlockAndWait:^{
+            object = [mainContext objectWithID:self.objectID];
+        }];
+        return object;
     }
 }
 
@@ -212,7 +216,11 @@
     if ([self.managedObjectContext isEqual:privateContext]) {
         return self;
     }else{
-        return [privateContext objectWithID:self.objectID];
+        __block id object = nil;
+        [privateContext performBlockAndWait:^{
+            object = [privateContext objectWithID:self.objectID];
+        }];
+        return object;
     }
 }
 
