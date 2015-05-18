@@ -25,47 +25,47 @@
 
 +(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-    NSManagedObjectContext *manageOBjectContext = [self defaultPrivateContext];
-    
-    [manageOBjectContext performBlock:^{
-        NSBatchUpdateRequest *batchRequest = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:[self AR_entityName]];
-        batchRequest.propertiesToUpdate = @{propertyName:value};
-        batchRequest.resultType = NSUpdatedObjectIDsResultType;
-        batchRequest.affectedStores = [[manageOBjectContext persistentStoreCoordinator] persistentStores];
-        if (condition) {
-            batchRequest.predicate = [NSPredicate predicateWithFormat:condition];
-        }
+    if(_systermVersion_greter_8_0){
+        NSManagedObjectContext *manageOBjectContext = [self defaultPrivateContext];
         
-        NSError *requestError;
-        NSBatchUpdateResult *result = (NSBatchUpdateResult *)[manageOBjectContext executeRequest:batchRequest error:&requestError];
-        
-        if ([[result result] respondsToSelector:@selector(count)]){
-            if ([[result result] count] > 0){
-                [manageOBjectContext performBlock:^{
-                    for (NSManagedObjectID *objectID in [result result]){
-                        NSError         *faultError = nil;
-                        NSManagedObject *object     = [manageOBjectContext existingObjectWithID:objectID error:&faultError];
-                        // Observers of this context will be notified to refresh this object.
-                        // If it was deleted, well.... not so much.
-                        [manageOBjectContext refreshObject:object mergeChanges:YES];
-                    }
-                    
-                    NSError *error = nil;
-                    [manageOBjectContext save:&error];
-                    NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
-                }];
-            } else {
-                // We got back nothing!
+        [manageOBjectContext performBlock:^{
+            NSBatchUpdateRequest *batchRequest = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:[self AR_entityName]];
+            batchRequest.propertiesToUpdate = @{propertyName:value};
+            batchRequest.resultType = NSUpdatedObjectIDsResultType;
+            batchRequest.affectedStores = [[manageOBjectContext persistentStoreCoordinator] persistentStores];
+            if (condition) {
+                batchRequest.predicate = [NSPredicate predicateWithFormat:condition];
             }
-        } else {
-            // We got back something other than a collection
-        }
-    }];
-#else
-    
-    [self AR_updateKeyPath:propertyName toValue:value where:condition];
-#endif
+            
+            NSError *requestError;
+            NSBatchUpdateResult *result = (NSBatchUpdateResult *)[manageOBjectContext executeRequest:batchRequest error:&requestError];
+            
+            if ([[result result] respondsToSelector:@selector(count)]){
+                if ([[result result] count] > 0){
+                    [manageOBjectContext performBlock:^{
+                        for (NSManagedObjectID *objectID in [result result]){
+                            NSError         *faultError = nil;
+                            NSManagedObject *object     = [manageOBjectContext existingObjectWithID:objectID error:&faultError];
+                            // Observers of this context will be notified to refresh this object.
+                            // If it was deleted, well.... not so much.
+                            [manageOBjectContext refreshObject:object mergeChanges:YES];
+                        }
+                        
+                        NSError *error = nil;
+                        [manageOBjectContext save:&error];
+                        NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+                    }];
+                } else {
+                    // We got back nothing!
+                }
+            } else {
+                // We got back something other than a collection
+            }
+        }];
+    }else{
+        
+        [self AR_updateKeyPath:propertyName toValue:value where:condition];
+    }
 }
 
 +(void)AR_updateKeyPath:(NSString *)keyPath toValue:(id)value
@@ -155,7 +155,7 @@
             });
         }
     }
-
+    
 }
 
 +(void)AR_saveCompletion:(void (^)(BOOL, NSError *))completion
@@ -191,7 +191,7 @@
             });
         }
     }
-
+    
 }
 
 #pragma mark - transfer to main/private(thread) methods
@@ -202,7 +202,11 @@
     if ([self.managedObjectContext isEqual:mainContext]) {
         return self;
     }else{
-        return [mainContext objectWithID:self.objectID];
+        __block id object = nil;
+        [mainContext performBlockAndWait:^{
+            object = [mainContext objectWithID:self.objectID];
+        }];
+        return object;
     }
 }
 
@@ -212,7 +216,11 @@
     if ([self.managedObjectContext isEqual:privateContext]) {
         return self;
     }else{
-        return [privateContext objectWithID:self.objectID];
+        __block id object = nil;
+        [privateContext performBlockAndWait:^{
+            object = [privateContext objectWithID:self.objectID];
+        }];
+        return object;
     }
 }
 
@@ -257,27 +265,27 @@
     NSFetchRequest *request = [self AR_allRequest];
     NSManagedObjectContext *context = [self defaultPrivateContext];
     __block NSError *error = nil;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-    [context performBlock:^{
-        NSAsynchronousFetchRequest *asyncRequest = [[NSAsynchronousFetchRequest alloc] initWithFetchRequest:request completionBlock:^(NSAsynchronousFetchResult *result) {
+    if (_systermVersion_greter_8_0) {
+        [context performBlock:^{
+            NSAsynchronousFetchRequest *asyncRequest = [[NSAsynchronousFetchRequest alloc] initWithFetchRequest:request completionBlock:^(NSAsynchronousFetchResult *result) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (handler) {
+                        handler(error,[result.finalResult copy]);
+                    }
+                });
+            }];
+            [context executeRequest:asyncRequest error:&error];
+        }];
+    }else{
+        [context performBlock:^{
+            NSArray *results = [context executeFetchRequest:request error:&error];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (handler) {
-                    handler(error,[result.finalResult copy]);
+                    handler(error,results);
                 }
             });
         }];
-        [context executeRequest:asyncRequest error:&error];
-    }];
-#else
-    [context performBlock:^{
-        NSArray *results = [context executeFetchRequest:request error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (handler) {
-                handler(error,results);
-            }
-        });
-    }];
-#endif
+    }
 }
 
 +(NSArray *)AR_whereProperty:(NSString *)property equalTo:(id)value
@@ -301,7 +309,7 @@
         if (objs.count > 0) {
             obj = objs[0];
         }
-    }];  
+    }];
     return obj;
 }
 
@@ -347,7 +355,7 @@
         objs = [context executeFetchRequest:request error:&error];
     }];
     return objs;
-
+    
 }
 
 +(id)AR_anyoneWithPredicate:(NSPredicate *)predicate
@@ -452,7 +460,7 @@
         objs = [context executeFetchRequest:request error:&error];
     }];
     return objs;
-
+    
 }
 
 +(NSArray *)AR_sortedKeyPath:(NSString *)keyPath
