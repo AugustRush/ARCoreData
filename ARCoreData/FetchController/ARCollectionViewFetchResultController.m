@@ -61,23 +61,6 @@
     return [self.fetchResultController objectAtIndexPath:indexPath];
 }
 
--(void)setPause:(BOOL)pause
-{
-    if (pause != _pause) {
-        _pause = pause;
-        if (_pause) {
-            self.collectionView.dataSource = nil;
-        }else{
-            self.collectionView.dataSource = self;
-            NSError *error;
-            if (![self.fetchResultController performFetch:&error]) {
-                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
-            }
-            [self.collectionView reloadData];
-        }
-    }
-}
-
 #pragma mark - NSFetchedResultsControllerDelegate methods
 
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller

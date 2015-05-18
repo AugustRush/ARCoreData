@@ -25,7 +25,7 @@
 
 +(void)AR_updateProperty:(NSString *)propertyName toValue:(id)value where:(NSString *)condition
 {
-#ifdef _systermVersion_greter_8_0
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     NSManagedObjectContext *manageOBjectContext = [self defaultPrivateContext];
     
     [manageOBjectContext performBlock:^{
@@ -202,11 +202,7 @@
     if ([self.managedObjectContext isEqual:mainContext]) {
         return self;
     }else{
-        __block id object = nil;
-        [mainContext performBlockAndWait:^{
-            object = [mainContext objectWithID:self.objectID];
-        }];
-        return object;
+        return [mainContext objectWithID:self.objectID];
     }
 }
 
@@ -216,11 +212,7 @@
     if ([self.managedObjectContext isEqual:privateContext]) {
         return self;
     }else{
-        __block id object = nil;
-        [privateContext performBlockAndWait:^{
-            object = [privateContext objectWithID:self.objectID];
-        }];
-        return object;
+        return [privateContext objectWithID:self.objectID];
     }
 }
 
@@ -265,7 +257,7 @@
     NSFetchRequest *request = [self AR_allRequest];
     NSManagedObjectContext *context = [self defaultPrivateContext];
     __block NSError *error = nil;
-#ifdef _systermVersion_greter_8_0
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     [context performBlock:^{
         NSAsynchronousFetchRequest *asyncRequest = [[NSAsynchronousFetchRequest alloc] initWithFetchRequest:request completionBlock:^(NSAsynchronousFetchResult *result) {
             dispatch_async(dispatch_get_main_queue(), ^{

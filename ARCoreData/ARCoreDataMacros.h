@@ -9,8 +9,6 @@
 #ifndef ARCoreDataDemo_ARCoreDataMacros_h
 #define ARCoreDataDemo_ARCoreDataMacros_h
 
-#define _systermVersion_greter_8_0 [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
-
 #ifdef DEBUG
 #define NSLog(format, ...) \
     do { \

@@ -47,7 +47,7 @@
                 break;
         }
     }
-    
+
 }
 
 -(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy
@@ -70,25 +70,17 @@
                 else {
                     NSMutableSet *localSet = [self mutableSetValueForKey:relationshipName];
                     [localSet addObjectsFromArray:destinationObjs];
-                    if (relationshipDes.isOrdered) {
-                        [self setValue:[NSOrderedSet orderedSetWithSet:localSet] forKey:relationshipName];
-                    }else{
-                        [self setValue:localSet forKey:relationshipName];
-                    }
+                    [self setValue:localSet forKey:relationshipName];
                 }
             }else{
-                if (relationshipDes.isOrdered) {
-                    [self setValue:[NSOrderedSet orderedSetWithArray:destinationObjs] forKey:relationshipName];
-                }else{
-                    [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
-                }
+                [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
             }
         }
     }else{
         id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
         [self setValue:destinationObjs forKey:relationshipName];
     }
-    
+
 }
 
 #pragma mark - private methods
