@@ -2,19 +2,13 @@
 
 * ARCoreData is a library to make CoreData easily. we can become a good friend with CoreData now. Don't need any config，just enjoy a high performance object storage。
 
-## MOC Model
-
-![](https://github.com/AugustRush/ARCoreData/blob/master/DB8F5789-125D-415E-BD9F-A9AF19AF8414.png)
-
 *****************************************
 
 ## Features
 
-* custom primaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
+* PrimaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
 
-* JSON(NSDictionary) -> NSManageObject(In theory,support any KVC object)
-
-* JSONs(NSArray) -> NSManageObject(s)
+* Auto relationship Mapping (to -> one  , to -> many )
 
 * Safety Mutlie thread
 
