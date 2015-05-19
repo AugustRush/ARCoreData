@@ -6,17 +6,17 @@
 
 ## Features
 
-* PrimaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
+###### PrimaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
 
-* Auto relationship Mapping (to -> one  , to -> many )
+###### Auto relationship Mapping (to -> one  , to -> many )
 
-* Safety Mutlie thread
+###### Safety Mutlie thread
 
-* Easily fetch
+###### Easily fetch
 
-* ARTableViewFetchResultController(a convenience class to replace NSFetchResultControler for UITableView)
+###### ARTableViewFetchResultController(a convenience class to replace NSFetchResultControler for UITableView)
 
-* ARCollectionViewFetchResultController(a convenience class to replace NSFetchResultControler for UICollectionView)
+###### ARCollectionViewFetchResultController(a convenience class to replace NSFetchResultControler for UICollectionView)
 
 ## Install
 
