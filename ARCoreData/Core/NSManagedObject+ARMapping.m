@@ -61,8 +61,7 @@
         NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value];
         if (destinationObjs != nil && destinationObjs.count > 0) {
             if (policy == ARRelationshipMergePolicyAdd) {
-                id relationObject = [self valueForKey:relationshipName];
-                if([relationObject isKindOfClass:[NSMutableOrderedSet class]]) {
+                if(relationshipDes.isOrdered) {
                     NSMutableOrderedSet *localOrderedSet = [self mutableOrderedSetValueForKey:relationshipName];
                     [localOrderedSet addObjectsFromArray:destinationObjs];
                     [self setValue:localOrderedSet forKey:relationshipName];
@@ -73,14 +72,18 @@
                     [self setValue:localSet forKey:relationshipName];
                 }
             }else{
-                [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
+                if (relationshipDes.isOrdered) {
+                    [self setValue:[NSOrderedSet orderedSetWithArray:destinationObjs] forKey:relationshipName];
+                }else{
+                    [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
+                }
             }
         }
     }else{
         id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
         [self setValue:destinationObjs forKey:relationshipName];
     }
-
+    
 }
 
 #pragma mark - private methods
