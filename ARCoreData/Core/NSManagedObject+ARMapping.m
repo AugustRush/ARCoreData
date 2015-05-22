@@ -73,7 +73,10 @@
                 }
             }else{
                 if (relationshipDes.isOrdered) {
-                    [self setValue:[NSOrderedSet orderedSetWithArray:destinationObjs] forKey:relationshipName];
+                    NSMutableOrderedSet *localOrderedSet = [self mutableOrderedSetValueForKey:relationshipName];
+                    [localOrderedSet removeAllObjects];
+                    [localOrderedSet addObjectsFromArray:destinationObjs];
+                    [self setValue:localOrderedSet forKey:relationshipName];
                 }else{
                     [self setValue:[NSSet setWithArray:destinationObjs] forKey:relationshipName];
                 }
