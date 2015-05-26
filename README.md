@@ -6,13 +6,13 @@
 
 ## Features
 
-###### PrimaryKey, currently support NSString , NSInteger(int_64,int_32,int_16..),NSNumber
+###### PrimaryKey
 
-###### Auto relationship Mapping (to -> one  , to -> many )
+###### Auto Mapping (attribute，relationship)
 
 ###### Safety Mutlie thread
 
-###### Easily fetch
+###### Async fetch
 
 ###### ARTableViewFetchResultController(a convenience class to replace NSFetchResultControler for UITableView)
 
@@ -32,141 +32,62 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 
 ## Creat new object
 
-if you have a Person and Dog class like this:
 ```
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+/**
+ *  creat an entity in mainQueue context
+ *
+ *  @return entity
+ */
++(id)AR_new;
 
-@class Dog;
+/**
+ *  creat an new entity in your context
+ *
+ *  @param context your context
+ *
+ *  @return entity
+ */
++(id)AR_newInContext:(NSManagedObjectContext *)context;
 
-@interface Person : NSManagedObject<ARManageObjectMappingProtocol>
+/**
+ *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
+ *
+ *  @param JSON key value object(KVC object)
+ *
+ *  @return mapping object
+ */
++(id)AR_newOrUpdateWithJSON:(id)JSON;
+/**
+ *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
+ *
+ *  @param JSON key value objects(KVC objects)
+ *
+ *  @return mapping objects
+ */
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic) BOOL sex;
-@property (nonatomic, retain) NSString * guid;
-@property (nonatomic, retain) NSSet *dogs;
-@end
+/**
+ *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
+ *
+ *  @param JSON   JSON key value object(KVC object)
+ *  @param policy ARRelationshipMergePolicy custom
+ *
+ *  @return mapping object
+ */
++(id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
 
-@interface Person (CoreDataGeneratedAccessors)
-
-- (void)addDogsObject:(Dog *)value;
-- (void)removeDogsObject:(Dog *)value;
-- (void)addDogs:(NSSet *)values;
-- (void)removeDogs:(NSSet *)values;
-
-@end
-
-_____________________
-
-
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-
-@class Person;
-
-@interface Dog : NSManagedObject
-
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic) int64_t guid;
-@property (nonatomic, retain) NSSet *owners;
-@end
-
-@interface Dog (CoreDataGeneratedAccessors)
-
-- (void)addOwnersObject:(Person *)value;
-- (void)removeOwnersObject:(Person *)value;
-- (void)addOwners:(NSSet *)values;
-- (void)removeOwners:(NSSet *)values;
-
-@end
-
-```
-you can create a person like this:
-
-```
-Person *person = [Person AR_new];
-person.name = @"aaa";
-person.guid = @"1";
-    
-Dog *pet = [Dog AR_new];
-pet.name = @"doggie";
-pet.guid = 123;
-
-[person addDogsObject:pet];
-
-[Person AR_saveAndWait];//this is save method
+/**
+ *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
+ *
+ *  @param JSONs  JSON key value objects(KVC objects)
+ *  @param policy ARRelationshipMergePolicy custom
+ *
+ *  @return mapping objects
+ */
++(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy;
 
 ```
-
-if you want to use a JSON(KVC object) create a new person, you should impliment <ARManageObjectMappingProtocol>, 
-this is my Person and Dog .m file.
-
-```
-@implementation Person
-
-@dynamic name;
-@dynamic sex;
-@dynamic guid;
-@dynamic dogs;
-
-+(NSDictionary *)JSONKeyPathsByPropertyKey
-{
-    return @{@"guid":@"g",
-             @"name":@"n",
-             @"sex":@"s",
-             @"dogs":@"ds"};
-}
-
-+(NSString *)primaryKey
-{
-    return @"guid";
-}
-
-@end
-
-
-**********************************
-
-
-@implementation Dog
-
-@dynamic name;
-@dynamic owners;
-@dynamic guid;
-
-+(NSDictionary *)JSONKeyPathsByPropertyKey
-{
-    return @{@"name":@"n",
-             @"owners":@"o",
-             @"guid":@"g.uid"};
-}
-
-+(NSString *)primaryKey
-{
-    return @"guid";
-}
-
-@end
-
-```
-
-and then, you can create a Person like this:
-
-```
-        Person *person = [Person AR_newOrUpdateWithJSON:@{@"n":name,
-                                                @"g":@"3",
-                                                @"s":@YES,
-                                                @"ds":@[@{@"n":@"haha",
-                                                          @"g":@{@"uid":@"7",
-                                                                 @"extra":@34}},
-                                                        @{@"n":name,
-                                                          @"g":@{@"uid":@"6",
-                                                                 @"extra":@34}}]}];
-```
-
-if you implement the class method +(NSString *)primaryKey; you just can create an unique person through a same "guid".
-
-## Mapping (ARManageObjectMappingProtocol)
+## Mapping
 
 ```
 @protocol ARManageObjectMappingProtocol <NSObject>
@@ -176,8 +97,9 @@ if you implement the class method +(NSString *)primaryKey; you just can create a
 @optional
 +(NSString *)primaryKey;
 
-@end
 ```
+
+if you implement the class method +(NSString *)primaryKey; you just can create an unique person through a same "guid".
 
 I have implemented some methods, you can use server response directly to create an(or a array) manageObject(s),
 there have two methods :
@@ -189,6 +111,8 @@ there have two methods :
 
 ```
 you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h) , yes ,this protocol have two methods,like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. you just to impliment these two methods , and just use two methods the above, it will automaticly transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
+
+#### Note: you can create an custom mapping for you coreData model's attribute or relationships like Mantle. the detail in my demo.
 
 ## Fetch objects
 
