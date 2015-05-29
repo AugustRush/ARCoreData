@@ -33,57 +33,16 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 ## Creat new object
 
 ```
-/**
- *  creat an entity in mainQueue context
- *
- *  @return entity
- */
 +(id)AR_new;
 
-/**
- *  creat an new entity in your context
- *
- *  @param context your context
- *
- *  @return entity
- */
 +(id)AR_newInContext:(NSManagedObjectContext *)context;
 
-/**
- *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
- *
- *  @param JSON key value object(KVC object)
- *
- *  @return mapping object
- */
 +(id)AR_newOrUpdateWithJSON:(id)JSON;
-/**
- *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
- *
- *  @param JSON key value objects(KVC objects)
- *
- *  @return mapping objects
- */
+
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
 
-/**
- *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
- *
- *  @param JSON   JSON key value object(KVC object)
- *  @param policy ARRelationshipMergePolicy custom
- *
- *  @return mapping object
- */
 +(id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
 
-/**
- *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
- *
- *  @param JSONs  JSON key value objects(KVC objects)
- *  @param policy ARRelationshipMergePolicy custom
- *
- *  @return mapping objects
- */
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy;
 
 ```
@@ -95,7 +54,7 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 +(NSDictionary *)JSONKeyPathsByPropertyKey;
 
 @optional
-+(NSString *)primaryKey;
++(NSSet *)uniquedPropertyKeys;
 
 ```
 
@@ -116,7 +75,21 @@ you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCo
 
 ## Fetch objects
 
-there have a lot of methods to help you fetch objects convenience and faster, you can see the file [Fetch](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/NSManagedObject%2BARConvenience.h).
+```
++(id)AR_anyone;
+
++(NSArray *)AR_all;
+
++(NSArray *)AR_whereProperty:(NSString *)property
+                     equalTo:(id)value;
+
++(NSArray *)AR_where:(NSString *)condition,...;
+
++(NSUInteger)AR_count;
+
+.......
+
+```
 
 Example:
 ```
