@@ -28,17 +28,6 @@
 
 #pragma mark - ARManageObjectMappingProtocol create
 
-+(NSCache *)cacheLocalObjects
-{
-    static NSCache *localObjects = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        localObjects = [[NSCache alloc] init];
-    });
-    
-    return localObjects;
-}
-
 +(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON
 {
     return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd];
@@ -64,29 +53,28 @@
     NSMutableArray *objs = [NSMutableArray array];
     
     NSDictionary *mapping = [self performSelector:@selector(JSONKeyPathsByPropertyKey)];
-    NSString *primaryKey = nil;
-    if ([self respondsToSelector:@selector(primaryKey)]) {
+    NSSet *primaryKeys = nil;
+    if ([self respondsToSelector:@selector(uniquedPropertyKeys)]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        primaryKey = [self performSelector:@selector(primaryKey)];
+        primaryKeys = [self performSelector:@selector(uniquedPropertyKeys)];
 #pragma clang diagnostic pop
     }
     
     NSManagedObjectContext *context = [self defaultPrivateContext];
     for (NSDictionary *JSON in JSONs) {
         [objs addObject:[self objectWithJSON:JSON
-                                  primaryKey:primaryKey
+                                 primaryKeys:primaryKeys
                                      mapping:mapping
                      relationshipMergePolicy:policy
                                    inContext:context]];
         
     }
-    [[self cacheLocalObjects] removeAllObjects];
     return objs;
 }
 
 +(id)     objectWithJSON:(NSDictionary *)JSON
-              primaryKey:(NSString *)primaryKey
+             primaryKeys:(NSSet *)primaryKeys
                  mapping:(NSDictionary *)mapping
  relationshipMergePolicy:(ARRelationshipMergePolicy)policy
                inContext:(NSManagedObjectContext *)context
@@ -95,32 +83,37 @@
     @autoreleasepool {
         [context performBlockAndWait:^{
             // find or create the entity object
-            if (primaryKey == nil) {
+            if (primaryKeys == nil || primaryKeys.count == 0) {
                 entity = [self AR_newInContext:context];
             }else{
-                NSString *mappingKey = [mapping valueForKey:primaryKey];
                 
-                NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:[self AR_entityName] inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
-                id remoteValue = [JSON valueForKeyPath:mappingKey];
-                if (attributeDes.attributeType == NSStringAttributeType) {
-                    remoteValue = [remoteValue description];
-                }else{
-                    remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
-                }
-                
-                NSString *cacheKey = [NSString stringWithFormat:@"%@.%@=%@",NSStringFromClass(self),primaryKey,remoteValue];
-                entity = [[self cacheLocalObjects] objectForKey:cacheKey];
-                if (entity == nil) {
-                    entity = [self localManageObjectWithPrimaryKey:primaryKey
-                                                             value:remoteValue
-                                                         inContext:context];
+                NSMutableArray *subPredicates = [NSMutableArray array];
+                for (NSString *primaryKey in primaryKeys) {
+                    NSString *mappingKey = [mapping valueForKey:primaryKey];
                     
-                    if (entity == nil) {
-                        entity = [self AR_newInContext:context];
+                    NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:[self AR_entityName] inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
+                    id remoteValue = [JSON valueForKeyPath:mappingKey];
+                    if (attributeDes.attributeType == NSStringAttributeType) {
+                        remoteValue = [remoteValue description];
+                    }else{
+                        remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
                     }
-                    [[self cacheLocalObjects] setObject:entity forKey:cacheKey];
+    
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,remoteValue];
+                    [subPredicates addObject:predicate];
                 }
                 
+                NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates];
+                NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
+                fetchRequest.fetchLimit = 1;
+                [fetchRequest setPredicate:compoundPredicate];
+                
+                entity = [[context executeFetchRequest:fetchRequest error:nil] lastObject];
+                
+                
+                if (entity == nil) {
+                    entity = [self AR_newInContext:context];
+                }
             }
             
             NSArray *attributes = [entity allAttributeNames];
@@ -156,19 +149,6 @@
         }];
     }
     return entity;
-}
-
-+(NSManagedObject *)localManageObjectWithPrimaryKey:(NSString *)primaryKey
-                                              value:(id)value
-                                          inContext:(NSManagedObjectContext *)context
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,value];
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
-    fetchRequest.fetchLimit = 1;
-    [fetchRequest setPredicate:predicate];
-    
-    return [[context executeFetchRequest:fetchRequest error:nil] lastObject];
 }
 
 @end

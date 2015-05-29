@@ -27,9 +27,9 @@
              @"dogs":@"ds"};
 }
 
-+(NSString *)primaryKey
++(NSSet *)uniquedPropertyKeys
 {
-    return @"guid";
+    return [NSSet setWithObjects:@"guid", nil];
 }
 
 // the custom property transform methods, just add "Transformer" before property name, exmple,

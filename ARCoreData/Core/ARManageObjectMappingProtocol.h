@@ -18,6 +18,6 @@ typedef NS_ENUM(NSUInteger, ARRelationshipMergePolicy) {
 +(NSDictionary *)JSONKeyPathsByPropertyKey;
 
 @optional
-+(NSString *)primaryKey;
++(NSSet *)uniquedPropertyKeys;
 
 @end

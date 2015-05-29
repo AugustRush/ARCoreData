@@ -23,9 +23,9 @@
              @"guid":@"g.uid"};
 }
 
-+(NSString *)primaryKey
++(NSSet *)uniquedPropertyKeys
 {
-    return @"guid";
+    return [NSSet setWithObjects:@"guid",@"name", nil];
 }
 
 @end
