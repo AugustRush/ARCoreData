@@ -7,6 +7,7 @@
 //
 
 #import "ARTableViewFetchResultController.h"
+#import "NSManagedObject+ARConvenience.h"
 
 @interface ARTableViewFetchResultController ()<UITableViewDataSource,NSFetchedResultsControllerDelegate>
 
@@ -47,7 +48,25 @@
 
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.fetchResultController objectAtIndexPath:indexPath];
+    NSManagedObject *object = [self.fetchResultController objectAtIndexPath:indexPath];
+    return [object AR_objectInPrivate];
+}
+
+-(void)setPause:(BOOL)pause
+{
+    if (pause != _pause) {
+        _pause = pause;
+        if (_pause) {
+            self.tableView.dataSource = nil;
+        }else{
+            self.tableView.dataSource = self;
+            NSError *error;
+            if (![self.fetchResultController performFetch:&error]) {
+                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            }
+            [self.tableView reloadData];
+        }
+    }
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
@@ -81,7 +100,8 @@
             if ([self.tableView.indexPathsForVisibleRows containsObject:indexPath]) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 if ([self.delegate respondsToSelector:@selector(tableFetchResultController:updateCell:withObject:)]) {
-                    [self.delegate tableFetchResultController:self updateCell:cell withObject:anObject];
+                    id privateObject = [anObject AR_objectInPrivate];
+                    [self.delegate tableFetchResultController:self updateCell:cell withObject:privateObject];
                 }else{
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
@@ -137,7 +157,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellReuseIdentifier forIndexPath:indexPath];
     id object = [self.fetchResultController objectAtIndexPath:indexPath];
-    [self.delegate tableFetchResultController:self configureCell:cell withObject:object];
+    [self.delegate tableFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate]];
     return cell;
 }
 

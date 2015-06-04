@@ -62,7 +62,7 @@
  *  sync find objects where property is equal to a specification value and sorted using a keypath
  *
  *  @param property  property name
- *  @param value     exect value
+ *  @param value     expect value
  *  @param keyPath   keypath
  *  @param ascending ascending
  *

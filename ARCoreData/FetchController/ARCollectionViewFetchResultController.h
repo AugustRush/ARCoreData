@@ -34,6 +34,8 @@
 @property (nonatomic, assign) id<ARCollectionViewFetchResultControllerDelegate> delegate;
 @property (nonatomic, strong, readonly) NSFetchedResultsController *fetchResultController;
 
+@property (nonatomic, assign) BOOL pause;
+
 @property (nonatomic, readonly) NSArray *sections;
 
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath;

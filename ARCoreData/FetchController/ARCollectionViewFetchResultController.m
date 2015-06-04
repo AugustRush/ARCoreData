@@ -7,6 +7,7 @@
 //
 
 #import "ARCollectionViewFetchResultController.h"
+#import "NSManagedObject+ARConvenience.h"
 
 #define AR_changeType @"type"
 #define AR_changeIndexPath1 @"change_indexPath1"
@@ -19,8 +20,8 @@
 @property (nonatomic, copy) NSString *cellReuseIdentifier;
 @property (nonatomic, strong) NSFetchedResultsController *fetchResultController;
 
-@property (nonatomic, strong) NSMutableArray *objectChanges;
-@property (nonatomic, strong) NSMutableArray *sectionChanges;
+@property (atomic, strong) NSMutableArray *objectChanges;
+@property (atomic, strong) NSMutableArray *sectionChanges;
 
 @end
 
@@ -58,7 +59,25 @@
 
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.fetchResultController objectAtIndexPath:indexPath];
+    NSManagedObject *object = [self.fetchResultController objectAtIndexPath:indexPath];
+    return [object AR_objectInPrivate];
+}
+
+-(void)setPause:(BOOL)pause
+{
+    if (pause != _pause) {
+        _pause = pause;
+        if (_pause) {
+            self.collectionView.dataSource = nil;
+        }else{
+            self.collectionView.dataSource = self;
+            NSError *error;
+            if (![self.fetchResultController performFetch:&error]) {
+                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            }
+            [self.collectionView reloadData];
+        }
+    }
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
@@ -202,7 +221,7 @@
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellReuseIdentifier forIndexPath:indexPath];
     id object = [self.fetchResultController objectAtIndexPath:indexPath];
-    [self.delegate collectionFetchResultController:self configureCell:cell withObject:object];
+    [self.delegate collectionFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate]];
     return cell;
 }
 

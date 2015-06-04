@@ -86,7 +86,7 @@
         id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
         [self setValue:destinationObjs forKey:relationshipName];
     }
-    
+
 }
 
 #pragma mark - private methods

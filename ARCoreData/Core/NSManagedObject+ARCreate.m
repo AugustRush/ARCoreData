@@ -26,6 +26,16 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self AR_entityName] inManagedObjectContext:context];
 }
 
++(NSCache *)objectIDStore
+{
+    static NSCache *cache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [[NSCache alloc] init];
+    });
+    return cache;
+}
+
 #pragma mark - ARManageObjectMappingProtocol create
 
 +(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON
@@ -87,6 +97,7 @@
                 entity = [self AR_newInContext:context];
             }else{
                 
+                //create a compumd predicate
                 NSMutableArray *subPredicates = [NSMutableArray array];
                 for (NSString *primaryKey in primaryKeys) {
                     NSString *mappingKey = [mapping valueForKey:primaryKey];
@@ -98,21 +109,29 @@
                     }else{
                         remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
                     }
-    
+                    
                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,remoteValue];
                     [subPredicates addObject:predicate];
                 }
                 
                 NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates];
-                NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
-                fetchRequest.fetchLimit = 1;
-                [fetchRequest setPredicate:compoundPredicate];
-                
-                entity = [[context executeFetchRequest:fetchRequest error:nil] lastObject];
-                
+                NSManagedObjectID *objectID = [[self objectIDStore] objectForKey:compoundPredicate.predicateFormat];
+                if (objectID != nil) {
+                    entity = [context existingObjectWithID:objectID error:nil];
+                }
                 
                 if (entity == nil) {
-                    entity = [self AR_newInContext:context];
+                    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
+                    fetchRequest.fetchLimit = 1;
+                    [fetchRequest setPredicate:compoundPredicate];
+                    
+                    entity = [[context executeFetchRequest:fetchRequest error:nil] lastObject];
+                    
+                    
+                    if (entity == nil) {
+                        entity = [self AR_newInContext:context];
+                        [[self objectIDStore] setObject:[entity.objectID copy] forKey:compoundPredicate.predicateFormat];
+                    }
                 }
             }
             
