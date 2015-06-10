@@ -33,6 +33,7 @@
 		970B1D2B1B14805B001D73AA /* ARTableViewFetchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 970B1D211B14805B001D73AA /* ARTableViewFetchResultController.m */; };
 		9779BAB21AE25A4A0053379C /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB11AE25A4A0053379C /* Person.m */; };
 		9779BAB51AE265490053379C /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 9779BAB41AE265490053379C /* Dog.m */; };
+		979BC5201B282C7700070B0B /* NSManagedObject+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = 979BC51F1B282C7700070B0B /* NSManagedObject+Sync.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,8 @@
 		9779BAB11AE25A4A0053379C /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		9779BAB31AE265490053379C /* Dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
 		9779BAB41AE265490053379C /* Dog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dog.m; sourceTree = "<group>"; };
+		979BC51E1B282C7700070B0B /* NSManagedObject+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Sync.h"; sourceTree = "<group>"; };
+		979BC51F1B282C7700070B0B /* NSManagedObject+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Sync.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +238,8 @@
 				970B1D1A1B14805B001D73AA /* NSManagedObject+ARCreate.m */,
 				970B1D1B1B14805B001D73AA /* NSManagedObject+ARMapping.h */,
 				970B1D1C1B14805B001D73AA /* NSManagedObject+ARMapping.m */,
+				979BC51E1B282C7700070B0B /* NSManagedObject+Sync.h */,
+				979BC51F1B282C7700070B0B /* NSManagedObject+Sync.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -348,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				979BC5201B282C7700070B0B /* NSManagedObject+Sync.m in Sources */,
 				970B1D2B1B14805B001D73AA /* ARTableViewFetchResultController.m in Sources */,
 				970B1D261B14805B001D73AA /* ARCoreDataManager.m in Sources */,
 				73D45F1E1962666800745653 /* YCAppDelegate.m in Sources */,
