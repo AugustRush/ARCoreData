@@ -17,7 +17,7 @@
  *  @param JSONs      JSON key value objects(KVC objects)
  *  @param completion async completion block
  */
-+(void)AR_syncWithJSONs:(NSArray *)JSONs completion:(void(^)(NSArray *objects))completion;
++(NSArray *)AR_syncWithJSONs:(NSArray *)JSONs;
 /**
  *  sync to coreData Stack
  *
@@ -25,6 +25,10 @@
  *  @param mergePolicy ARRelationshipMergePolicy custom
  *  @param completion  async completion block
  */
-+(void)AR_syncWithJSONs:(NSArray *)JSONs mergePolicy:(ARRelationshipMergePolicy)mergePolicy completion:(void(^)(NSArray *objects))completion;
++(NSArray *)AR_syncWithJSONs:(NSArray *)JSONs mergePolicy:(ARRelationshipMergePolicy)mergePolicy;
+
++(id)AR_syncWithJSON:(id)JSON;
+
++(id)AR_syncWithJSON:(id)JSON mergePolicy:(ARRelationshipMergePolicy)mergePolicy;
 
 @end

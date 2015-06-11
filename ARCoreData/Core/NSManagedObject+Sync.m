@@ -14,12 +14,23 @@
 
 @implementation NSManagedObject (Sync)
 
-+(void)AR_syncWithJSONs:(NSArray *)JSONs completion:(void (^)(NSArray *))completion
++(id)AR_syncWithJSON:(id)JSON
 {
-    [self AR_syncWithJSONs:JSONs mergePolicy:ARRelationshipMergePolicyAdd completion:completion];
+    return [self AR_syncWithJSON:JSON mergePolicy:ARRelationshipMergePolicyAdd];
 }
 
-+(void)AR_syncWithJSONs:(NSArray *)JSONs mergePolicy:(ARRelationshipMergePolicy)mergePolicy completion:(void (^)(NSArray *))completion
++(id)AR_syncWithJSON:(id)JSON mergePolicy:(ARRelationshipMergePolicy)mergePolicy
+{
+    NSAssert(JSON != nil, @"JSON object shoud not be nil");
+    return [[self AR_syncWithJSONs:@[JSON] mergePolicy:mergePolicy] lastObject];
+}
+
++(NSArray *)AR_syncWithJSONs:(NSArray *)JSONs
+{
+    return [self AR_syncWithJSONs:JSONs mergePolicy:ARRelationshipMergePolicyAdd];
+}
+
++(NSArray *)AR_syncWithJSONs:(NSArray *)JSONs mergePolicy:(ARRelationshipMergePolicy)mergePolicy
 {
     NSAssert([JSONs isKindOfClass:[NSArray class]], @"JSONs should be a NSArray");
     NSAssert1([self respondsToSelector:@selector(JSONKeyPathsByPropertyKey)],  @"%@ class should impliment +(NSDictionary *)JSONKeyPathsByPropertyKey; method", NSStringFromClass(self));
@@ -35,21 +46,17 @@
     }
     
     NSManagedObjectContext *context = [self defaultPrivateContext];
-    [context performBlock:^{
-        for (id json in JSONs) {
+    for (id json in JSONs) {
+        [context performBlockAndWait:^{
             [objects addObject:[self objectWithObject:json
                                           primaryKeys:primaryKeys
                                               mapping:mapping
                               relationshipMergePolicy:mergePolicy
                                             inContext:context]];
-        }
-        NSError *error;
-        if ([context save:&error]) {
-            if (completion) {
-                completion(objects);
-            }
-        }
-    }];
+        }];
+    }
+
+    return objects;
 }
 
 +(id)     objectWithObject:(id)JSON

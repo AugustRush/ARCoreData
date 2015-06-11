@@ -26,6 +26,10 @@
 {
     [super viewDidLoad];
     
+    [Person AR_truncateAll];
+    [Dog AR_truncateAll];
+    [Person AR_saveCompletion:nil];
+
     NSFetchRequest *fetchRequest = [Dog AR_allRequest];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY owners.guid = %@",@"3"];
     [fetchRequest setPredicate:predicate];
@@ -76,32 +80,32 @@
     
 //    NSLog(@"start mapping");
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *JSONs = [NSMutableArray array];
-        for (int i = 1; i < 30; i++) {
-            NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-            NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%20];
-            [JSONs addObject:@{@"n":name,
-                              @"g":@"3",
-                              @"s":@YES,
-                              @"ds":@[@{@"n":guid,
-                                        @"g":@{@"uid":@6,
-                                               @"extra":@34}},
-                                      @{@"n":name,
-                                        @"g":@{@"uid":@"6",
-                                               @"extra":@34}}]}];
-        }
-        
-        //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
-        
-        [Person AR_syncWithJSONs:JSONs completion:^(NSArray *objects) {
-
-        }];
-    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        NSMutableArray *JSONs = [NSMutableArray array];
+//        for (int i = 1; i < 3000; i++) {
+//            NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
+//            NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%20];
+//            [JSONs addObject:@{@"n":name,
+//                              @"g":@"3",
+//                              @"s":@YES,
+//                              @"ds":@[@{@"n":guid,
+//                                        @"g":@{@"uid":@6,
+//                                               @"extra":@34}},
+//                                      @{@"n":name,
+//                                        @"g":@{@"uid":@"6",
+//                                               @"extra":@34}}]}];
+//        }
+//        
+//        //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
+//        
+//        [Person AR_syncWithJSONs:JSONs completion:^(NSArray *objects) {
+//
+//        }];
+//    });
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *JSONs = [NSMutableArray array];
-        for (int i = 1; i < 30; i++) {
+        for (int i = 1; i < 3000; i++) {
             NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
             NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%20];
             [JSONs addObject:@{@"n":name,
@@ -117,10 +121,12 @@
         
         //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
         
-        [Person AR_syncWithJSONs:JSONs completion:^(NSArray *objects) {
+        [Person AR_newOrUpdateWithJSONs:JSONs];
+        [Person AR_saveCompletion:^(BOOL success, NSError *error) {
             NSLog(@"all person count is %ld",[Person AR_count]);
             NSLog(@"all dogs count is %ld",[Dog AR_count]);
         }];
+        
     });
 
     
