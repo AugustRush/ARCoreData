@@ -117,25 +117,29 @@
         
         [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
             
-            NSString *methodName = [NSString stringWithFormat:@"%@Transformer:",key];
-            SEL selector = NSSelectorFromString(methodName);
-            
-            if ([self respondsToSelector:selector]) {
+            id remoteValue = [JSON valueForKeyPath:obj];
+            if (remoteValue != nil) {
+                
+                NSString *methodName = [NSString stringWithFormat:@"%@Transformer:",key];
+                SEL selector = NSSelectorFromString(methodName);
+                if ([self respondsToSelector:selector]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                id value = [self performSelector:selector withObject:[JSON valueForKeyPath:obj]];
+                    id value = [self performSelector:selector withObject:remoteValue];
 #pragma clang diagnostic pop
-                if (value != nil) {
-                    [entity setValue:value forKey:key];
-                }
-                
-            }else{
-                if ([attributes containsObject:key]) {
-                    [entity mergeAttributeForKey:key withValue:[JSON valueForKeyPath:obj]];
+                    if (value != nil) {
+                        [entity setValue:value forKey:key];
+                    }
                     
+                }else{
+                    if ([attributes containsObject:key]) {
+                        [entity mergeAttributeForKey:key withValue:remoteValue];
+                        
+                        
+                    }else if ([relationships containsObject:key]){
+                        [entity mergeRelationshipForKey:key withValue:remoteValue mergePolicy:policy];
+                    }
                     
-                }else if ([relationships containsObject:key]){
-                    [entity mergeRelationshipForKey:key withValue:[JSON valueForKeyPath:obj] mergePolicy:policy];
                 }
                 
             }
