@@ -13,10 +13,10 @@
 @protocol ARTableViewFetchResultControllerDelegate <NSObject>
 
 @required
--(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(id)cell withObject:(id)object;
+-(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(id)cell withObject:(id)object atIndexPath:(NSIndexPath *)indexPath;
 
 @optional
--(void)tableFetchResultController:(ARTableViewFetchResultController *)controller updateCell:(id)cell withObject:(id)object;
+-(void)tableFetchResultController:(ARTableViewFetchResultController *)controller updateCell:(id)cell withObject:(id)object atIndexPath:(NSIndexPath *)indexPath;
 
 -(void)tableFetchResultControllerDidChangedContent:(ARTableViewFetchResultController *)controller;
 -(void)tableFetchResultControllerWillChangedContent:(ARTableViewFetchResultController *)controller;
@@ -33,10 +33,9 @@
 
 @property (nonatomic, assign) id<ARTableViewFetchResultControllerDelegate> delegate;
 @property (nonatomic, strong, readonly) NSFetchedResultsController *fetchResultController;
-
 @property (nonatomic, assign) BOOL pause;
-
 @property (nonatomic, readonly) NSArray *sections;
+@property (nonatomic, assign) BOOL reloadWhenDataChanged;//will reload data when data changed without animation
 
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath;
 

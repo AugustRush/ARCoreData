@@ -121,7 +121,7 @@
                 if (objectID != nil) {
                     entity = [context existingObjectWithID:objectID error:nil];
                 }
-                
+
                 if (entity == nil) {
                     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
                     fetchRequest.fetchLimit = 1;
@@ -144,7 +144,7 @@
                 
                 id remoteValue = [JSON valueForKeyPath:obj];
                 if (remoteValue != nil) {
-                    
+                
                     NSString *methodName = [NSString stringWithFormat:@"%@Transformer:",key];
                     SEL selector = NSSelectorFromString(methodName);
                     if ([self respondsToSelector:selector]) {

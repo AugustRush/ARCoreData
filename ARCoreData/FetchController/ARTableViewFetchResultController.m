@@ -30,7 +30,7 @@
         self.tableView.dataSource = self;
         self.cellReuseIdentifier = cellReuseIdentifier;
         self.delegate = delegate;
-        
+        self.reloadWhenDataChanged = NO;
         NSError *error;
         if (![self.fetchResultController performFetch:&error]) {
             NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
@@ -73,7 +73,9 @@
 
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.tableView beginUpdates];
+    if (!self.reloadWhenDataChanged) {
+        [self.tableView beginUpdates];
+    }
     if ([self.delegate respondsToSelector:@selector(tableFetchResultControllerWillChangedContent:)]) {
         [self.delegate tableFetchResultControllerWillChangedContent:self];
     }
@@ -81,7 +83,11 @@
 
 -(void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.tableView endUpdates];
+    if (self.reloadWhenDataChanged) {
+        [self.tableView reloadData];
+    }else{
+        [self.tableView endUpdates];
+    }
     if ([self.delegate respondsToSelector:@selector(tableFetchResultControllerDidChangedContent:)]) {
         [self.delegate tableFetchResultControllerDidChangedContent:self];
     }
@@ -89,55 +95,58 @@
 
 -(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 {
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        case NSFetchedResultsChangeMove:
-            [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-            break;
-        case NSFetchedResultsChangeUpdate:
-            if ([self.tableView.indexPathsForVisibleRows containsObject:indexPath]) {
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                if ([self.delegate respondsToSelector:@selector(tableFetchResultController:updateCell:withObject:)]) {
-                    id privateObject = [anObject AR_objectInPrivate];
-                    [self.delegate tableFetchResultController:self updateCell:cell withObject:privateObject];
-                }else{
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    if (!self.reloadWhenDataChanged) {
+        switch (type) {
+            case NSFetchedResultsChangeInsert:
+                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+            case NSFetchedResultsChangeMove:
+                [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+                break;
+            case NSFetchedResultsChangeUpdate:
+                if ([self.tableView.indexPathsForVisibleRows containsObject:indexPath]) {
+                    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                    if ([self.delegate respondsToSelector:@selector(tableFetchResultController:updateCell:withObject:atIndexPath:)]) {
+                        id privateObject = [anObject AR_objectInPrivate];
+                        [self.delegate tableFetchResultController:self updateCell:cell withObject:privateObject atIndexPath:indexPath];
+                    }else{
+                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    }
                 }
-            }
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-
-            
-        default:
-            break;
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+                
+                
+            default:
+                break;
+        }
     }
 }
 
 -(void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        case NSFetchedResultsChangeMove:
-            //not impliment
-            break;
-        case NSFetchedResultsChangeUpdate:
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-            
-        default:
-            break;
+    if (!self.reloadWhenDataChanged) {
+        switch (type) {
+            case NSFetchedResultsChangeInsert:
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+            case NSFetchedResultsChangeMove:
+                //not impliment
+                break;
+            case NSFetchedResultsChangeUpdate:
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+                
+                
+            default:
+                break;
+        } 
     }
-
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -157,7 +166,9 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellReuseIdentifier forIndexPath:indexPath];
     id object = [self.fetchResultController objectAtIndexPath:indexPath];
-    [self.delegate tableFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate]];
+    if([self.delegate respondsToSelector:@selector(tableFetchResultController:configureCell:withObject:atIndexPath:)]) {
+        [self.delegate tableFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate] atIndexPath:indexPath];
+    }
     return cell;
 }
 

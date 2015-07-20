@@ -19,6 +19,7 @@
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, copy) NSString *cellReuseIdentifier;
 @property (nonatomic, strong) NSFetchedResultsController *fetchResultController;
+@property (nonatomic, strong) NSFetchRequest *fetchRequest;
 
 @property (atomic, strong) NSMutableArray *objectChanges;
 @property (atomic, strong) NSMutableArray *sectionChanges;
@@ -31,9 +32,7 @@
 {
     self = [super init];
     if (self) {
-        NSManagedObjectContext *manageContex = [[ARCoreDataManager shareManager] mainContext];
-        self.fetchResultController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:manageContex sectionNameKeyPath:nil cacheName:nil];
-        self.fetchResultController.delegate = self;
+        self.fetchRequest = fetchRequest;
         self.collectionView = collectionView;
         self.collectionView.dataSource = self;
         self.cellReuseIdentifier = cellReuseIdentifier;
@@ -78,6 +77,27 @@
             [self.collectionView reloadData];
         }
     }
+}
+
+- (NSFetchedResultsController *)fetchResultController
+{
+    if (_fetchResultController != nil) {
+        return _fetchResultController;
+    }
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSManagedObjectContext *manageContex = [[ARCoreDataManager shareManager] mainContext];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:manageContex sectionNameKeyPath:nil cacheName:nil];
+    aFetchedResultsController.delegate = self;
+    self.fetchResultController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchResultController performFetch:&error]) {
+        NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+    }
+    
+    return _fetchResultController;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
@@ -136,13 +156,13 @@
             }
         }];
     } completion:^(BOOL finished) {
-        [self.objectChanges removeAllObjects];
-        [self.sectionChanges removeAllObjects];
-        
         if ([self.delegate respondsToSelector:@selector(collectionFetchResultControllerDidChangedContent:)]) {
             [self.delegate collectionFetchResultControllerDidChangedContent:self];
         }
     }];
+    
+    [self.objectChanges removeAllObjects];
+    [self.sectionChanges removeAllObjects];
 }
 
 -(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath

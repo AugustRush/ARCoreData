@@ -8,10 +8,11 @@
 
 #import "NSManagedObject+ARMapping.h"
 #import "NSManagedObject+ARConvenience.h"
+#import "NSManagedObject+ARCreate.h"
 #import "NSManagedObject+ARManageObjectContext.h"
 #import "NSManagedObject+ARRequest.h"
+#import "NSManagedObject+ARCreate.h"
 #import "ARCoreDataManager.h"
-#import "NSManagedObject+Sync.h"
 
 @implementation NSManagedObject (ARMapping)
 
@@ -19,7 +20,7 @@
 {
     NSAttributeDescription *attributeDes = [self attributeDescriptionForAttribute:attributeName];
     
-    if (value != nil && value != [NSNull null]) {
+    if (value != [NSNull null]) {
         switch (attributeDes.attributeType) {
             case NSDecimalAttributeType:
             case NSInteger16AttributeType:
@@ -51,13 +52,13 @@
 
 -(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy
 {
-    if (value == nil || [value isEqual:[NSNull null]]) {
+    if ([value isEqual:[NSNull null]]) {
         return;
     }
     NSRelationshipDescription *relationshipDes = [self relationshipDescriptionForRelationship:relationshipName];
     NSString *desClassName = relationshipDes.destinationEntity.managedObjectClassName;
     if (relationshipDes.isToMany) {
-        NSArray *destinationObjs = [NSClassFromString(desClassName) AR_syncWithJSONs:value mergePolicy:policy];
+        NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value];
         if (destinationObjs != nil && destinationObjs.count > 0) {
             if (policy == ARRelationshipMergePolicyAdd) {
                 if(relationshipDes.isOrdered) {
@@ -82,7 +83,7 @@
             }
         }
     }else{
-        id destinationObjs = [NSClassFromString(desClassName) AR_syncWithJSON:value mergePolicy:policy];
+        id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
         [self setValue:destinationObjs forKey:relationshipName];
     }
 
