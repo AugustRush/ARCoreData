@@ -201,13 +201,11 @@
 
 // delete methods
 
-+(BOOL)AR_truncateAll;
--(void)AR_delete;
++(BOOL)AR_truncateAllInContext:(NSManagedObjectContext *)context;
 
 //save methods
-+(BOOL)AR_saveAndWait;
-+(void)AR_saveAndWaitCompletion:(void(^)(BOOL success,NSError *error))completion;
-+(void)AR_saveCompletion:(void(^)(BOOL success, NSError *error))completion;
++ (BOOL)AR_saveAndWait:(void(^)(NSManagedObjectContext *currentContext))saveAndWait;
++ (void)AR_save:(void(^)(NSManagedObjectContext *currentContext))save completion:(void(^)(NSError *error))completion;
 
 // update methods
 

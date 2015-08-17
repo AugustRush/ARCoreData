@@ -58,7 +58,7 @@
     NSRelationshipDescription *relationshipDes = [self relationshipDescriptionForRelationship:relationshipName];
     NSString *desClassName = relationshipDes.destinationEntity.managedObjectClassName;
     if (relationshipDes.isToMany) {
-        NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value];
+        NSArray *destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSONs:value inContext:self.managedObjectContext];
         if (destinationObjs != nil && destinationObjs.count > 0) {
             if (policy == ARRelationshipMergePolicyAdd) {
                 if(relationshipDes.isOrdered) {
@@ -83,7 +83,7 @@
             }
         }
     }else{
-        id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value];
+        id destinationObjs = [NSClassFromString(desClassName) AR_newOrUpdateWithJSON:value inContext:self.managedObjectContext];
         [self setValue:destinationObjs forKey:relationshipName];
     }
 

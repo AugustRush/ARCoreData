@@ -25,16 +25,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [Person AR_truncateAll];
-    [Dog AR_truncateAll];
-    [Person AR_saveCompletion:nil];
 
     NSFetchRequest *fetchRequest = [Dog AR_allRequest];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY owners.guid = %@",@"3"];
-    [fetchRequest setPredicate:predicate];
     
-    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
+    NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"guid" ascending:NO];
     [fetchRequest setSortDescriptors:@[sorted]];
     
     self.fetchController = [[ARTableViewFetchResultController alloc] initWithFetchRequest:fetchRequest tableView:self.tableView cellReuseIdentifier: @"cell" delegate:self];
@@ -44,8 +38,7 @@
 
 #pragma mark - ARTableViewFetchResultControllerDelegate methods
 
--(void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(UITableViewCell *)cell withObject:(id)object
-{
+- (void)tableFetchResultController:(ARTableViewFetchResultController *)controller configureCell:(UITableViewCell *)cell withObject:(id)object atIndexPath:(NSIndexPath *)indexPath {
     Dog *dog = (Dog *)object;
     cell.textLabel.text = [NSString stringWithFormat:@"%lld %@",dog.guid,dog.name];
 }
@@ -55,13 +48,15 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Dog *dog = [self.fetchController objectAtIndexPath:indexPath];
-    [dog AR_delete];
+    NSManagedObjectID *objectID = dog.objectID;
     
-    [Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
-        
-        NSLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
+    [Person AR_saveAndWait:^(NSManagedObjectContext *currentContext) {
+        Dog *deleteDog = (Dog *)[currentContext existingObjectWithID:objectID error:nil];
+        [currentContext deleteObject:deleteDog];
     }];
+    
+    NSLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
+    NSLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
 }
 
 #pragma mark - manage memory methods
@@ -78,55 +73,30 @@
 
 - (IBAction)addEntityObj:(id)sender {
     
-//    NSLog(@"start mapping");
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        NSMutableArray *JSONs = [NSMutableArray array];
-//        for (int i = 1; i < 3000; i++) {
-//            NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-//            NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%20];
-//            [JSONs addObject:@{@"n":name,
-//                              @"g":@"3",
-//                              @"s":@YES,
-//                              @"ds":@[@{@"n":guid,
-//                                        @"g":@{@"uid":@6,
-//                                               @"extra":@34}},
-//                                      @{@"n":name,
-//                                        @"g":@{@"uid":@"6",
-//                                               @"extra":@34}}]}];
-//        }
-//        
-//        //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
-//        
-//        [Person AR_syncWithJSONs:JSONs completion:^(NSArray *objects) {
-//
-//        }];
-//    });
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *JSONs = [NSMutableArray array];
-        for (int i = 1; i < 3000; i++) {
-            NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
-            NSString *guid = [NSString stringWithFormat:@"%u",arc4random()%20];
-            [JSONs addObject:@{@"n":name,
-                               @"g":@"3",
-                               @"s":@YES,
-                               @"ds":@[@{@"n":guid,
-                                         @"g":@{@"uid":@6,
-                                                @"extra":@34}},
-                                       @{@"n":name,
-                                         @"g":@{@"uid":@"6",
-                                                @"extra":@34}}]}];
-        }
-        
-        //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
-        
-        [Person AR_newOrUpdateWithJSONs:JSONs];
-        [Person AR_saveCompletion:^(BOOL success, NSError *error) {
+       
+        [Person AR_save:^(NSManagedObjectContext *currentContext) {
+            NSLog(@"start");
+            for (int i = 1; i < 3000; i++) {
+                NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
+                NSString *guid = [NSString stringWithFormat:@"%d",i];
+                [Person AR_newOrUpdateWithJSON:@{@"n":name,
+                                                 @"g":@"3",
+                                                 @"s":@YES,
+                                                 @"ds":@[@{@"n":guid,
+                                                           @"g":@{@"uid":guid,
+                                                                  @"extra":@34}},
+                                                         @{@"n":name,
+                                                           @"g":@{@"uid":guid,
+                                                                  @"extra":@34}}]} inContext:currentContext];
+            }
+            //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
+            NSLog(@"stop");
+
+        } completion:^(NSError *error) {
             NSLog(@"all person count is %ld",[Person AR_count]);
             NSLog(@"all dogs count is %ld",[Dog AR_count]);
         }];
-        
     });
 
     

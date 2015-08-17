@@ -99,99 +99,43 @@
 
 #pragma mark - save methods
 
-+(BOOL)AR_saveAndWait
-{
-    NSManagedObjectContext *privateContext = [self defaultPrivateContext];
-    NSManagedObjectContext *mainContext = [self defaultMainContext];
-    __block BOOL success = NO;
++ (BOOL)AR_saveAndWait:(void (^)(NSManagedObjectContext *))saveAndWait {
+    NSAssert(saveAndWait != nil, @"saveAndWait block should not be nil!!!");
+    NSManagedObjectContext *context = [self currentContext];
+    __block BOOL success = YES;
     __block NSError *error = nil;
-    if ([privateContext hasChanges]) {
-        [privateContext performBlockAndWait:^{
-            success = [privateContext save:&error];
-        }];
-    }else if([mainContext hasChanges]){
-        [mainContext performBlockAndWait:^{
-            success = [mainContext save:&error];
-        }];
-    }else{
-        NSLog(@"there is nothing to save !");
-    }
-    if (error != nil) {
-        NSLog(@"save error is %@",error);
-    }
+    [context performBlockAndWait:^{
+        saveAndWait(context);
+        success = [context save:&error];
+        if (success) {
+            [context.parentContext performBlockAndWait:^{
+                [context.parentContext save:&error];
+            }];
+        }
+        if (error != nil) {
+            NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+        }
+    }];
     return success;
 }
 
-+(void)AR_saveAndWaitCompletion:(void (^)(BOOL, NSError *))completion
-{
-    NSManagedObjectContext *privateContext = [self defaultPrivateContext];
-    NSManagedObjectContext *mainContext = [self defaultMainContext];
-    
-    __block NSError *error = nil;
++ (void)AR_save:(void (^)(NSManagedObjectContext *))save completion:(void (^)(NSError *))completion {
+    NSAssert(save, @"save block should not be nil!!!");
     __block BOOL success = YES;
-    if ([privateContext hasChanges]) {
-        [privateContext performBlockAndWait:^{
-            
-            success = [privateContext save:&error];
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(success,error);
-                });
-            }
-        }];
-    }else if ([mainContext hasChanges]){
-        [mainContext performBlockAndWait:^{
-            success = [mainContext save:&error];
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(success,error);
-                });
-            }
-        }];
-    }else{
-        if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(success,error);
-            });
-        }
-    }
-    
-}
-
-+(void)AR_saveCompletion:(void (^)(BOOL, NSError *))completion
-{
-    NSManagedObjectContext *privateContext = [self defaultPrivateContext];
-    NSManagedObjectContext *mainContext = [self defaultMainContext];
-    
     __block NSError *error = nil;
-    __block BOOL success = YES;
-    if ([privateContext hasChanges]) {
-        [privateContext performBlock:^{
-            
-            success = [privateContext save:&error];
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(success,error);
-                });
-            }
-        }];
-    }else if ([mainContext hasChanges]){
-        [mainContext performBlock:^{
-            success = [mainContext save:&error];
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(success,error);
-                });
-            }
-        }];
-    }else{
-        if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(success,error);
-            });
+    NSManagedObjectContext *context = [self currentContext];
+    [context performBlock:^{
+        save(context);
+        success = [context save:&error];
+        if (error == nil) {
+            [context.parentContext performBlockAndWait:^{
+                [context.parentContext save:&error];
+            }];
         }
-    }
-    
+        if (completion) {
+            completion(error);
+        }
+    }];
 }
 
 #pragma mark - transfer to main/private(thread) methods
@@ -226,13 +170,11 @@
 
 #pragma mark - delete methods
 
-+(BOOL)AR_truncateAll
-{
++ (BOOL)AR_truncateAllInContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [self AR_allRequest];
     [request setReturnsObjectsAsFaults:YES];
     [request setIncludesPropertyValues:NO];
     
-    NSManagedObjectContext *context = [self defaultPrivateContext];
     [context performBlockAndWait:^{
         NSError *error = nil;
         NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
@@ -243,10 +185,6 @@
     return YES;
 }
 
--(void)AR_delete
-{
-    [self.managedObjectContext deleteObject:self];
-}
 
 #pragma mark - fetch methods
 

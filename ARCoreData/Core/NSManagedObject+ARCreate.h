@@ -12,7 +12,7 @@
 @interface NSManagedObject (ARCreate)
 
 /**
- *  creat an entity in mainQueue context
+ *  creat an entity in default private queue context
  *
  *  @return entity
  */
@@ -34,7 +34,7 @@
  *
  *  @return mapping object
  */
-+(id)AR_newOrUpdateWithJSON:(id)JSON;
++(id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
  *
@@ -42,7 +42,7 @@
  *
  *  @return mapping objects
  */
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs inContext:(NSManagedObjectContext *)context;
 
 /**
  *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
@@ -52,7 +52,7 @@
  *
  *  @return mapping object
  */
-+(id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
++ (id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
@@ -62,6 +62,6 @@
  *
  *  @return mapping objects
  */
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy;
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
 @end

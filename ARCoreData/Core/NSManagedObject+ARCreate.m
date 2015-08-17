@@ -38,26 +38,23 @@
 
 #pragma mark - ARManageObjectMappingProtocol create
 
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON
++(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON inContext:(NSManagedObjectContext *)context
 {
-    return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd];
+    return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd inContext:context];
 }
 
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy
-{
++ (id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context {
     if (JSON != nil) {
-        return [[self AR_newOrUpdateWithJSONs:@[JSON] relationshipsMergePolicy:policy] lastObject];
+        return [[self AR_newOrUpdateWithJSONs:@[JSON] relationshipsMergePolicy:policy inContext:context] lastObject];
     }
     return nil;
 }
 
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs
-{
-    return [self AR_newOrUpdateWithJSONs:JSONs relationshipsMergePolicy:ARRelationshipMergePolicyAdd];
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs inContext:(NSManagedObjectContext *)context {
+    return [self AR_newOrUpdateWithJSONs:JSONs relationshipsMergePolicy:ARRelationshipMergePolicyAdd inContext:context];
 }
 
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy
-{
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context {
     NSAssert([JSONs isKindOfClass:[NSArray class]], @"JSONs should be a NSArray");
     NSAssert1([self respondsToSelector:@selector(JSONKeyPathsByPropertyKey)],  @"%@ class should impliment +(NSDictionary *)JSONKeyPathsByPropertyKey; method", NSStringFromClass(self));
     NSMutableArray *objs = [NSMutableArray array];
@@ -71,7 +68,6 @@
 #pragma clang diagnostic pop
     }
     
-    NSManagedObjectContext *context = [self defaultPrivateContext];
     for (NSDictionary *JSON in JSONs) {
         [objs addObject:[self objectWithJSON:JSON
                                  primaryKeys:primaryKeys

@@ -25,7 +25,7 @@
 
 +(NSSet *)uniquedPropertyKeys
 {
-    return [NSSet setWithObjects:@"guid",@"name", nil];
+    return [NSSet setWithObjects:@"guid", nil];
 }
 
 @end
