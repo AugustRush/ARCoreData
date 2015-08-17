@@ -16,7 +16,7 @@
  *
  *  @return entity
  */
-+(id)AR_new;
++ (id)AR_new;
 
 /**
  *  creat an new entity in your context
@@ -25,7 +25,7 @@
  *
  *  @return entity
  */
-+(id)AR_newInContext:(NSManagedObjectContext *)context;
++ (id)AR_newInContext:(NSManagedObjectContext *)context;
 
 /**
  *  to ceate new or update existed object with JSON, this class should impliment ARManageObjectMappingProtocol protocol
@@ -34,7 +34,7 @@
  *
  *  @return mapping object
  */
-+(id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
++ (id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
 /**
  *  to ceate new or update existed objects with JSONs, this class should impliment ARManageObjectMappingProtocol protocol
  *

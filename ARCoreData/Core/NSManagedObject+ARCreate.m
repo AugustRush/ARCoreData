@@ -15,31 +15,18 @@
 
 #pragma mark - common create
 
-+(id)AR_new
-{
++ (id)AR_new {
     NSManagedObjectContext *manageContext = [self defaultPrivateContext];
     return [NSEntityDescription insertNewObjectForEntityForName:[self AR_entityName] inManagedObjectContext:manageContext];
 }
 
-+(id)AR_newInContext:(NSManagedObjectContext *)context
-{
++ (id)AR_newInContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription insertNewObjectForEntityForName:[self AR_entityName] inManagedObjectContext:context];
-}
-
-+(NSCache *)objectIDStore
-{
-    static NSCache *cache = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cache = [[NSCache alloc] init];
-    });
-    return cache;
 }
 
 #pragma mark - ARManageObjectMappingProtocol create
 
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON inContext:(NSManagedObjectContext *)context
-{
++ (id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON inContext:(NSManagedObjectContext *)context {
     return [self AR_newOrUpdateWithJSON:JSON relationshipMergePolicy:ARRelationshipMergePolicyAdd inContext:context];
 }
 
@@ -79,93 +66,82 @@
     return objs;
 }
 
-+(id)     objectWithJSON:(NSDictionary *)JSON
-             primaryKeys:(NSSet *)primaryKeys
-                 mapping:(NSDictionary *)mapping
- relationshipMergePolicy:(ARRelationshipMergePolicy)policy
-               inContext:(NSManagedObjectContext *)context
-{
++ (id)     objectWithJSON:(NSDictionary *)JSON
+              primaryKeys:(NSSet *)primaryKeys
+                  mapping:(NSDictionary *)mapping
+  relationshipMergePolicy:(ARRelationshipMergePolicy)policy
+                inContext:(NSManagedObjectContext *)context {
     __block NSManagedObject *entity = nil;
     @autoreleasepool {
-        [context performBlockAndWait:^{
-            // find or create the entity object
-            if (primaryKeys == nil || primaryKeys.count == 0) {
-                entity = [self AR_newInContext:context];
-            }else{
+        // find or create the entity object
+        if (primaryKeys == nil || primaryKeys.count == 0) {
+            entity = [self AR_newInContext:context];
+        }else{
+            
+            //create a compumd predicate
+            NSString *entityName = [self AR_entityName];
+            NSMutableArray *subPredicates = [NSMutableArray array];
+            for (NSString *primaryKey in primaryKeys) {
+                NSString *mappingKey = [mapping valueForKey:primaryKey];
                 
-                //create a compumd predicate
-                NSString *entityName = [self AR_entityName];
-                NSMutableArray *subPredicates = [NSMutableArray array];
-                for (NSString *primaryKey in primaryKeys) {
-                    NSString *mappingKey = [mapping valueForKey:primaryKey];
-                    
-                    NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
-                    id remoteValue = [JSON valueForKeyPath:mappingKey];
-                    if (attributeDes.attributeType == NSStringAttributeType) {
-                        remoteValue = [remoteValue description];
-                    }else{
-                        remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
-                    }
-                    
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,remoteValue];
-                    [subPredicates addObject:predicate];
+                NSAttributeDescription *attributeDes = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:context] attributesByName] objectForKey:primaryKey];
+                id remoteValue = [JSON valueForKeyPath:mappingKey];
+                if (attributeDes.attributeType == NSStringAttributeType) {
+                    remoteValue = [remoteValue description];
+                }else{
+                    remoteValue = [NSNumber numberWithLongLong:[remoteValue longLongValue]];
                 }
                 
-                NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates];
-                NSString *objectIDStoreKey = [entityName stringByAppendingString:compoundPredicate.predicateFormat];
-                NSManagedObjectID *objectID = [[self objectIDStore] objectForKey:objectIDStoreKey];
-                if (objectID != nil) {
-                    entity = [context existingObjectWithID:objectID error:nil];
-                }
-
-                if (entity == nil) {
-                    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
-                    fetchRequest.fetchLimit = 1;
-                    [fetchRequest setPredicate:compoundPredicate];
-                    
-                    entity = [[context executeFetchRequest:fetchRequest error:nil] lastObject];
-                    
-                    
-                    if (entity == nil) {
-                        entity = [self AR_newInContext:context];
-                        [[self objectIDStore] setObject:[entity.objectID copy] forKey:objectIDStoreKey];
-                    }
-                }
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",primaryKey,remoteValue];
+                [subPredicates addObject:predicate];
             }
             
-            NSArray *attributes = [entity allAttributeNames];
-            NSArray *relationships = [entity allRelationshipNames];
+            NSCompoundPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates];
             
-            [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
+            NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self AR_entityName]];
+            fetchRequest.fetchLimit = 1;
+            fetchRequest.resultType = NSManagedObjectIDResultType;
+            [fetchRequest setPredicate:compoundPredicate];
+            
+            NSManagedObjectID *objectID = [[context executeFetchRequest:fetchRequest error:nil] firstObject];
+            if (objectID) {
+                entity = [context existingObjectWithID:objectID error:nil];
+            }else{
+                entity = [self AR_newInContext:context];
+            }
+        }
+        
+        NSArray *attributes = [entity allAttributeNames];
+        NSArray *relationships = [entity allRelationshipNames];
+        
+        [mapping enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
+            
+            id remoteValue = [JSON valueForKeyPath:obj];
+            if (remoteValue != nil) {
                 
-                id remoteValue = [JSON valueForKeyPath:obj];
-                if (remoteValue != nil) {
-                
-                    NSString *methodName = [NSString stringWithFormat:@"%@Transformer:",key];
-                    SEL selector = NSSelectorFromString(methodName);
-                    if ([self respondsToSelector:selector]) {
+                NSString *methodName = [NSString stringWithFormat:@"%@Transformer:",key];
+                SEL selector = NSSelectorFromString(methodName);
+                if ([self respondsToSelector:selector]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                        id value = [self performSelector:selector withObject:remoteValue];
+                    id value = [self performSelector:selector withObject:remoteValue];
 #pragma clang diagnostic pop
-                        if (value != nil) {
-                            [entity setValue:value forKey:key];
-                        }
+                    if (value != nil) {
+                        [entity setValue:value forKey:key];
+                    }
+                    
+                }else{
+                    if ([attributes containsObject:key]) {
+                        [entity mergeAttributeForKey:key withValue:remoteValue];
                         
-                    }else{
-                        if ([attributes containsObject:key]) {
-                            [entity mergeAttributeForKey:key withValue:remoteValue];
-                            
-                            
-                        }else if ([relationships containsObject:key]){
-                            [entity mergeRelationshipForKey:key withValue:remoteValue mergePolicy:policy];
-                        }
                         
+                    }else if ([relationships containsObject:key]){
+                        [entity mergeRelationshipForKey:key withValue:remoteValue mergePolicy:policy];
                     }
                     
                 }
                 
-            }];
+            }
             
         }];
     }

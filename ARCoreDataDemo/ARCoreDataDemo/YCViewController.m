@@ -94,8 +94,8 @@
             NSLog(@"stop");
 
         } completion:^(NSError *error) {
-            NSLog(@"all person count is %ld",[Person AR_count]);
-            NSLog(@"all dogs count is %ld",[Dog AR_count]);
+            NSLog(@"all person count is %lu",(unsigned long)[Person AR_count]);
+            NSLog(@"all dogs count is %lu",(unsigned long)[Dog AR_count]);
         }];
     });
 
