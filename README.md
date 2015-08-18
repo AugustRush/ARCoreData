@@ -6,21 +6,21 @@
 
 ## Features
 
-###### PrimaryKey
+###### Primary Key
 
 ###### Auto Mapping (attribute，relationship)
 
-###### Safety Mutlie thread
+###### Multi Thread Safety
 
 ###### Async fetch
 
-###### ARTableViewFetchResultController(a convenience class to replace NSFetchResultControler for UITableView)
+###### ARTableViewFetchResultController (a convenience class to replace NSFetchResultControler for UITableView)
 
-###### ARCollectionViewFetchResultController(a convenience class to replace NSFetchResultControler for UICollectionView)
+###### ARCollectionViewFetchResultController (a convenience class to replace NSFetchResultControler for UICollectionView)
 
 ## Install
 
-#### Manualy
+####  Manually
 just drag ARCoreData to your project and edit you model , do not need to config any others 
 <br>Import: `#import "ARCoreData.h"`
 
@@ -30,7 +30,7 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 ## Getting start
 ***********************
 
-## Creat new object
+## Creat a new object
 
 ```
 +(id)AR_new;
@@ -69,11 +69,11 @@ there have two methods :
 +(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
 
 ```
-you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h) , yes ,this protocol have two methods,like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. you just to impliment these two methods , and just use two methods the above, it will automaticly transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
+you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h), yes, this protocol has two methods, like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. You just need to implement and use these two methods, it will automatically transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
 
-#### Note: you can create an custom mapping for you coreData model's attribute or relationships like Mantle. the detail in my demo.
+#### Note: you can create a custom mapping for you CoreData model's attribute or relationships like Mantle. Check more details in the demo.
 
-## Fetch objects
+## Fetching objects
 
 ```
 +(id)AR_anyone;
@@ -127,11 +127,11 @@ and so on !!!
 
 * Encryption
 
-* Fixed bugs
+* Fix bugs
 
 ## TL;DR:
-there have more methods i have created for you, you can see it in my Demo project after. this library also worked in
-swift fine !
+there have more methods I have created, you can see it in the Demo project after. This library also works in
+Swift!
 
 
 
