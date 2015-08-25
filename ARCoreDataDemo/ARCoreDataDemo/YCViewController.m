@@ -26,6 +26,14 @@
 {
     [super viewDidLoad];
 
+    [Dog AR_save:^(NSManagedObjectContext *currentContext) {
+        [Dog AR_truncateAllInContext:currentContext];
+        [Person AR_truncateAllInContext:currentContext];
+    } completion:^(NSError *error) {
+        NSLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
+        NSLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
+    }];
+    
     NSFetchRequest *fetchRequest = [Dog AR_allRequest];
     
     NSSortDescriptor *sorted = [NSSortDescriptor sortDescriptorWithKey:@"guid" ascending:NO];
@@ -77,8 +85,9 @@
        
         [Person AR_save:^(NSManagedObjectContext *currentContext) {
             NSLog(@"start");
-            for (int i = 1; i < 3000; i++) {
+            for (int i = 0; i < 1000; i++) {
                 NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
+                //guid as uniqued value for mapping
                 NSString *guid = [NSString stringWithFormat:@"%d",i];
                 [Person AR_newOrUpdateWithJSON:@{@"n":name,
                                                  @"g":@"3",
@@ -90,7 +99,6 @@
                                                            @"g":@{@"uid":guid,
                                                                   @"extra":@34}}]} inContext:currentContext];
             }
-            //因为Person的primarykey是“guid”，而在mapping中对应的为“g”，所以只要g为相同的值，那么就只会创建一个Person实例，可以加上for循环，或者多次点击添加进行测试
             NSLog(@"stop");
 
         } completion:^(NSError *error) {
@@ -98,9 +106,6 @@
             NSLog(@"all dogs count is %lu",(unsigned long)[Dog AR_count]);
         }];
     });
-
-    
-//    NSLog(@"stop mapping");
     
 }
 

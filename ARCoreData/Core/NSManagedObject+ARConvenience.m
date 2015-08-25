@@ -175,13 +175,11 @@
     [request setReturnsObjectsAsFaults:YES];
     [request setIncludesPropertyValues:NO];
     
-    [context performBlockAndWait:^{
-        NSError *error = nil;
-        NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
-        for (id obj in objsToDelete ) {
-            [context deleteObject:obj];
-        }
-    }];
+    NSError *error = nil;
+    NSArray *objsToDelete = [context executeFetchRequest:request error:&error];
+    for (id obj in objsToDelete ) {
+        [context deleteObject:obj];
+    }
     return YES;
 }
 

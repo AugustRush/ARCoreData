@@ -32,6 +32,7 @@ NSString *const ARCoreDataCurrentThreadContext = @"ARCoreData_CurrentThread_Cont
         context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         [context setParentContext:[self defaultPrivateContext]];
         [context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+        context.undoManager = nil;
         threadDict[ARCoreDataCurrentThreadContext] = context;
     }
     return context;

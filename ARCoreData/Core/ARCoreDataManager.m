@@ -23,8 +23,7 @@
 
 #pragma mark - init methods
 
--(id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         [self addNotifications];
@@ -32,8 +31,7 @@
     return self;
 }
 
-+(instancetype)shareManager
-{
++ (instancetype)shareManager {
     static ARCoreDataManager *__coreDataManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -45,8 +43,7 @@
 
 #pragma mark - merge notification methods
 
--(void)mainManageObjectContextDidSaved:(NSNotification *)notification
-{
+- (void)mainManageObjectContextDidSaved:(NSNotification *)notification {
     @synchronized(self){
         [self.privateContext performBlock:^{
             [self.privateContext mergeChangesFromContextDidSaveNotification:notification];
@@ -54,8 +51,7 @@
     }
 }
 
--(void)privateManageObjectContextDidSaved:(NSNotification *)notification
-{
+- (void)privateManageObjectContextDidSaved:(NSNotification *)notification {
     @synchronized(self){
         [self.mainContext performBlock:^{
 //http://stackoverflow.com/questions/3923826/nsfetchedresultscontroller-with-predicate-ignores-changes-merged-from-different
@@ -69,8 +65,7 @@
 
 #pragma mark - Custom methods
 
--(void)removeAllRecord
-{
+- (void)removeAllRecord {
     NSError *error = nil;
     NSPersistentStoreCoordinator *storeCoodinator = self.persistentStoreCoordinator;
     [storeCoodinator removePersistentStore:self.persistentStore error:&error];
@@ -89,8 +84,7 @@
     }
 }
 
--(void)addNotifications
-{
+- (void)addNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(mainManageObjectContextDidSaved:)
                                                  name:NSManagedObjectContextDidSaveNotification
@@ -102,15 +96,13 @@
                                                object:[self privateContext]];
 }
 
--(void)removeNotifications
-{
+- (void)removeNotifications {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Core Data stack
 
--(NSManagedObjectContext *)mainContext
-{
+- (NSManagedObjectContext *)mainContext {
     if (_mainContext != nil) {
         return _mainContext;
     }
@@ -119,14 +111,14 @@
     if (coordinator != nil) {
         _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        _mainContext.undoManager = nil;
         [_mainContext setPersistentStoreCoordinator:coordinator];
     }
     
     return _mainContext;
 }
 
-- (NSManagedObjectContext *)privateContext
-{
+- (NSManagedObjectContext *)privateContext {
     if (_privateContext != nil) {
         return _privateContext;
     }
@@ -135,13 +127,13 @@
     if (coordinator != nil) {
         _privateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         _privateContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        _privateContext.undoManager = nil;
         [_privateContext setPersistentStoreCoordinator:coordinator];
     }
     return _privateContext;
 }
 
-- (NSManagedObjectModel *)managedObjectModel
-{
+- (NSManagedObjectModel *)managedObjectModel {
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
@@ -150,8 +142,7 @@
     return _managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     if (_persistentStoreCoordinator != nil) {
         return _persistentStoreCoordinator;
     }
@@ -222,8 +213,7 @@
     return YES;
 }
 
-- (NSDictionary *)persistentStoreOptions
-{
+- (NSDictionary *)persistentStoreOptions {
     return @{NSInferMappingModelAutomaticallyOption: @YES,
              NSMigratePersistentStoresAutomaticallyOption: @YES,
              NSSQLitePragmasOption: @{@"synchronous": @"NO"}};
@@ -231,8 +221,7 @@
 
 #pragma mark - Application's Documents directory
 
-- (NSURL *)applicationDocumentsDirectory
-{
+- (NSURL *)applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
