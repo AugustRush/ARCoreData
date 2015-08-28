@@ -12,16 +12,9 @@
 #define _systermVersion_greter_8_0 [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
 
 #ifdef DEBUG
-#define NSLog(format, ...) \
-    do { \
-    NSLog(@"<%@ : %d : %s>-: %@", \
-    [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
-    __LINE__, \
-    __FUNCTION__, \
-    [NSString stringWithFormat:format, ##__VA_ARGS__]); \
-    } while(0)
+#define ARLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
-#define NSLog(...)
+#define ARLog(...)
 #endif
 
 

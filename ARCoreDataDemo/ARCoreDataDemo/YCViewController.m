@@ -30,8 +30,8 @@
         [Dog AR_truncateAllInContext:currentContext];
         [Person AR_truncateAllInContext:currentContext];
     } completion:^(NSError *error) {
-        NSLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
-        NSLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
+        ARLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
+        ARLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
     }];
     
     NSFetchRequest *fetchRequest = [Dog AR_allRequest];
@@ -63,15 +63,15 @@
         [currentContext deleteObject:deleteDog];
     }];
     
-    NSLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
-    NSLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
+    ARLog(@"all dog count is %ld",(unsigned long)[Dog AR_count]);
+    ARLog(@"all person count is %ld",(unsigned long)[Person AR_count]);
 }
 
 #pragma mark - manage memory methods
 
 -(void)dealloc
 {
-    NSLog(@"%s",__PRETTY_FUNCTION__);
+    ARLog(@"%s",__PRETTY_FUNCTION__);
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +84,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        
         [Person AR_save:^(NSManagedObjectContext *currentContext) {
-            NSLog(@"start");
+            ARLog(@"start");
             for (int i = 0; i < 1000; i++) {
                 NSString *name = [NSString stringWithFormat:@"%u",arc4random()%4];
                 //guid as uniqued value for mapping
@@ -99,11 +99,11 @@
                                                            @"g":@{@"uid":guid,
                                                                   @"extra":@34}}]} inContext:currentContext];
             }
-            NSLog(@"stop");
+            ARLog(@"stop");
 
         } completion:^(NSError *error) {
-            NSLog(@"all person count is %lu",(unsigned long)[Person AR_count]);
-            NSLog(@"all dogs count is %lu",(unsigned long)[Dog AR_count]);
+            ARLog(@"all person count is %lu",(unsigned long)[Person AR_count]);
+            ARLog(@"all dogs count is %lu",(unsigned long)[Dog AR_count]);
         }];
     });
     

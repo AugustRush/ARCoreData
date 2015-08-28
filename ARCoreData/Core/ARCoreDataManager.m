@@ -7,6 +7,7 @@
 //
 
 #import "ARCoreDataManager.h"
+#import "ARCoreDataMacros.h"
 
 @interface ARCoreDataManager ()
 
@@ -165,8 +166,6 @@
     self.persistentStore = persistanceStore;
     
     if (!persistanceStore) {
-
-        NSLog(@"persistance store may has changed");
         error = nil;
         if ([self removeSQLiteFilesAtStoreURL:storeURL error:&error]) {
             self.persistentStore = [_persistentStoreCoordinator
@@ -176,7 +175,7 @@
                                 options:persistentStoreOptions
                                 error:&error];
         }else{
-            NSLog(@"could not remove has changed sqilte");
+            ARLog(@"could not remove has changed sqilte");
         }
     }
     

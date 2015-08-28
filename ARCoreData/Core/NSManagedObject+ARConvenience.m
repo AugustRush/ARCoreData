@@ -53,7 +53,7 @@
                         
                         NSError *error = nil;
                         [manageOBjectContext save:&error];
-                        NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+                        ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
                     }];
                 } else {
                     // We got back nothing!
@@ -90,9 +90,9 @@
             }];
             NSError *saveError = nil;
             [manageObjectContext save:&saveError];
-            NSLog(@"%s save error is %@",__PRETTY_FUNCTION__,saveError);
+            ARLog(@"%s save error is %@",__PRETTY_FUNCTION__,saveError);
         }else{
-            NSLog(@"%s fetch error is %@",__PRETTY_FUNCTION__,error);
+            ARLog(@"%s fetch error is %@",__PRETTY_FUNCTION__,error);
         }
     }];
 }
@@ -113,7 +113,7 @@
             }];
         }
         if (error != nil) {
-            NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
         }
     }];
     return success;
@@ -404,8 +404,7 @@
               fetchBatchSize:(NSUInteger)batchSize
                   fetchLimit:(NSUInteger)fetchLimit
                  fetchOffset:(NSUInteger)fetchOffset
-                       where:(NSString *)condition, ...
-{
+                       where:(NSString *)condition, ... {
     NSFetchRequest *request = [self AR_requestWithFetchLimit:fetchLimit
                                                    batchSize:batchSize
                                                  fetchOffset:fetchOffset];

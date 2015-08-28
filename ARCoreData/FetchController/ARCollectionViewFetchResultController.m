@@ -8,6 +8,7 @@
 
 #import "ARCollectionViewFetchResultController.h"
 #import "NSManagedObject+ARConvenience.h"
+#import "ARCoreDataMacros.h"
 
 #define AR_changeType @"type"
 #define AR_changeIndexPath1 @"change_indexPath1"
@@ -43,7 +44,7 @@
         
         NSError *error;
         if (![self.fetchResultController performFetch:&error]) {
-            NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
         }
     }
     return self;
@@ -72,7 +73,7 @@
             self.collectionView.dataSource = self;
             NSError *error;
             if (![self.fetchResultController performFetch:&error]) {
-                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+                ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
             }
             [self.collectionView reloadData];
         }
@@ -94,7 +95,7 @@
     
     NSError *error = nil;
     if (![self.fetchResultController performFetch:&error]) {
-        NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+        ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
     }
     
     return _fetchResultController;

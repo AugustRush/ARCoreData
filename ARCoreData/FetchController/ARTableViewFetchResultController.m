@@ -8,6 +8,7 @@
 
 #import "ARTableViewFetchResultController.h"
 #import "NSManagedObject+ARConvenience.h"
+#import "ARCoreDataMacros.h"
 
 @interface ARTableViewFetchResultController ()<UITableViewDataSource,NSFetchedResultsControllerDelegate>
 
@@ -33,7 +34,7 @@
         self.reloadWhenDataChanged = NO;
         NSError *error;
         if (![self.fetchResultController performFetch:&error]) {
-            NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+            ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
         }
     }
     return self;
@@ -62,7 +63,7 @@
             self.tableView.dataSource = self;
             NSError *error;
             if (![self.fetchResultController performFetch:&error]) {
-                NSLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
+                ARLog(@"%s error is %@",__PRETTY_FUNCTION__,error);
             }
             [self.tableView reloadData];
         }

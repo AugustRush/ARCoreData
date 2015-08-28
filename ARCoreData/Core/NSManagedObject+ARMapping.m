@@ -16,8 +16,7 @@
 
 @implementation NSManagedObject (ARMapping)
 
--(void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value
-{
+- (void)mergeAttributeForKey:(NSString *)attributeName withValue:(id)value {
     NSAttributeDescription *attributeDes = [self attributeDescriptionForAttribute:attributeName];
     
     if (value != [NSNull null]) {
@@ -47,11 +46,9 @@
                 break;
         }
     }
-
 }
 
--(void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy
-{
+- (void)mergeRelationshipForKey:(NSString *)relationshipName withValue:(id)value mergePolicy:(ARRelationshipMergePolicy)policy {
     if ([value isEqual:[NSNull null]]) {
         return;
     }
@@ -91,30 +88,25 @@
 
 #pragma mark - private methods
 
--(NSArray *)allAttributeNames
-{
+- (NSArray *)allAttributeNames {
     return self.entity.attributesByName.allKeys;
 }
 
--(NSArray *)allRelationshipNames
-{
+- (NSArray *)allRelationshipNames {
     return self.entity.relationshipsByName.allKeys;
 }
 
--(NSAttributeDescription *)attributeDescriptionForAttribute:(NSString *)attributeName
-{
+- (NSAttributeDescription *)attributeDescriptionForAttribute:(NSString *)attributeName {
     return [self.entity.attributesByName objectForKey:attributeName];
 }
 
--(NSRelationshipDescription *)relationshipDescriptionForRelationship:(NSString *)relationshipName
-{
+- (NSRelationshipDescription *)relationshipDescriptionForRelationship:(NSString *)relationshipName {
     return [self.entity.relationshipsByName objectForKey:relationshipName];
 }
 
 #pragma mark - transform methods
 
-NSDate * dateFromString(NSString *value)
-{
+NSDate * dateFromString(NSString *value) {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     [formatter setLocale:[NSLocale currentLocale]];
