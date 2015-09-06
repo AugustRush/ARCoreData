@@ -33,17 +33,17 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 ## Creat a new object
 
 ```
-+(id)AR_new;
++ (id)AR_new;
 
-+(id)AR_newInContext:(NSManagedObjectContext *)context;
++ (id)AR_newInContext:(NSManagedObjectContext *)context;
 
-+(id)AR_newOrUpdateWithJSON:(id)JSON;
++ (id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
 
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs inContext:(NSManagedObjectContext *)context;
 
-+(id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy;
++ (id)AR_newOrUpdateWithJSON:(id)JSON relationshipMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy;
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
 ```
 ## Mapping
@@ -64,9 +64,9 @@ I have implemented some methods, you can use server response directly to create 
 there have two methods :
 
 ```
-+(id)AR_newOrUpdateWithJSON:(NSDictionary *)JSON;
++ (id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
 
-+(NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs;
++ (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
 ```
 you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h), yes, this protocol has two methods, like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. You just need to implement and use these two methods, it will automatically transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
@@ -105,19 +105,29 @@ and so on !!!
 
 ```
 * sync
-    [Person AR_saveAndWait];
-
-    [Person AR_saveAndWaitCompletion:^(BOOL success, NSError *error) {
-        // fetch objects or do UI work
+   //NSManageObjectID is thread safety
+    [Person AR_saveAndWait:^(NSManagedObjectContext *currentContext) {
+        Dog *deleteDog = (Dog *)[currentContext existingObjectWithID:objectID error:nil];
+        [currentContext deleteObject:deleteDog];
     }];
 
 * async
 
-	[Person AR_saveCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"all dog is %@ dog count is %ld",[Dog AR_all],[Dog AR_count]);
-        
-        NSLog(@"all person is %@ dog count is %ld",[Person AR_all],[Person AR_count]);
-    }];
+[Person AR_save:^(NSManagedObjectContext *currentContext) {
+                [Person AR_newOrUpdateWithJSON:@{@"n":name,
+                                                 @"g":@"3",
+                                                 @"s":@YES,
+                                                 @"ds":@[@{@"n":@"123",
+                                                           @"g":@{@"uid":@"123",
+                                                                  @"extra":@34}},
+                                                         @{@"n":name,
+                                                           @"g":@{@"uid":@"123",
+                                                                  @"extra":@34}}]} inContext:currentContext];
+        } completion:^(NSError *error) {
+            ARLog(@"all person count is %lu",(unsigned long)[Person AR_count]);
+            ARLog(@"all dogs count is %lu",(unsigned long)[Dog AR_count]);
+        }];
+
 
 
 ```
@@ -126,8 +136,6 @@ and so on !!!
 * Migration
 
 * Encryption
-
-* Fix bugs
 
 ## TL;DR:
 there have more methods I have created, you can see it in the Demo project after. This library also works in

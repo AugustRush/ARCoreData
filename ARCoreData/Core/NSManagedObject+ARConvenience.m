@@ -396,7 +396,6 @@
         objs = [context executeFetchRequest:request error:&error];
     }];
     return objs;
-    
 }
 
 +(NSArray *)AR_sortedKeyPath:(NSString *)keyPath
