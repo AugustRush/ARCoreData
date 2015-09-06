@@ -50,7 +50,7 @@
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *object = [self.fetchResultController objectAtIndexPath:indexPath];
-    return [object AR_objectInPrivate];
+    return object;
 }
 
 -(void)setPause:(BOOL)pause
@@ -108,8 +108,7 @@
                 if ([self.tableView.indexPathsForVisibleRows containsObject:indexPath]) {
                     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     if ([self.delegate respondsToSelector:@selector(tableFetchResultController:updateCell:withObject:atIndexPath:)]) {
-                        id privateObject = [anObject AR_objectInPrivate];
-                        [self.delegate tableFetchResultController:self updateCell:cell withObject:privateObject atIndexPath:indexPath];
+                        [self.delegate tableFetchResultController:self updateCell:cell withObject:anObject atIndexPath:indexPath];
                     }else{
                         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                     }
@@ -168,7 +167,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellReuseIdentifier forIndexPath:indexPath];
     id object = [self.fetchResultController objectAtIndexPath:indexPath];
     if([self.delegate respondsToSelector:@selector(tableFetchResultController:configureCell:withObject:atIndexPath:)]) {
-        [self.delegate tableFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate] atIndexPath:indexPath];
+        [self.delegate tableFetchResultController:self configureCell:cell withObject:object atIndexPath:indexPath];
     }
     return cell;
 }

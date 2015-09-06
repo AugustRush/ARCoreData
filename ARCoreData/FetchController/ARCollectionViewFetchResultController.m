@@ -60,7 +60,7 @@
 -(id)objectAtIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *object = [self.fetchResultController objectAtIndexPath:indexPath];
-    return [object AR_objectInPrivate];
+    return object;
 }
 
 -(void)setPause:(BOOL)pause
@@ -242,7 +242,7 @@
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellReuseIdentifier forIndexPath:indexPath];
     id object = [self.fetchResultController objectAtIndexPath:indexPath];
-    [self.delegate collectionFetchResultController:self configureCell:cell withObject:[object AR_objectInPrivate]];
+    [self.delegate collectionFetchResultController:self configureCell:cell withObject:object];
     return cell;
 }
 
