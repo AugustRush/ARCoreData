@@ -58,10 +58,10 @@ just drag ARCoreData to your project and edit you model , do not need to config 
 
 ```
 
-if you implement the class method +(NSString *)primaryKey; you just can create an unique person through a same "guid".
+you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h), yes, this protocol has two methods, like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. You just need to implement and use these two methods, it will automatically transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
 
 I have implemented some methods, you can use server response directly to create an(or a array) manageObject(s),
-there have two methods :
+there are some methods you can use to sync JSONs to persistance store (.sqlite):
 
 ```
 + (id)AR_newOrUpdateWithJSON:(id)JSON inContext:(NSManagedObjectContext *)context;
@@ -69,7 +69,6 @@ there have two methods :
 + (NSArray *)AR_newOrUpdateWithJSONs:(NSArray *)JSONs relationshipsMergePolicy:(ARRelationshipMergePolicy)policy inContext:(NSManagedObjectContext *)context;
 
 ```
-you have seen [ARManageObjectMappingProtocol](https://github.com/AugustRush/ARCoreData/blob/master/ARCoreData/Core/ARManageObjectMappingProtocol.h), yes, this protocol has two methods, like famous mapping library <a href="https://github.com/Mantle/Mantle">Mantle</a>, but it must be faster than Mantle. You just need to implement and use these two methods, it will automatically transfrom a JSON(s) or KVC object(s) to NSManageObject(s) instance. Overall, it's very easy and safe.
 
 #### Note: you can create a custom mapping for you CoreData model's attribute or relationships like Mantle. Check more details in the demo.
 
